@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#081c15" />
+  <title>Admin & Template Studio | Maple Connect</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Top Header -->
+    <header style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(212, 175, 55, 0.25);">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="index.html" class="btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 0.85rem;">
+          ← Experience Home
+        </a>
+        <div>
+          <h1 class="font-serif gold-gradient-text" style="font-size: 1.35rem; font-weight: 700;">
+            Template Studio & QR Admin
+          </h1>
+          <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.65);">
+            Configure multi-client layouts, photo framing geometry, and printable QR codes
+          </p>
+        </div>
+      </div>
+      <div>
+        <button id="btn-export-frame" class="btn-gold" style="font-size: 0.8rem; padding: 0.6rem 1rem;">
+          🖼️ Export Transparent Frame PNG
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="admin-grid">
+      <!-- Left Controls Panel -->
+      <div class="admin-panel">
+        <!-- Tabs -->
+        <div class="admin-nav-tabs">
+          <button class="admin-tab-btn active" data-tab="template">🎨 Template</button>
+          <button class="admin-tab-btn" data-tab="qrcodes">📱 QR Code</button>
+          <button class="admin-tab-btn" data-tab="json">📄 JSON</button>
+        </div>
+
+        <!-- Campaign Selector -->
+        <div class="admin-form-group">
+          <label class="admin-label" for="select-campaign">
+            <span>Select Active Campaign</span>
+            <span>✦ Multi-Client</span>
+          </label>
+          <select id="select-campaign" class="admin-select">
+            <option value="nilgiri-tea">🍃 Sagar Nilgiri Products (Tea Estate)</option>
+            <option value="maple-artisan">🍁 Maple Artisan Connect (Craft Heritage)</option>
+            <option value="highland-spice">🌿 Highland Spice & Botanical (Spice Trails)</option>
+          </select>
+        </div>
+
+        <!-- TAB 1: Template Sliders -->
+        <div class="admin-tab-content" data-tab-content="template">
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--nilgiri-gold); margin-bottom: 1rem; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 0.4rem;">
+            Photo Cutout Geometry (1080×1350 Base)
+          </div>
+
+          <div class="admin-form-group">
+            <div class="admin-label">
+              <span>Photo Area Width</span>
+              <span id="val-w">900px</span>
+            </div>
+            <input type="range" id="input-w" min="500" max="1000" step="5" />
+          </div>
+
+          <div class="admin-form-group">
+            <div class="admin-label">
+              <span>Photo Area Height</span>
+              <span id="val-h">870px</span>
+            </div>
+            <input type="range" id="input-h" min="500" max="1000" step="5" />
+          </div>
+
+          <div class="admin-form-group">
+            <div class="admin-label">
+              <span>Photo Area X Offset</span>
+              <span id="val-x">90px</span>
+            </div>
+            <input type="range" id="input-x" min="0" max="300" step="2" />
+          </div>
+
+          <div class="admin-form-group">
+            <div class="admin-label">
+              <span>Photo Area Y Offset</span>
+              <span id="val-y">220px</span>
+            </div>
+            <input type="range" id="input-y" min="100" max="400" step="2" />
+          </div>
+
+          <div class="admin-form-group">
+            <div class="admin-label">
+              <span>Corner Border Radius</span>
+              <span id="val-r">44px</span>
+            </div>
+            <input type="range" id="input-r" min="0" max="100" step="2" />
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+            <button id="btn-save-template" class="btn-gold" style="flex: 1; font-size: 0.85rem; padding: 0.75rem;">
+              💾 Save to Storage
+            </button>
+            <button id="btn-reset-defaults" class="btn-secondary" style="font-size: 0.85rem; padding: 0.75rem;">
+              ↺ Reset
+            </button>
+          </div>
+          <div id="save-status-msg" style="font-size: 0.75rem; color: #4ade80; text-align: center; margin-top: 0.75rem; min-height: 1.2rem;"></div>
+        </div>
+
+        <!-- TAB 2: Printable QR Generator -->
+        <div class="admin-tab-content" data-tab-content="qrcodes" style="display: none;">
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--nilgiri-gold); margin-bottom: 1rem; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 0.4rem;">
+            Print-Ready Campaign QR Codes
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label" for="admin-qr-url">Destination URL</label>
+            <input type="text" id="admin-qr-url" class="admin-input" />
+          </div>
+
+          <div style="display: flex; justify-content: center; margin: 1.5rem 0;">
+            <div id="admin-qr-container" style="padding: 1rem; background: #ffffff; border-radius: 1.25rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5);"></div>
+          </div>
+
+          <button id="btn-download-qr" class="btn-gold" style="width: 100%; font-size: 0.85rem; padding: 0.8rem;">
+            ⬇️ Download Printable QR Code (PNG)
+          </button>
+        </div>
+
+        <!-- TAB 3: JSON Config Viewer -->
+        <div class="admin-tab-content" data-tab-content="json" style="display: none;">
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--nilgiri-gold); margin-bottom: 1rem; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 0.4rem;">
+            Exportable Campaign JSON Definition
+          </div>
+
+          <textarea id="json-campaign-text" readonly style="width: 100%; height: 260px; background: rgba(8, 28, 21, 0.95); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 0.75rem; padding: 0.85rem; color: #a7f3d0; font-family: monospace; font-size: 0.75rem; resize: vertical; outline: none; margin-bottom: 1rem;"></textarea>
+
+          <button id="btn-copy-json" class="btn-gold" style="width: 100%; font-size: 0.85rem; padding: 0.8rem;">
+            📋 Copy JSON Configuration
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Live Preview Canvas -->
+      <div class="admin-panel" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 class="font-serif" style="font-size: 1.1rem; color: #fdf4d8;">Live Template Compositor (1080×1350)</h3>
+          <span class="badge-pill" style="font-size: 0.65rem;">Real-time</span>
+        </div>
+
+        <div class="preview-canvas-box" style="position: relative;">
+          <img id="admin-preview-img" alt="Live template preview" />
+          <div id="admin-preview-loading" style="display: none; position: absolute; inset: 0; background: rgba(8, 28, 21, 0.8); align-items: center; justify-content: center; font-size: 0.85rem; color: var(--nilgiri-gold);">
+            Rendering live frame...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pure JavaScript Scripts -->
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/campaigns.js"></script>
+  <script src="js/canvas-composer.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

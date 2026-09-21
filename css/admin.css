@@ -1,0 +1,105 @@
+/* Admin & Template Studio Stylesheet */
+.admin-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .admin-grid {
+    grid-template-columns: 420px 1fr;
+  }
+}
+
+.admin-panel {
+  background: rgba(17, 46, 35, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+}
+
+.admin-nav-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(8, 28, 21, 0.85);
+  padding: 0.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  margin-bottom: 1.5rem;
+}
+
+.admin-tab-btn {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: rgba(251, 248, 242, 0.7);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-tab-btn.active {
+  background: var(--nilgiri-gold);
+  color: #081c15;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+.admin-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.admin-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--nilgiri-gold);
+  margin-bottom: 0.4rem;
+}
+
+.admin-select, .admin-input {
+  width: 100%;
+  background: rgba(8, 28, 21, 0.9);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  color: var(--nilgiri-cream);
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.admin-select:focus, .admin-input:focus {
+  border-color: var(--nilgiri-gold);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.preview-canvas-box {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 2px solid rgba(212, 175, 55, 0.45);
+  box-shadow: var(--shadow-luxury);
+  background: #000000;
+}
+
+.preview-canvas-box img, .preview-canvas-box canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}

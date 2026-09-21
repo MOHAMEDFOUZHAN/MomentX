@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#081c15" />
+  <title>Maple Connect | QR Branded Photo Experience</title>
+  <meta name="description" content="Capture and frame high-resolution on-site branded visitor moments with instant social sharing." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Visual Shutter Flash Overlay -->
+  <div id="flash-overlay" class="flash-overlay"></div>
+
+  <!-- Hidden Camera/Gallery File Input -->
+  <input type="file" id="file-input" accept="image/*" capture="user" style="display: none;" />
+
+  <!-- ================================================================= -->
+  <!-- SCREEN 0: PORTAL / HOME (Browse Campaigns & Mobile QR Codes)     -->
+  <!-- ================================================================= -->
+  <main id="screen-portal" class="screen-step active" style="flex-direction: column; justify-content: space-between; max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem;">
+    <!-- Top Navigation -->
+    <header style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(212, 175, 55, 0.2);">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div style="width: 2.4rem; height: 2.4rem; border-radius: 0.75rem; background: var(--nilgiri-forest); border: 1.5px solid rgba(212, 175, 55, 0.45); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--nilgiri-gold);">
+          ✦
+        </div>
+        <div>
+          <h1 class="font-serif" style="font-size: 1.05rem; font-weight: 700; color: var(--nilgiri-cream);">Maple Connect</h1>
+          <p style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--nilgiri-gold);">QR Photo Experience Engine</p>
+        </div>
+      </div>
+      <a href="admin.html" class="btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 0.9rem; border-radius: 999px;">
+        <span>⚙️ Admin & Studio</span>
+      </a>
+    </header>
+
+    <!-- Hero Section -->
+    <section style="margin: 2.5rem 0; text-align: center;">
+      <div class="badge-pill" style="margin-bottom: 1rem;">
+        <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4ade80;"></span>
+        <span>Mobile-First On-Site Experience</span>
+      </div>
+      <h2 class="font-serif gold-gradient-text" style="font-size: 2.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.85rem;">
+        Scan. Snap. <br />Frame Your Moment.
+      </h2>
+      <p style="font-size: 0.95rem; color: rgba(251, 248, 242, 0.75); max-width: 580px; margin: 0 auto; line-height: 1.6;">
+        Ultra-crisp 1080×1350 on-site photo branding for retail destinations, tea estates, and exhibitions. Powered entirely by HTML5 Canvas with native mobile camera support.
+      </p>
+    </section>
+
+    <!-- Campaign Selection Cards -->
+    <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem;">
+      <!-- Card 1: Sagar Nilgiri -->
+      <div class="glass-card" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border-color: rgba(212, 175, 55, 0.4);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+            <span style="font-size: 1.75rem;">🍃</span>
+            <span class="badge-pill" style="font-size: 0.65rem;">Flagship</span>
+          </div>
+          <h3 class="font-serif" style="font-size: 1.25rem; font-weight: 700; color: #fdf4d8; margin-bottom: 0.35rem;">
+            Sagar Nilgiri Products
+          </h3>
+          <p style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.7); margin-bottom: 1.25rem; line-height: 1.4;">
+            Botanical tea leaves & misty Nilgiri crests. Designed for Ooty visitors & tea tasting rooms.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button data-launch-campaign="nilgiri-tea" class="btn-gold" style="flex: 1; font-size: 0.8rem; padding: 0.7rem 0.8rem;">
+            <span>📸 Launch Frame</span>
+          </button>
+          <button data-show-qr="nilgiri-tea" class="btn-secondary" style="padding: 0.7rem 0.85rem;" title="Scan on Mobile">
+            <span>📱 QR</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 2: Maple Artisan -->
+      <div class="glass-card" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border-color: rgba(224, 169, 109, 0.35);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+            <span style="font-size: 1.75rem;">🍁</span>
+            <span class="badge-pill" style="font-size: 0.65rem; color: #e0a96d; border-color: rgba(224, 169, 109, 0.4);">Artisan</span>
+          </div>
+          <h3 class="font-serif" style="font-size: 1.25rem; font-weight: 700; color: #fdf4d8; margin-bottom: 0.35rem;">
+            Maple Artisan Connect
+          </h3>
+          <p style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.7); margin-bottom: 1.25rem; line-height: 1.4;">
+            Warm terracotta hues & handcrafted heritage borders. Ideal for specialty roasters and makers.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button data-launch-campaign="maple-artisan" class="btn-gold" style="flex: 1; font-size: 0.8rem; padding: 0.7rem 0.8rem; background: linear-gradient(135deg, #fce5d4 0%, #e0a96d 60%, #a86c38 100%);">
+            <span>📸 Launch Frame</span>
+          </button>
+          <button data-show-qr="maple-artisan" class="btn-secondary" style="padding: 0.7rem 0.85rem;" title="Scan on Mobile">
+            <span>📱 QR</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 3: Highland Spice -->
+      <div class="glass-card" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border-color: rgba(229, 169, 59, 0.35);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+            <span style="font-size: 1.75rem;">🌿</span>
+            <span class="badge-pill" style="font-size: 0.65rem; color: #e5a93b; border-color: rgba(229, 169, 59, 0.4);">Spice Trail</span>
+          </div>
+          <h3 class="font-serif" style="font-size: 1.25rem; font-weight: 700; color: #fdf4d8; margin-bottom: 0.35rem;">
+            Highland Spice & Botanical
+          </h3>
+          <p style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.7); margin-bottom: 1.25rem; line-height: 1.4;">
+            Aromatic green cardamom borders and highland gold flourishes for spice plantations.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button data-launch-campaign="highland-spice" class="btn-gold" style="flex: 1; font-size: 0.8rem; padding: 0.7rem 0.8rem; background: linear-gradient(135deg, #fcf0d4 0%, #e5a93b 60%, #b87c14 100%);">
+            <span>📸 Launch Frame</span>
+          </button>
+          <button data-show-qr="highland-spice" class="btn-secondary" style="padding: 0.7rem 0.85rem;" title="Scan on Mobile">
+            <span>📱 QR</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Specs Footer -->
+    <footer style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid rgba(212, 175, 55, 0.15); text-align: center;">
+      <div>
+        <div style="font-weight: 700; color: var(--nilgiri-gold); font-size: 0.95rem;">1080 × 1350</div>
+        <div style="font-size: 0.7rem; color: rgba(251, 248, 242, 0.6);">Instagram HD Ratio</div>
+      </div>
+      <div>
+        <div style="font-weight: 700; color: var(--nilgiri-gold); font-size: 0.95rem;">0 Dependencies</div>
+        <div style="font-size: 0.7rem; color: rgba(251, 248, 242, 0.6);">Pure HTML/CSS/JS</div>
+      </div>
+      <div>
+        <div style="font-weight: 700; color: var(--nilgiri-gold); font-size: 0.95rem;">100% Mobile Ready</div>
+        <div style="font-size: 0.7rem; color: rgba(251, 248, 242, 0.6);">Touch & Native Camera</div>
+      </div>
+    </footer>
+  </main>
+
+
+  <!-- ================================================================= -->
+  <!-- SCREEN 1: CAMPAIGN LANDING (Mobile Brand Onboarding)             -->
+  <!-- ================================================================= -->
+  <main id="screen-landing" class="screen-step" style="flex-direction: column; justify-content: space-between; max-width: 440px; margin: 0 auto; padding: 1.5rem 1.25rem;">
+    <!-- Brand Header -->
+    <header style="text-align: center; padding-top: 0.5rem;">
+      <div class="badge-pill" id="brand-client-name-badge" style="margin-bottom: 0.75rem;">
+        <span>✦</span>
+        <span id="brand-client-name">Sagar Nilgiri Products</span>
+        <span>✦</span>
+      </div>
+      <h2 id="brand-campaign-title" class="font-serif gold-gradient-text" style="font-size: 1.85rem; font-weight: 700; line-height: 1.25; margin-bottom: 0.35rem;">
+        A Moment from the Nilgiris
+      </h2>
+      <p id="brand-tagline" style="font-size: 0.85rem; color: rgba(251, 248, 242, 0.75); font-weight: 300;">
+        Nature Lives in Every Detail
+      </p>
+    </header>
+
+    <!-- Interactive Teaser Frame -->
+    <div class="glass-panel" style="position: relative; aspect-ratio: 900 / 870; width: 100%; margin: 1.5rem 0; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid rgba(212, 175, 55, 0.5); box-shadow: var(--shadow-luxury);">
+      <div style="width: 80%; height: 75%; border-radius: 1.5rem; border: 1.5px dashed rgba(212, 175, 55, 0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1.5rem; background: rgba(0, 0, 0, 0.4);">
+        <div style="width: 3.5rem; height: 3.5rem; border-radius: 50%; background: rgba(212, 175, 55, 0.2); border: 1px solid rgba(212, 175, 55, 0.5); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 0.75rem;">
+          📷
+        </div>
+        <p class="font-serif" style="font-size: 0.95rem; font-weight: 600; color: #fbf8f2;">Your Photo Goes Here</p>
+        <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.6); margin-top: 0.35rem;">Position yourself to be framed in luxury botanical borders</p>
+      </div>
+
+      <div style="position: absolute; bottom: 0.85rem; text-align: center; width: 100%;">
+        <span id="brand-subtitle-badge" style="font-size: 0.7rem; font-family: var(--font-display); letter-spacing: 0.1em; color: var(--nilgiri-gold); background: rgba(8, 28, 21, 0.9); padding: 0.35rem 0.85rem; border-radius: 999px; border: 1px solid rgba(212, 175, 55, 0.3);">
+          ✦ I VISITED THE NILGIRIS ✦
+        </span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
+      <button id="btn-start-camera" class="btn-gold" style="width: 100%; font-size: 1rem; padding: 1rem;">
+        <span>📸 Open Camera & Frame Photo</span>
+      </button>
+
+      <button data-action="upload-photo" class="btn-secondary" style="width: 100%; font-size: 0.85rem;">
+        <span>🖼️ Choose from Gallery</span>
+      </button>
+
+      <button data-action="sample-portrait" class="btn-secondary" style="width: 100%; font-size: 0.8rem; background: rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); color: var(--nilgiri-gold);">
+        <span>✨ Instant Demo Sample Portrait</span>
+      </button>
+    </div>
+  </main>
+
+
+  <!-- ================================================================= -->
+  <!-- SCREEN 2: CAMERA VIEWFINDER                                      -->
+  <!-- ================================================================= -->
+  <main id="screen-camera" class="screen-step" style="flex-direction: column; position: fixed; inset: 0; background: #000000; z-index: 100;">
+    <!-- Top Viewfinder Toolbar -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);">
+      <button id="btn-close-camera" class="btn-icon" style="width: 2.6rem; height: 2.6rem;" title="Close">✕</button>
+      <div id="camera-client-label" class="badge-pill" style="font-size: 0.7rem; border-color: rgba(212, 175, 55, 0.5);">
+        SAGAR NILGIRI PRODUCTS
+      </div>
+      <button data-action="sample-portrait" class="btn-icon" style="width: 2.6rem; height: 2.6rem;" title="Sample Portrait">✨</button>
+    </div>
+
+    <!-- Center Video & Framing Guide -->
+    <div style="position: relative; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+      <video id="camera-video" playsinline autoplay muted style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"></video>
+
+      <!-- Framing Guide Cutout Mask -->
+      <div class="framing-guide">
+        <div class="corner-tick tick-tl"></div>
+        <div class="corner-tick tick-tr"></div>
+        <div class="corner-tick tick-bl"></div>
+        <div class="corner-tick tick-br"></div>
+
+        <div style="position: absolute; top: 1rem; width: 100%; text-align: center;">
+          <span style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--nilgiri-gold); background: rgba(8, 28, 21, 0.75); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(212, 175, 55, 0.3);">
+            ✦ Center Face Inside ✦
+          </span>
+        </div>
+      </div>
+
+      <!-- Mobile Camera Notice (if HTTP or camera permission needed) -->
+      <div id="camera-error-banner" style="display: none; position: absolute; inset: 0; z-index: 25; background: rgba(8, 28, 21, 0.95); flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center;">
+        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📷</div>
+        <h3 class="font-serif" style="font-size: 1.25rem; font-weight: 700; color: #fdf4d8; margin-bottom: 0.5rem;">Camera Permission Notice</h3>
+        <p id="camera-error-text" style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.75); margin-bottom: 1.5rem; line-height: 1.5; max-width: 320px;">
+          Tap below to capture directly using your mobile phone camera!
+        </p>
+        <button data-action="upload-photo" class="btn-gold" style="width: 100%; max-width: 280px; margin-bottom: 0.75rem;">
+          <span>📸 Snap Photo with Device</span>
+        </button>
+        <button data-action="sample-portrait" class="btn-secondary" style="width: 100%; max-width: 280px;">
+          <span>✨ Test with Demo Portrait</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Controls -->
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-around; align-items: center; padding: 1.5rem 2rem 2.5rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
+      <button data-action="upload-photo" class="btn-icon" title="Upload from Gallery">🖼️</button>
+
+      <!-- Main Shutter Button -->
+      <div id="btn-shutter" class="shutter-btn-container" title="Take Photo">
+        <div class="shutter-ring"></div>
+        <div class="shutter-core">
+          <span style="font-size: 1.5rem;">📷</span>
+        </div>
+      </div>
+
+      <button id="btn-flip-camera" class="btn-icon" title="Flip Camera">🔄</button>
+    </div>
+  </main>
+
+
+  <!-- ================================================================= -->
+  <!-- SCREEN 3: PHOTO ADJUSTER (Touch Drag, Zoom & Mirror)             -->
+  <!-- ================================================================= -->
+  <main id="screen-adjust" class="screen-step" style="flex-direction: column; justify-content: space-between; max-width: 440px; margin: 0 auto; padding: 1.25rem;">
+    <header style="text-align: center; padding-top: 0.5rem;">
+      <h2 class="font-serif gold-gradient-text" style="font-size: 1.5rem; font-weight: 700;">Adjust Your Photo</h2>
+      <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.7); margin-top: 0.25rem;">
+        Drag to center • Adjust zoom to fit frame
+      </p>
+    </header>
+
+    <!-- Adjuster Stage with Drag & Clip -->
+    <div style="width: 100%; display: flex; justify-content: center; margin: 1rem 0;">
+      <div id="adjuster-stage" class="adjuster-stage">
+        <img id="adjuster-img" alt="Customer photo adjustment" />
+      </div>
+    </div>
+
+    <!-- Adjust Controls -->
+    <div class="glass-panel" style="padding: 1rem 1.25rem; margin-bottom: 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.8rem;">
+        <span style="color: var(--nilgiri-gold); font-weight: 600;">Scale & Zoom</span>
+        <span id="zoom-val-text" style="color: rgba(251, 248, 242, 0.8);">1.0x</span>
+      </div>
+      <input type="range" id="zoom-slider" min="0.7" max="2.5" step="0.05" value="1.0" />
+
+      <div style="display: flex; justify-content: space-between; gap: 0.75rem; margin-top: 1rem;">
+        <button id="btn-mirror-photo" class="btn-secondary" style="flex: 1; font-size: 0.75rem; padding: 0.6rem;">
+          <span>🪞 Mirror Flip</span>
+        </button>
+        <button id="btn-retake-photo" class="btn-secondary" style="flex: 1; font-size: 0.75rem; padding: 0.6rem;">
+          <span>🔄 Retake</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Confirm Button -->
+    <button id="btn-confirm-adjust" class="btn-gold" style="width: 100%; font-size: 1rem; padding: 0.95rem;">
+      <span>✦ Confirm & Frame Photo ✦</span>
+    </button>
+  </main>
+
+
+  <!-- ================================================================= -->
+  <!-- SCREEN 4: COMPOSITING ANIMATION                                  -->
+  <!-- ================================================================= -->
+  <main id="screen-compositing" class="screen-step" style="flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; min-height: 100dvh; text-align: center; padding: 2rem;">
+    <div style="width: 4.5rem; height: 4.5rem; border-radius: 50%; border: 3px solid rgba(212, 175, 55, 0.2); border-top-color: var(--nilgiri-gold); animation: spin 1s infinite linear; margin-bottom: 1.5rem;"></div>
+    <h3 class="font-serif gold-gradient-text" style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">
+      Crafting High-Resolution Frame
+    </h3>
+    <p style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.7); max-width: 280px; line-height: 1.5;">
+      Applying gold foil accents, botanical flourishes, and official authenticity verification...
+    </p>
+    <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+  </main>
+
+
+  <!-- ================================================================= -->
+  <!-- SCREEN 5: FINAL PREVIEW & SHARING                                -->
+  <!-- ================================================================= -->
+  <main id="screen-preview" class="screen-step" style="flex-direction: column; justify-content: space-between; max-width: 440px; margin: 0 auto; padding: 1.25rem;">
+    <header style="text-align: center; padding-top: 0.5rem;">
+      <div class="badge-pill" style="margin-bottom: 0.5rem;">
+        <span>✓ High-Resolution 1080×1350 Generated</span>
+      </div>
+      <h2 id="preview-title" class="font-serif gold-gradient-text" style="font-size: 1.6rem; font-weight: 700;">
+        Your Branded Moment
+      </h2>
+    </header>
+
+    <!-- Final Composite Display -->
+    <div style="width: 100%; margin: 1rem 0; border-radius: 1.5rem; overflow: hidden; box-shadow: var(--shadow-luxury); border: 2px solid rgba(212, 175, 55, 0.5);">
+      <img id="final-composite-img" alt="Branded photo composite" style="width: 100%; height: auto; display: block;" />
+    </div>
+
+    <!-- Actions -->
+    <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
+      <button id="btn-download-hd" class="btn-gold" style="width: 100%; font-size: 0.95rem; padding: 0.9rem;">
+        <span>⬇️ Download HD Photo (1080×1350)</span>
+      </button>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button id="btn-share" class="btn-secondary" style="flex: 1; font-size: 0.85rem; padding: 0.85rem;">
+          <span>📤 Share / Post</span>
+        </button>
+        <button id="btn-take-another" class="btn-secondary" style="flex: 1; font-size: 0.85rem; padding: 0.85rem;">
+          <span>📸 Take Another</span>
+        </button>
+      </div>
+
+      <!-- Brand CTA Link -->
+      <a id="cta-brand-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="text-align: center; font-size: 0.8rem; background: rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); color: var(--nilgiri-gold); text-decoration: none; padding: 0.75rem;">
+        <span id="cta-brand-text">Explore Nilgiri Reserve Blends →</span>
+      </a>
+    </div>
+  </main>
+
+
+  <!-- ================================================================= -->
+  <!-- MODAL: INSTAGRAM & SOCIAL SHARING                                -->
+  <!-- ================================================================= -->
+  <div id="share-modal" class="modal-backdrop">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 class="font-serif gold-gradient-text" style="font-size: 1.25rem; font-weight: 700;">Share Your Moment</h3>
+        <button data-close-modal class="btn-icon" style="width: 2.2rem; height: 2.2rem;">✕</button>
+      </div>
+      <p style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.75); margin-bottom: 1.25rem; line-height: 1.5;">
+        1. Save your 1080×1350 photo to your device.<br />
+        2. Copy the curated brand caption below.<br />
+        3. Open Instagram or WhatsApp and share!
+      </p>
+
+      <div style="background: rgba(8, 28, 21, 0.9); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 1rem; padding: 0.85rem; margin-bottom: 1.25rem;">
+        <p id="caption-text-preview" style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.9); white-space: pre-line; line-height: 1.4; max-height: 120px; overflow-y: auto;"></p>
+      </div>
+
+      <button id="btn-copy-caption" class="btn-gold" style="width: 100%; font-size: 0.85rem; padding: 0.8rem;">
+        <span>📋 Copy Caption & Hashtags</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- MODAL: SCAN ON MOBILE (Dynamic QR Code)                          -->
+  <!-- ================================================================= -->
+  <div id="qr-modal" class="modal-backdrop">
+    <div class="modal-box" style="text-align: center;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 id="qr-modal-title" class="font-serif gold-gradient-text" style="font-size: 1.2rem; font-weight: 700;">
+          Scan with Mobile Camera
+        </h3>
+        <button data-close-modal class="btn-icon" style="width: 2.2rem; height: 2.2rem;">✕</button>
+      </div>
+      <p id="qr-modal-sub" style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.75); margin-bottom: 1.25rem;">
+        Point your phone camera at this QR code to launch the camera experience on your mobile device!
+      </p>
+
+      <!-- Dynamic QR Canvas Container -->
+      <div style="display: flex; justify-content: center; margin: 1.25rem 0;">
+        <div id="qr-code-display" style="padding: 1rem; background: #ffffff; border-radius: 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></div>
+      </div>
+
+      <div style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.6); margin-bottom: 1rem; word-break: break-all;">
+        Or open direct link:<br />
+        <a id="qr-direct-link" href="#" target="_blank" style="color: var(--nilgiri-gold); text-decoration: underline;"></a>
+      </div>
+
+      <button data-close-modal class="btn-secondary" style="width: 100%; font-size: 0.8rem;">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <!-- Pure JavaScript Application Scripts -->
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/campaigns.js"></script>
+  <script src="js/canvas-composer.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
