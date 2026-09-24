@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#081c15" />
+  <title>Sagar Nilgiri | Visitor Analytics & Performance</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <style>
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.1rem;
+      margin: 1.75rem 0;
+    }
+    .kpi-card {
+      background: rgba(14, 23, 19, 0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(226, 190, 108, 0.26);
+      border-radius: 1.35rem;
+      padding: 1.35rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 36px rgba(0, 0, 0, 0.6);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(226, 190, 108, 0.6);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 22px 48px rgba(0, 0, 0, 0.75), 0 0 20px rgba(226, 190, 108, 0.2);
+    }
+    .kpi-title {
+      font-size: 0.72rem;
+      color: var(--lux-pearl-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.45rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .kpi-value {
+      font-family: var(--font-serif);
+      font-size: 2.15rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff 0%, #fae6ba 35%, #e2be6c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+    .kpi-sub {
+      font-size: 0.7rem;
+      color: var(--lux-gold-champagne);
+      margin-top: 0.45rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* Funnel Styles */
+    .funnel-step {
+      margin-bottom: 1.1rem;
+    }
+    .funnel-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      margin-bottom: 0.4rem;
+      color: #faf7f0;
+    }
+    .funnel-bar-bg {
+      width: 100%;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .funnel-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #cfa03c, #fae6ba);
+      border-radius: 999px;
+      box-shadow: 0 0 12px rgba(226, 190, 108, 0.5);
+      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Activity Feed */
+    .activity-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 0.35rem;
+    }
+    .activity-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 0.95rem;
+      background: rgba(10, 16, 13, 0.75);
+      border: 1px solid rgba(226, 190, 108, 0.18);
+      border-radius: 0.95rem;
+      font-size: 0.78rem;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: border-color 0.2s ease;
+    }
+    .activity-item:hover {
+      border-color: rgba(226, 190, 108, 0.45);
+    }
+    .activity-badge {
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-view { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.35); }
+    .badge-snap { background: rgba(226, 190, 108, 0.18); color: #fae6ba; border: 1px solid rgba(226, 190, 108, 0.45); }
+    .badge-download { background: rgba(34, 197, 94, 0.15); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.35); }
+    .badge-share { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.35); }
+
+    /* Time Filter Pill Buttons */
+    .time-filter-pill {
+      background: transparent;
+      border: 1px solid rgba(226, 190, 108, 0.25);
+      color: var(--lux-pearl-dim);
+      padding: 0.38rem 0.95rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .time-filter-pill.active, .time-filter-pill:hover {
+      background: linear-gradient(135deg, #fef4db 0%, #e6c16c 50%, #cfa03c 100%);
+      color: #070a09;
+      font-weight: 700;
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 2px 12px rgba(226, 190, 108, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Top Header -->
+    <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(212, 175, 55, 0.25);">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="index.html" class="btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 0.85rem;">
+          ← Visitor Experience
+        </a>
+        <div>
+          <h1 class="font-serif gold-gradient-text" style="font-size: 1.35rem; font-weight: 700;">
+            Visitor Analytics & Footfall
+          </h1>
+          <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.65);">
+            Live tracking for Sagar Nilgiri Products • QR Scans, Photos & Engagement
+          </p>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.6rem;">
+        <div style="display: flex; gap: 0.35rem; background: rgba(8, 28, 21, 0.85); padding: 0.25rem; border-radius: 999px; border: 1px solid rgba(212, 175, 55, 0.25);">
+          <button class="time-filter-pill active" data-timeframe="all">All Time</button>
+          <button class="time-filter-pill" data-timeframe="30d">30 Days</button>
+          <button class="time-filter-pill" data-timeframe="7d">7 Days</button>
+          <button class="time-filter-pill" data-timeframe="today">Today</button>
+        </div>
+
+        <button id="btn-refresh-stats" class="btn-gold" style="font-size: 0.75rem; padding: 0.55rem 0.85rem;">
+          🔄 Refresh Live
+        </button>
+        <a href="admin.html" class="btn-secondary" style="font-size: 0.75rem; padding: 0.55rem 0.85rem;">
+          ⚙️ Studio
+        </a>
+      </div>
+    </header>
+
+    <!-- Top KPI Grid -->
+    <div class="kpi-grid">
+      <!-- 1. Visits -->
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>QR Scans / Visits</span>
+          <span>👁️</span>
+        </div>
+        <div id="stat-visits" class="kpi-value">0</div>
+        <div class="kpi-sub">Total visitor sessions</div>
+      </div>
+
+      <!-- 2. Camera Opened -->
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Camera Launched</span>
+          <span>📸</span>
+        </div>
+        <div id="stat-camera" class="kpi-value">0</div>
+        <div class="kpi-sub">Viewfinder engagement</div>
+      </div>
+
+      <!-- 3. Photos Snapped -->
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Photos Snapped</span>
+          <span>✨</span>
+        </div>
+        <div id="stat-snaps" class="kpi-value">0</div>
+        <div class="kpi-sub">Shutter clicks recorded</div>
+      </div>
+
+      <!-- 4. Downloads -->
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>HD Downloads</span>
+          <span>⬇️</span>
+        </div>
+        <div id="stat-downloads" class="kpi-value">0</div>
+        <div class="kpi-sub">1080×1350 framed photos</div>
+      </div>
+
+      <!-- 5. Shares -->
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Social Shares</span>
+          <span>📤</span>
+        </div>
+        <div id="stat-shares" class="kpi-value">0</div>
+        <div class="kpi-sub">Instagram & WhatsApp</div>
+      </div>
+
+      <!-- 6. Conversion -->
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Download Rate</span>
+          <span>🎯</span>
+        </div>
+        <div id="stat-conversion" class="kpi-value">0%</div>
+        <div class="kpi-sub">Visits converted to photos</div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+      <!-- Left Column: Funnel & Performance -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <!-- Funnel Card -->
+        <div class="admin-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h3 class="font-serif gold-gradient-text" style="font-size: 1.15rem; font-weight: 700;">
+              Visitor Engagement Funnel
+            </h3>
+            <span class="badge-pill" style="font-size: 0.65rem;">End-to-End</span>
+          </div>
+
+          <div id="funnel-container">
+            <!-- Funnel steps generated dynamically -->
+            <div style="text-align: center; color: rgba(251, 248, 242, 0.5); padding: 2rem;">
+              Loading funnel data...
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Activity Card -->
+        <div class="admin-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 class="font-serif gold-gradient-text" style="font-size: 1.15rem; font-weight: 700;">
+              Recent Daily Activity
+            </h3>
+            <span style="font-size: 0.7rem; color: rgba(251, 248, 242, 0.6);">Last 7 Days</span>
+          </div>
+          
+          <div id="timeline-container" style="min-height: 180px; display: flex; flex-direction: column; justify-content: flex-end;">
+            <!-- Render dynamic chart bars -->
+            <div style="text-align: center; color: rgba(251, 248, 242, 0.5); padding: 2rem;">
+              Loading daily timeline...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Devices & Live Activity -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <!-- Devices Breakdown -->
+        <div class="admin-panel">
+          <h3 class="font-serif gold-gradient-text" style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">
+            Device & Platform Distribution
+          </h3>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.7); margin-bottom: 0.5rem; text-transform: uppercase;">
+                Device Type
+              </p>
+              <div id="device-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem;">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+            <div>
+              <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.7); margin-bottom: 0.5rem; text-transform: uppercase;">
+                Operating System
+              </p>
+              <div id="os-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem;">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-time Event Feed -->
+        <div class="admin-panel" style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 class="font-serif gold-gradient-text" style="font-size: 1.15rem; font-weight: 700;">
+              Live Activity Stream
+            </h3>
+            <span style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.65rem; color: #4ade80;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #4ade80;"></span> Live Sync
+            </span>
+          </div>
+
+          <div id="activity-feed" class="activity-feed">
+            <div style="text-align: center; color: rgba(251, 248, 242, 0.5); padding: 2rem;">
+              Listening for visitor events...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Actions Footer -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid rgba(212, 175, 55, 0.2); font-size: 0.75rem; color: rgba(251, 248, 242, 0.6);">
+      <div>
+        <span>Sagar Nilgiri Products • On-Site Marketing Analytics Engine</span>
+      </div>
+      <div>
+        <button id="btn-reset-data" style="background: transparent; border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 0.35rem 0.75rem; border-radius: 999px; cursor: pointer; font-size: 0.7rem;">
+          ⚠️ Reset Test Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics JavaScript Engine -->
+  <script>
+    (function () {
+      let currentTimeframe = 'all';
+
+      // Elements
+      const statVisits = document.getElementById('stat-visits');
+      const statCamera = document.getElementById('stat-camera');
+      const statSnaps = document.getElementById('stat-snaps');
+      const statDownloads = document.getElementById('stat-downloads');
+      const statShares = document.getElementById('stat-shares');
+      const statConversion = document.getElementById('stat-conversion');
+
+      const funnelContainer = document.getElementById('funnel-container');
+      const timelineContainer = document.getElementById('timeline-container');
+      const deviceList = document.getElementById('device-list');
+      const osList = document.getElementById('os-list');
+      const activityFeed = document.getElementById('activity-feed');
+      const btnRefresh = document.getElementById('btn-refresh-stats');
+      const btnReset = document.getElementById('btn-reset-data');
+
+      // Fetch aggregated stats from Python backend
+      async function loadStats() {
+        try {
+          const res = await fetch(`/api/analytics/stats?timeframe=${currentTimeframe}`);
+          if (!res.ok) throw new Error('Failed to fetch analytics');
+          const data = await res.json();
+          renderStats(data);
+        } catch (e) {
+          console.warn('Analytics API offline or not responding:', e);
+          // Demo fallback if backend is offline
+          renderDemoStats();
+        }
+      }
+
+      // Fetch live activity stream
+      async function loadRecentEvents() {
+        try {
+          const res = await fetch('/api/analytics/recent');
+          if (!res.ok) return;
+          const data = await res.json();
+          renderRecentEvents(data.events || []);
+        } catch (e) {
+          console.warn('Could not load live events:', e);
+        }
+      }
+
+      function renderStats(data) {
+        const s = data.summary || {};
+        statVisits.textContent = (s.total_visits || 0).toLocaleString();
+        statCamera.textContent = (s.camera_opens || 0).toLocaleString();
+        statSnaps.textContent = (s.photos_snapped || 0).toLocaleString();
+        statDownloads.textContent = (s.total_downloads || 0).toLocaleString();
+        statShares.textContent = (s.total_shares || 0).toLocaleString();
+        statConversion.textContent = `${s.conversion_rate || 0}%`;
+
+        // Render Funnel
+        const funnel = data.funnel || [];
+        if (funnel.length > 0) {
+          funnelContainer.innerHTML = funnel.map(item => `
+            <div class="funnel-step">
+              <div class="funnel-header">
+                <span>${item.step}</span>
+                <span style="font-weight: 600; color: var(--nilgiri-gold);">${item.count} (${item.pct}%)</span>
+              </div>
+              <div class="funnel-bar-bg">
+                <div class="funnel-bar-fill" style="width: ${Math.max(item.pct, 2)}%;"></div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Render Devices
+        const devices = data.devices || {};
+        deviceList.innerHTML = Object.entries(devices).length > 0
+          ? Object.entries(devices).map(([d, count]) => `
+            <div style="display: flex; justify-content: space-between; padding: 0.35rem 0.5rem; background: rgba(8, 28, 21, 0.5); border-radius: 0.5rem;">
+              <span style="text-transform: capitalize;">${d === 'mobile' ? '📱 Mobile' : d === 'tablet' ? '📟 Tablet' : '💻 Desktop'}</span>
+              <span style="color: var(--nilgiri-gold); font-weight: 600;">${count}</span>
+            </div>
+          `).join('')
+          : '<div style="color: rgba(251,248,242,0.5);">No device data yet</div>';
+
+        // Render OS
+        const os = data.operating_systems || {};
+        osList.innerHTML = Object.entries(os).length > 0
+          ? Object.entries(os).map(([name, count]) => `
+            <div style="display: flex; justify-content: space-between; padding: 0.35rem 0.5rem; background: rgba(8, 28, 21, 0.5); border-radius: 0.5rem;">
+              <span>${name}</span>
+              <span style="color: var(--nilgiri-gold); font-weight: 600;">${count}</span>
+            </div>
+          `).join('')
+          : '<div style="color: rgba(251,248,242,0.5);">No OS data yet</div>';
+
+        // Render Timeline
+        const timeline = data.timeline || [];
+        if (timeline.length > 0) {
+          const maxVisits = Math.max(...timeline.map(t => Math.max(t.visits, t.downloads, 1)));
+          timelineContainer.innerHTML = `
+            <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 0.5rem; height: 140px; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(212, 175, 55, 0.2);">
+              ${timeline.map(t => {
+                const visitHeight = Math.max((t.visits / maxVisits) * 110, 8);
+                const dlHeight = Math.max((t.downloads / maxVisits) * 110, 4);
+                return `
+                  <div style="display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; gap: 0.2rem;" title="${t.day}: ${t.visits} visits, ${t.downloads} downloads">
+                    <div style="display: flex; align-items: flex-end; gap: 2px; width: 100%; justify-content: center;">
+                      <div style="width: 40%; max-width: 14px; height: ${visitHeight}px; background: rgba(59, 130, 246, 0.85); border-radius: 4px 4px 0 0;"></div>
+                      <div style="width: 40%; max-width: 14px; height: ${dlHeight}px; background: var(--nilgiri-gold); border-radius: 4px 4px 0 0;"></div>
+                    </div>
+                    <span style="font-size: 0.6rem; color: rgba(251, 248, 242, 0.6);">${t.day.slice(5)}</span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+            <div style="display: flex; justify-content: center; gap: 1.5rem; font-size: 0.7rem; margin-top: 0.75rem;">
+              <span style="display: flex; align-items: center; gap: 0.35rem;"><span style="width: 8px; height: 8px; border-radius: 2px; background: rgba(59, 130, 246, 0.85);"></span> Visits</span>
+              <span style="display: flex; align-items: center; gap: 0.35rem;"><span style="width: 8px; height: 8px; border-radius: 2px; background: var(--nilgiri-gold);"></span> Downloads</span>
+            </div>
+          `;
+        } else {
+          timelineContainer.innerHTML = '<div style="text-align: center; color: rgba(251,248,242,0.5); padding: 2rem;">No recent daily activity yet.</div>';
+        }
+      }
+
+      function renderRecentEvents(events) {
+        if (!events || events.length === 0) {
+          activityFeed.innerHTML = '<div style="text-align: center; color: rgba(251,248,242,0.5); padding: 2rem;">No events logged yet. Scan the QR code to see live events!</div>';
+          return;
+        }
+
+        const badgeMap = {
+          'page_view': { text: 'QR Visit', cls: 'badge-view', icon: '👁️' },
+          'camera_open': { text: 'Camera', cls: 'badge-snap', icon: '📷' },
+          'photo_snap': { text: 'Photo Taken', cls: 'badge-snap', icon: '📸' },
+          'photo_download': { text: 'HD Download', cls: 'badge-download', icon: '⬇️' },
+          'photo_share': { text: 'Shared', cls: 'badge-share', icon: '📤' },
+          'cta_click': { text: 'Tea Shop CTA', cls: 'badge-download', icon: '🍃' },
+        };
+
+        activityFeed.innerHTML = events.map(e => {
+          const b = badgeMap[e.event_type] || { text: e.event_type, cls: 'badge-view', icon: '✦' };
+          const deviceIcon = e.device_type === 'mobile' ? '📱' : '💻';
+          return `
+            <div class="activity-item">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <span class="activity-badge ${b.cls}">${b.icon} ${b.text}</span>
+                <span style="color: rgba(251, 248, 242, 0.85);">${deviceIcon} ${e.os_name} • ${e.browser}</span>
+              </div>
+              <span style="color: rgba(251, 248, 242, 0.45); font-size: 0.65rem;">${e.created_at}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderDemoStats() {
+        renderStats({
+          summary: {
+            total_visits: 128,
+            camera_opens: 94,
+            photos_snapped: 82,
+            total_downloads: 65,
+            total_shares: 28,
+            conversion_rate: 50.8
+          },
+          funnel: [
+            { step: 'QR Scans / Visits', count: 128, pct: 100 },
+            { step: 'Camera Opened', count: 94, pct: 73.4 },
+            { step: 'Photos Snapped', count: 82, pct: 64.1 },
+            { step: 'HD Downloads', count: 65, pct: 50.8 },
+            { step: 'Social Shares', count: 28, pct: 21.9 }
+          ],
+          devices: { mobile: 114, desktop: 14 },
+          operating_systems: { iOS: 78, Android: 36, Windows: 14 },
+          timeline: [
+            { day: '2026-09-15', visits: 12, downloads: 6 },
+            { day: '2026-09-16', visits: 18, downloads: 9 },
+            { day: '2026-09-17', visits: 24, downloads: 14 },
+            { day: '2026-09-18', visits: 20, downloads: 11 },
+            { day: '2026-09-19', visits: 32, downloads: 19 },
+            { day: '2026-09-20', visits: 38, downloads: 22 },
+            { day: '2026-09-21', visits: 44, downloads: 25 }
+          ]
+        });
+      }
+
+      // Time Filter Buttons
+      document.querySelectorAll('.time-filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.time-filter-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentTimeframe = btn.dataset.timeframe;
+          loadStats();
+        });
+      });
+
+      // Refresh Button
+      btnRefresh.addEventListener('click', () => {
+        btnRefresh.textContent = 'Refreshing...';
+        Promise.all([loadStats(), loadRecentEvents()]).then(() => {
+          setTimeout(() => { btnRefresh.textContent = '🔄 Refresh Live'; }, 400);
+        });
+      });
+
+      // Reset Button
+      btnReset.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to reset all analytics data?')) {
+          try {
+            await fetch('/api/analytics/reset', { method: 'POST' });
+            alert('Analytics data reset.');
+            loadStats();
+            loadRecentEvents();
+          } catch (e) {
+            alert('Could not reset data: ' + e.message);
+          }
+        }
+      });
+
+      // Initial Load & Polling
+      loadStats();
+      loadRecentEvents();
+      setInterval(loadRecentEvents, 10000); // Live sync every 10s
+    })();
+  </script>
+</body>
+</html>

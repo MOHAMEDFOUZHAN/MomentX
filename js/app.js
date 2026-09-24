@@ -1,6 +1,6 @@
 /**
  * Maple Connect - Main Application Controller
- * Connects UI Flow, Camera Capture, Touch Photo Adjuster, and Compositor.
+ * Connects UI Flow, Multi-Frame Selection, Camera Capture, Touch Photo Adjuster, and Compositor.
  */
 
 (function () {
@@ -21,6 +21,20 @@
   let initialOffsetX = 0;
   let initialOffsetY = 0;
 
+  // Analytics Tracker (logs events to Python/Node backend)
+  function trackEvent(eventType) {
+    try {
+      fetch('/api/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_type: eventType,
+          campaign_id: activeCampaign ? activeCampaign.id : 'nilgiri-valley'
+        })
+      }).catch(() => {});
+    } catch (e) {}
+  }
+
   // DOM Elements
   const screenPortal = document.getElementById('screen-portal');
   const screenLanding = document.getElementById('screen-landing');
@@ -36,8 +50,14 @@
 
   const adjusterImg = document.getElementById('adjuster-img');
   const adjusterStage = document.getElementById('adjuster-stage');
+  const adjusterOverlayImg = document.getElementById('adjuster-frame-overlay-img');
+  const adjustFrameLabel = document.getElementById('adjust-frame-label');
   const zoomSlider = document.getElementById('zoom-slider');
   const zoomValText = document.getElementById('zoom-val-text');
+
+  const landingTeaserImg = document.getElementById('landing-teaser-frame-img');
+  const landingTeaserWindow = document.getElementById('landing-teaser-window');
+  const landingFrameCounter = document.getElementById('landing-frame-counter');
 
   const finalCompositeImg = document.getElementById('final-composite-img');
   const shareModal = document.getElementById('share-modal');
@@ -67,20 +87,25 @@
     }
   }
 
-  // Populate Active Campaign Data into DOM
-  function updateCampaignTheme(camp) {
-    activeCampaign = camp;
-    document.title = `${camp.clientName} | QR Branded Photo Experience`;
+  // Set & Synchronize Active Frame
+  function setActiveFrame(frameOrId, options = {}) {
+    const frame = typeof frameOrId === 'string' ? getFrameById(frameOrId) : frameOrId;
+    if (!frame) return;
 
-    // Dynamic brand elements
+    activeCampaign = frame;
+    saveSelectedFrameId(frame.id);
+
+    // Update Document & Brand Headers
+    document.title = `${frame.name} | Nilgiris Branded Photo Experience`;
+
     const elements = {
-      'brand-client-name': camp.clientName,
-      'brand-campaign-title': camp.campaignTitle,
-      'brand-tagline': camp.brandTagline,
-      'brand-subtitle-badge': `✦ ${camp.campaignSubtitle} ✦`,
-      'camera-client-label': camp.clientName.toUpperCase(),
-      'preview-title': camp.campaignTitle,
-      'caption-text-preview': `${camp.suggestedShareText}\n\n${camp.defaultHashtags.join(' ')}`
+      'brand-client-name': frame.clientName,
+      'brand-campaign-title': frame.campaignTitle,
+      'brand-tagline': frame.brandTagline,
+      'brand-subtitle-badge': `✦ ${frame.campaignSubtitle.toUpperCase()} ✦`,
+      'camera-client-label': `${frame.badgeIcon || '✦'} ${frame.name.toUpperCase()}`,
+      'preview-title': frame.campaignTitle,
+      'caption-text-preview': `${frame.suggestedShareText}\n\n${frame.defaultHashtags.join(' ')}`
     };
 
     for (const [id, val] of Object.entries(elements)) {
@@ -88,11 +113,129 @@
       if (el) el.textContent = val;
     }
 
+    if (adjustFrameLabel) {
+      adjustFrameLabel.textContent = frame.name;
+    }
+
     const ctaLink = document.getElementById('cta-brand-link');
     if (ctaLink) {
-      ctaLink.href = camp.ctaUrl;
+      ctaLink.href = frame.ctaUrl;
       const ctaText = document.getElementById('cta-brand-text');
-      if (ctaText) ctaText.textContent = camp.ctaText;
+      if (ctaText) ctaText.textContent = frame.ctaText;
+    }
+
+    // Update Landing Teaser Frame
+    if (landingTeaserImg && frame.frameImage) {
+      landingTeaserImg.src = frame.frameImage;
+    }
+
+    // Update landing teaser window geometry
+    if (landingTeaserWindow && frame.template && frame.template.stageAreaPct) {
+      const pct = frame.template.stageAreaPct;
+      landingTeaserWindow.style.left = `${pct.left}%`;
+      landingTeaserWindow.style.top = `${pct.top}%`;
+      landingTeaserWindow.style.width = `${pct.width}%`;
+      landingTeaserWindow.style.height = `${pct.height}%`;
+    }
+
+    const allFrames = getAllFrames();
+    const frameIndex = allFrames.findIndex(f => f.id === frame.id);
+    if (landingFrameCounter && frameIndex >= 0) {
+      landingFrameCounter.textContent = `Frame ${frameIndex + 1} of ${allFrames.length}`;
+    }
+
+    // Update Adjuster Stage & Overlay
+    if (adjusterOverlayImg && frame.frameImage) {
+      adjusterOverlayImg.src = frame.frameImage;
+    }
+    if (adjusterStage && frame.template && frame.template.stageAreaPct) {
+      const pct = frame.template.stageAreaPct;
+      adjusterStage.style.left = `${pct.left}%`;
+      adjusterStage.style.top = `${pct.top}%`;
+      adjusterStage.style.width = `${pct.width}%`;
+      adjusterStage.style.height = `${pct.height}%`;
+    }
+
+    // Update Active CSS Classes across all selectors
+    document.querySelectorAll('[data-frame-id]').forEach(el => {
+      const fid = el.getAttribute('data-frame-id');
+      const isMatch = (fid === frame.id) || (frame.aliases && frame.aliases.includes(fid));
+      el.classList.toggle('active', isMatch);
+    });
+
+    // If switching from preview screen, trigger instant high-resolution re-compositing
+    if (options.recomputePreview && currentStep === 'preview' && capturedPhoto) {
+      runCompositor();
+    }
+  }
+
+  // Populate Dynamic Multi-Frame Selectors in UI
+  function renderAllFrameSelectors() {
+    const frames = getAllFrames();
+
+    // 1. Portal Frames Grid
+    const portalGrid = document.getElementById('portal-frames-grid');
+    if (portalGrid) {
+      portalGrid.innerHTML = frames.map(f => `
+        <div class="frame-card ${f.id === activeCampaign.id ? 'active' : ''}" data-frame-id="${f.id}">
+          <div class="frame-card-badge">${f.badgeIcon || '✦'} ${f.tag || f.category}</div>
+          <div class="frame-card-img-wrap">
+            <img src="${f.thumbImage || f.frameImage}" alt="${f.name}" loading="lazy" />
+          </div>
+          <div class="frame-card-info">
+            <h4 class="frame-card-title">${f.name}</h4>
+            <p class="frame-card-sub">${f.campaignSubtitle}</p>
+          </div>
+          <div class="frame-card-actions">
+            <button class="btn-gold" data-launch-frame="${f.id}" style="flex: 1; font-size: 0.85rem; padding: 0.75rem 0.9rem;">
+              <span>📸 Launch Frame</span>
+            </button>
+            <button class="btn-secondary" data-show-qr="${f.id}" style="padding: 0.75rem 0.9rem;" title="Scan on Mobile">
+              <span>📱 QR</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 2. Landing Frame Carousel
+    const landingCarousel = document.getElementById('landing-frame-carousel');
+    if (landingCarousel) {
+      landingCarousel.innerHTML = frames.map(f => `
+        <div class="landing-frame-item ${f.id === activeCampaign.id ? 'active' : ''}" data-frame-id="${f.id}" data-select-frame="${f.id}">
+          <div class="landing-frame-thumb">
+            <img src="${f.thumbImage || f.frameImage}" alt="${f.name}" />
+          </div>
+          <div class="landing-frame-name">${f.name}</div>
+          <div class="landing-frame-tag">${f.badgeIcon || '✦'} ${f.tag || 'Luxury'}</div>
+        </div>
+      `).join('');
+    }
+
+    // 3. Adjuster Frame Switcher Bar
+    const adjustBar = document.getElementById('adjust-frame-bar');
+    if (adjustBar) {
+      adjustBar.innerHTML = frames.map(f => `
+        <div class="adjust-frame-pill ${f.id === activeCampaign.id ? 'active' : ''}" data-frame-id="${f.id}" data-select-frame="${f.id}">
+          <div class="adjust-frame-pill-thumb">
+            <img src="${f.thumbImage || f.frameImage}" alt="${f.name}" />
+          </div>
+          <span>${f.badgeIcon || '✦'} ${f.name}</span>
+        </div>
+      `).join('');
+    }
+
+    // 4. Preview Screen Quick Re-frame Strip
+    const previewStrip = document.getElementById('preview-frame-strip');
+    if (previewStrip) {
+      previewStrip.innerHTML = frames.map(f => `
+        <div class="preview-frame-chip ${f.id === activeCampaign.id ? 'active' : ''}" data-frame-id="${f.id}" data-preview-switch-frame="${f.id}">
+          <div class="preview-frame-chip-thumb">
+            <img src="${f.thumbImage || f.frameImage}" alt="${f.name}" />
+          </div>
+          <span>${f.badgeIcon || '✦'} ${f.name}</span>
+        </div>
+      `).join('');
     }
   }
 
@@ -109,6 +252,7 @@
 
   // Camera Management
   async function launchCamera() {
+    trackEvent('camera_open');
     setStep('camera');
     if (cameraErrorBanner) cameraErrorBanner.style.display = 'none';
 
@@ -125,6 +269,7 @@
 
   // Proceed to Adjuster with captured photo
   function setupAdjuster(photo) {
+    trackEvent('photo_snap');
     cameraController.stopStream();
     capturedPhoto = photo;
     adjustScale = 1.0;
@@ -154,11 +299,20 @@
       // Add a slight micro-delay for smooth cinematic feedback
       await new Promise(r => setTimeout(r, 600));
 
+      // Calculate exact scaling from adjuster stage to canvas photo area
+      const stageRect = adjusterStage ? adjusterStage.getBoundingClientRect() : { width: 262, height: 242 };
+      const stageW = stageRect.width || 262;
+      const stageH = stageRect.height || 242;
+
+      const photoArea = (activeCampaign.template && activeCampaign.template.photoArea) || { width: 908, height: 844 };
+      const scaleFactorX = photoArea.width / stageW;
+      const scaleFactorY = photoArea.height / stageH;
+
       const adjustedPhoto = {
         ...capturedPhoto,
         scale: adjustScale,
-        offsetX: adjustOffsetX * (1080 / 340), // scale relative to adjuster canvas
-        offsetY: adjustOffsetY * (1350 / 425),
+        offsetX: adjustOffsetX * scaleFactorX,
+        offsetY: adjustOffsetY * scaleFactorY,
         mirrored: adjustMirrored
       };
 
@@ -174,7 +328,8 @@
 
   // Setup Touch and Mouse Dragging for Photo Adjuster
   function setupDraggableAdjuster() {
-    if (!adjusterStage) return;
+    const dragTarget = document.getElementById('adjuster-frame-wrapper') || adjusterStage;
+    if (!dragTarget) return;
 
     function handleStart(clientX, clientY) {
       isDragging = true;
@@ -182,6 +337,7 @@
       dragStartY = clientY;
       initialOffsetX = adjustOffsetX;
       initialOffsetY = adjustOffsetY;
+      dragTarget.style.cursor = 'grabbing';
     }
 
     function handleMove(clientX, clientY) {
@@ -193,20 +349,22 @@
 
     function handleEnd() {
       isDragging = false;
+      dragTarget.style.cursor = 'grab';
     }
 
     // Mouse events
-    adjusterStage.addEventListener('mousedown', (e) => {
+    dragTarget.addEventListener('mousedown', (e) => {
       e.preventDefault();
       handleStart(e.clientX, e.clientY);
     });
+
     window.addEventListener('mousemove', (e) => {
       if (isDragging) handleMove(e.clientX, e.clientY);
     });
     window.addEventListener('mouseup', handleEnd);
 
     // Touch events (mobile)
-    adjusterStage.addEventListener('touchstart', (e) => {
+    dragTarget.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         handleStart(e.touches[0].clientX, e.touches[0].clientY);
       }
@@ -224,8 +382,8 @@
   // Native Share or Instagram Modal
   async function handleShare() {
     if (!compositeResult) return;
+    trackEvent('photo_share');
 
-    // Check if Web Share API with files is supported
     if (navigator.share && compositeResult.blob) {
       try {
         const file = new File([compositeResult.blob], `${activeCampaign.id}-moment.jpg`, { type: 'image/jpeg' });
@@ -246,13 +404,13 @@
       }
     }
 
-    // Fallback: Open Instagram Share Guidance Modal
     if (shareModal) shareModal.classList.add('active');
   }
 
   // 1-Click Download of High-Res 1080x1350 JPEG
   function downloadPhoto() {
     if (!compositeResult || !compositeResult.dataUrl) return;
+    trackEvent('photo_download');
     const a = document.createElement('a');
     a.href = compositeResult.dataUrl;
     a.download = `${activeCampaign.id}-photo-1080x1350.jpg`;
@@ -262,20 +420,17 @@
   }
 
   // Display QR Code Modal for Scanning with Mobile
-  function openQrModal(campaignId) {
-    const campaigns = loadAllCampaigns();
-    const camp = campaigns[campaignId] || activeCampaign;
+  function openQrModal(frameId) {
+    const frame = getFrameById(frameId) || activeCampaign;
     const qrContainer = document.getElementById('qr-code-display');
     const qrLabel = document.getElementById('qr-modal-title');
     const qrSub = document.getElementById('qr-modal-sub');
     const qrDirectLink = document.getElementById('qr-direct-link');
 
-    if (qrLabel) qrLabel.textContent = camp.clientName;
-    if (qrSub) qrSub.textContent = camp.campaignTitle;
+    if (qrLabel) qrLabel.textContent = `${frame.badgeIcon || '✦'} ${frame.name}`;
+    if (qrSub) qrSub.textContent = `Scan to launch the ${frame.name} camera on your phone!`;
 
-    // Determine target URL for mobile phone
-    // If running on localhost, suggest using current origin or Wi-Fi IP
-    const targetUrl = `${window.location.origin}/q/${camp.id}`;
+    const targetUrl = `${window.location.origin}/q/${frame.id}`;
     if (qrDirectLink) {
       qrDirectLink.href = targetUrl;
       qrDirectLink.textContent = targetUrl;
@@ -299,26 +454,50 @@
   // Wire Event Listeners
   function initEvents() {
     // Portal Launch Buttons
-    document.querySelectorAll('[data-launch-campaign]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
+      const launchBtn = e.target.closest('[data-launch-frame]');
+      if (launchBtn) {
         e.preventDefault();
-        const campKey = btn.getAttribute('data-launch-campaign');
-        const campaigns = loadAllCampaigns();
-        if (campaigns[campKey]) {
-          updateCampaignTheme(campaigns[campKey]);
-          setStep('landing');
-        }
-      });
+        const fId = launchBtn.getAttribute('data-launch-frame');
+        setActiveFrame(fId);
+        setStep('landing');
+        return;
+      }
+
+      const qrBtn = e.target.closest('[data-show-qr]');
+      if (qrBtn) {
+        e.preventDefault();
+        const fId = qrBtn.getAttribute('data-show-qr');
+        openQrModal(fId);
+        return;
+      }
+
+      // Frame selection on Landing or Adjuster
+      const selectFrameItem = e.target.closest('[data-select-frame]');
+      if (selectFrameItem) {
+        e.preventDefault();
+        const fId = selectFrameItem.getAttribute('data-select-frame');
+        setActiveFrame(fId);
+        return;
+      }
+
+      // Frame quick switch on Preview Screen
+      const previewSwitchItem = e.target.closest('[data-preview-switch-frame]');
+      if (previewSwitchItem) {
+        e.preventDefault();
+        const fId = previewSwitchItem.getAttribute('data-preview-switch-frame');
+        setActiveFrame(fId, { recomputePreview: true });
+        return;
+      }
     });
 
-    // Portal QR Code Show Buttons
-    document.querySelectorAll('[data-show-qr]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const campKey = btn.getAttribute('data-show-qr');
-        openQrModal(campKey);
+    // Return to Portal Button
+    const backToPortalBtn = document.getElementById('btn-back-to-portal');
+    if (backToPortalBtn) {
+      backToPortalBtn.addEventListener('click', () => {
+        setStep('portal');
       });
-    });
+    }
 
     // Landing Screen: Start Experience
     const startBtn = document.getElementById('btn-start-camera');
@@ -356,7 +535,6 @@
         if (frame) {
           setupAdjuster(frame);
         } else {
-          // If video isn't active, open file input
           fileInput?.click();
         }
       });
@@ -431,7 +609,7 @@
       shareBtn.addEventListener('click', handleShare);
     }
 
-    // Preview: New Photo
+    // Preview: Take Another Photo
     const newPhotoBtn = document.getElementById('btn-take-another');
     if (newPhotoBtn) {
       newPhotoBtn.addEventListener('click', launchCamera);
@@ -463,12 +641,18 @@
 
   // Initialize Application
   function init() {
-    updateCampaignTheme(activeCampaign);
+    trackEvent('page_view');
 
-    // If URL contains a campaign path (e.g. /q/nilgiri-tea) or ?q=, start at that campaign's landing page
+    // Populate frame selectors
+    renderAllFrameSelectors();
+
+    // Set active frame state & theme
+    setActiveFrame(activeCampaign);
+
+    // If URL contains a campaign/frame path (e.g. /q/classic-gold) or ?frame=, start at that frame's landing page
     const path = window.location.pathname.toLowerCase();
     const query = new URLSearchParams(window.location.search);
-    if (path.startsWith('/q/') || query.has('q') || query.has('code') || query.has('campaign')) {
+    if (path.startsWith('/q/') || query.has('frame') || query.has('q') || query.has('code') || query.has('campaign')) {
       setStep('landing');
     } else {
       setStep('portal');
