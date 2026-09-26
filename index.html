@@ -21,7 +21,7 @@
   <!-- ================================================================= -->
   <main id="screen-portal" class="screen-step active" style="flex-direction: column; justify-content: space-between; max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem;">
     <!-- Top Navigation -->
-    <header style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(226, 190, 108, 0.2);">
+    <header class="portal-header">
       <div style="display: flex; align-items: center; gap: 0.75rem;">
         <div style="width: 2.5rem; height: 2.5rem; border-radius: 50%; background: linear-gradient(135deg, rgba(226, 190, 108, 0.18), rgba(14, 23, 19, 0.9)); border: 1px solid rgba(226, 190, 108, 0.5); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--lux-gold-champagne); box-shadow: 0 0 15px rgba(226, 190, 108, 0.25);">
           ✦
@@ -31,29 +31,60 @@
           <p style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--lux-gold-champagne);">Official Heritage Experience</p>
         </div>
       </div>
-      <div style="display: flex; gap: 0.5rem;">
-        <a href="analytics.html" class="btn-gold" style="font-size: 0.75rem; padding: 0.5rem 0.9rem; border-radius: 999px;">
+      <div class="portal-nav-actions">
+        <button id="btn-open-mobile-qr" class="btn-gold" style="font-size: 0.75rem; padding: 0.45rem 0.95rem; border-radius: 999px;">
+          <span>📱 Open on Phone</span>
+        </button>
+        <a href="analytics.html" class="btn-secondary" style="font-size: 0.75rem; padding: 0.45rem 0.85rem; border-radius: 999px;">
           <span>📊 Analytics</span>
         </a>
-        <a href="admin.html" class="btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 0.9rem; border-radius: 999px;">
+        <a href="admin.html" class="btn-secondary" style="font-size: 0.75rem; padding: 0.45rem 0.85rem; border-radius: 999px;">
           <span>⚙️ Studio</span>
         </a>
       </div>
     </header>
 
     <!-- Hero Section -->
-    <!-- Hero Section -->
-    <section style="margin: 2rem 0 1.5rem; text-align: center;">
-      <div class="badge-pill" style="margin-bottom: 1rem;">
+    <section style="margin: 1.75rem 0 1.25rem; text-align: center;">
+      <div class="badge-pill" style="margin-bottom: 0.85rem;">
         <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4ade80;"></span>
         <span>5 Luxury Heritage Frames Available</span>
       </div>
-      <h2 class="font-serif gold-gradient-text" style="font-size: 2.3rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.85rem;">
+      <h2 class="font-serif gold-gradient-text" style="font-size: 2.15rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.85rem;">
         Choose Your Frame. <br />Capture Your Moment.
       </h2>
-      <p style="font-size: 0.95rem; color: rgba(251, 248, 242, 0.75); max-width: 580px; margin: 0 auto; line-height: 1.6;">
+      <p style="font-size: 0.92rem; color: rgba(251, 248, 242, 0.75); max-width: 580px; margin: 0 auto; line-height: 1.6;">
         Ultra-crisp 1080×1350 branded photo frames for the Nilgiris and Homewood Tea. Select any handcrafted frame below to snap and share!
       </p>
+    </section>
+
+    <!-- Mobile Quick Launch Experience Card -->
+    <section class="mobile-experience-card glass-panel" style="margin-bottom: 2rem; padding: 1.15rem 1.4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border: 1px solid rgba(226, 190, 108, 0.35); background: linear-gradient(135deg, rgba(20, 34, 28, 0.8) 0%, rgba(10, 16, 13, 0.95) 100%);">
+      <div style="display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 250px;">
+        <div style="width: 3rem; height: 3rem; border-radius: 0.9rem; background: rgba(226, 190, 108, 0.12); border: 1px solid rgba(226, 190, 108, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; box-shadow: 0 0 20px rgba(226, 190, 108, 0.2);">
+          📱
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.2rem;">
+            <span class="badge-pill" style="font-size: 0.6rem; padding: 0.15rem 0.55rem; border-color: rgba(74, 222, 128, 0.5); color: #4ade80;">
+              ● Mobile Optimized
+            </span>
+            <span style="font-size: 0.7rem; color: var(--lux-gold-champagne); font-weight: 600;">Touch & Gestures</span>
+          </div>
+          <h3 class="font-serif" style="font-size: 1.05rem; color: var(--lux-cream); font-weight: 700; margin-bottom: 0.15rem;">
+            Open on Your Smartphone
+          </h3>
+          <p style="font-size: 0.78rem; color: rgba(251, 248, 242, 0.7); line-height: 1.4;">
+            Scan the QR code to use your phone's full-screen camera, touch & pinch adjuster, and 1-tap HD download.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <button id="btn-banner-scan-qr" class="btn-gold" style="font-size: 0.82rem; padding: 0.65rem 1.25rem;">
+          <span>📱 Scan QR for Phone</span>
+        </button>
+      </div>
     </section>
 
     <!-- Multi-Frame Catalog Section -->
@@ -104,7 +135,9 @@
           <span id="brand-client-name">Sagar Nilgiri Products</span>
           <span>✦</span>
         </div>
-        <div style="width: 60px;"></div>
+        <button id="btn-landing-phone-qr" class="btn-secondary" style="font-size: 0.7rem; padding: 0.35rem 0.75rem; border-radius: 999px;" title="Open this frame on Phone">
+          📱 QR
+        </button>
       </div>
 
       <h2 id="brand-campaign-title" class="font-serif gold-gradient-text" style="font-size: 1.65rem; font-weight: 700; line-height: 1.25; margin-bottom: 0.25rem;">
@@ -167,7 +200,7 @@
   <!-- ================================================================= -->
   <main id="screen-camera" class="screen-step" style="flex-direction: column; position: fixed; inset: 0; background: #000000; z-index: 100;">
     <!-- Top Viewfinder Toolbar -->
-    <div style="position: absolute; top: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);">
+    <div class="camera-top-toolbar" style="position: absolute; top: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);">
       <button id="btn-close-camera" class="btn-icon" style="width: 2.6rem; height: 2.6rem;" title="Close">✕</button>
       <div id="camera-client-label" class="badge-pill" style="font-size: 0.7rem; border-color: rgba(212, 175, 55, 0.5);">
         SAGAR NILGIRI PRODUCTS
@@ -210,7 +243,7 @@
     </div>
 
     <!-- Bottom Controls -->
-    <div style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-around; align-items: center; padding: 1.5rem 2rem 2.5rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
+    <div class="camera-bottom-toolbar" style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-around; align-items: center; padding: 1.5rem 2rem 2.5rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
       <button data-action="upload-photo" class="btn-icon" title="Upload from Gallery">🖼️</button>
 
       <!-- Main Shutter Button -->
@@ -362,23 +395,96 @@
   <!-- MODAL: INSTAGRAM & SOCIAL SHARING                                -->
   <!-- ================================================================= -->
   <div id="share-modal" class="modal-backdrop">
-    <div class="modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 class="font-serif gold-gradient-text" style="font-size: 1.25rem; font-weight: 700;">Share Your Moment</h3>
+    <div class="modal-box" style="max-width: 440px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <div>
+          <h3 class="font-serif gold-gradient-text" style="font-size: 1.25rem; font-weight: 700;">Share Your Moment</h3>
+          <p style="font-size: 0.72rem; color: rgba(251, 248, 242, 0.7); margin-top: 0.15rem;">Tap any app below to open and share instantly</p>
+        </div>
         <button data-close-modal class="btn-icon" style="width: 2.2rem; height: 2.2rem;">✕</button>
       </div>
-      <p style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.75); margin-bottom: 1.25rem; line-height: 1.5;">
-        1. Save your 1080×1350 photo to your device.<br />
-        2. Copy the curated brand caption below.<br />
-        3. Open Instagram or WhatsApp and share!
-      </p>
 
-      <div style="background: rgba(8, 28, 21, 0.9); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 1rem; padding: 0.85rem; margin-bottom: 1.25rem;">
-        <p id="caption-text-preview" style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.9); white-space: pre-line; line-height: 1.4; max-height: 120px; overflow-y: auto;"></p>
+      <!-- Live Share Notice Status -->
+      <div id="share-status-pill" style="display: none; padding: 0.55rem 0.85rem; border-radius: 0.85rem; background: rgba(74, 222, 128, 0.15); border: 1px solid rgba(74, 222, 128, 0.4); color: #4ade80; font-size: 0.72rem; font-weight: 600; text-align: center; margin-bottom: 0.75rem;">
+        ✓ Opening app...
       </div>
 
-      <button id="btn-copy-caption" class="btn-gold" style="width: 100%; font-size: 0.85rem; padding: 0.8rem;">
-        <span>📋 Copy Caption & Hashtags</span>
+      <!-- Native System Share Trigger -->
+      <button id="btn-trigger-system-share" class="btn-gold" style="width: 100%; font-size: 0.85rem; padding: 0.75rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+        <span>📱 Open Phone's Share Menu (All Apps)</span>
+      </button>
+
+      <!-- Apps Grid (Direct Deep Links) -->
+      <div class="share-apps-grid">
+        <!-- WhatsApp -->
+        <div id="share-btn-whatsapp" class="share-app-item">
+          <div class="share-app-icon" style="background: #25D366;">
+            💬
+          </div>
+          <span class="share-app-label">WhatsApp</span>
+          <span class="share-app-sub">Chat & Status</span>
+        </div>
+
+        <!-- Instagram -->
+        <div id="share-btn-instagram" class="share-app-item">
+          <div class="share-app-icon" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
+            📸
+          </div>
+          <span class="share-app-label">Instagram</span>
+          <span class="share-app-sub">Story & Feed</span>
+        </div>
+
+        <!-- Telegram -->
+        <div id="share-btn-telegram" class="share-app-item">
+          <div class="share-app-icon" style="background: #0088cc;">
+            ✈️
+          </div>
+          <span class="share-app-label">Telegram</span>
+          <span class="share-app-sub">Send Message</span>
+        </div>
+
+        <!-- Messages / SMS -->
+        <div id="share-btn-sms" class="share-app-item">
+          <div class="share-app-icon" style="background: #34C759;">
+            ✉️
+          </div>
+          <span class="share-app-label">Messages</span>
+          <span class="share-app-sub">iMessage / SMS</span>
+        </div>
+
+        <!-- Twitter / X -->
+        <div id="share-btn-twitter" class="share-app-item">
+          <div class="share-app-icon" style="background: #000000; border: 1px solid rgba(255,255,255,0.25);">
+            𝕏
+          </div>
+          <span class="share-app-label">X / Twitter</span>
+          <span class="share-app-sub">Post Tweet</span>
+        </div>
+
+        <!-- Facebook -->
+        <div id="share-btn-facebook" class="share-app-item">
+          <div class="share-app-icon" style="background: #1877F2;">
+            📘
+          </div>
+          <span class="share-app-label">Facebook</span>
+          <span class="share-app-sub">Feed Post</span>
+        </div>
+      </div>
+
+      <!-- Caption Preview & Copy -->
+      <div style="background: rgba(8, 28, 21, 0.9); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 1rem; padding: 0.75rem 0.85rem; margin-top: 0.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+          <span style="font-size: 0.65rem; color: var(--lux-gold-champagne); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">✦ Instagram Caption</span>
+          <button id="btn-copy-caption" class="btn-secondary" style="font-size: 0.65rem; padding: 0.25rem 0.65rem; border-radius: 999px;">
+            📋 Copy Caption
+          </button>
+        </div>
+        <p id="caption-text-preview" style="font-size: 0.7rem; color: rgba(251, 248, 242, 0.85); white-space: pre-line; line-height: 1.35; max-height: 65px; overflow-y: auto;"></p>
+      </div>
+
+      <!-- Save Photo Button -->
+      <button id="btn-modal-download-hd" class="btn-secondary" style="width: 100%; font-size: 0.78rem; margin-top: 0.75rem; padding: 0.65rem;">
+        <span>💾 Save 1080×1350 Photo to Device Gallery</span>
       </button>
     </div>
   </div>
@@ -404,10 +510,20 @@
         <div id="qr-code-display" style="padding: 1rem; background: #ffffff; border-radius: 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></div>
       </div>
 
-      <div style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.6); margin-bottom: 1rem; word-break: break-all;">
+      <div style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.6); margin-bottom: 0.85rem; word-break: break-all;">
         Or open direct link:<br />
         <a id="qr-direct-link" href="#" target="_blank" style="color: var(--nilgiri-gold); text-decoration: underline;"></a>
       </div>
+
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+        <button id="btn-copy-qr-link" class="btn-gold" style="flex: 1; font-size: 0.78rem; padding: 0.6rem;">
+          <span>📋 Copy Mobile Link</span>
+        </button>
+      </div>
+
+      <p style="font-size: 0.68rem; color: rgba(251, 248, 242, 0.5); margin-bottom: 1rem;">
+        ✦ Tip: Ensure your mobile phone is connected to the same Wi-Fi network.
+      </p>
 
       <button data-close-modal class="btn-secondary" style="width: 100%; font-size: 0.8rem;">
         Close

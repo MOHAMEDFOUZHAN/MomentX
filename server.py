@@ -15,7 +15,18 @@ from flask import Flask, request, jsonify, send_from_directory, g
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, static_folder=BASE_DIR, static_url_path='')
 
-DB_PATH = os.path.join(BASE_DIR, 'analytics.db')
+# Database path (use /tmp on Vercel serverless to support writes)
+if os.environ.get('VERCEL'):
+    DB_PATH = '/tmp/analytics.db'
+    seed_db = os.path.join(BASE_DIR, 'analytics.db')
+    if os.path.exists(seed_db) and not os.path.exists(DB_PATH):
+        try:
+            import shutil
+            shutil.copyfile(seed_db, DB_PATH)
+        except Exception as e:
+            print(f"Vercel DB seed notice: {e}")
+else:
+    DB_PATH = os.path.join(BASE_DIR, 'analytics.db')
 
 # ---------------------------------------------------------------------------
 # Database Management
@@ -112,9 +123,53 @@ def parse_user_agent(ua_string):
         
     return device, os_name, browser
 
+def get_wifi_ip():
+    import socket
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except Exception:
+        return '127.0.0.1'
+
+def generate_mobile_qr(url):
+    try:
+        import qrcode
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_H,
+            box_size=10,
+            border=3,
+        )
+        qr.add_data(url)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color='#081c15', back_color='#ffffff')
+        qr_file = os.path.join(BASE_DIR, 'mobile-app-qr.png')
+        img.save(qr_file)
+        return True
+    except Exception as e:
+        print(f"QR generation notice: {e}")
+        return False
+
 # ---------------------------------------------------------------------------
 # API Routes
 # ---------------------------------------------------------------------------
+@app.route('/api/network-info', methods=['GET'])
+def get_network_info():
+    """Return local Wi-Fi IP and URLs for mobile testing."""
+    local_ip = get_wifi_ip()
+    port = int(os.environ.get('PORT', 3001))
+    mobile_url = f"http://{local_ip}:{port}"
+    return jsonify({
+        'status': 'ok',
+        'local_ip': local_ip,
+        'port': port,
+        'mobile_url': mobile_url,
+        'qr_image_url': '/mobile-app-qr.png'
+    })
+
 @app.route('/api/event', methods=['POST'])
 def track_event():
     """Log an event (page_view, camera_open, photo_snap, photo_download, photo_share, cta_click)."""
@@ -317,33 +372,23 @@ def serve_static(filename):
     return send_from_directory(BASE_DIR, filename)
 
 # ---------------------------------------------------------------------------
-# Helper: IP address detection for Wi-Fi mobile testing
-# ---------------------------------------------------------------------------
-def get_wifi_ip():
-    import socket
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        ip = s.getsockname()[0]
-        s.close()
-        return ip
-    except Exception:
-        return '127.0.0.1'
-
-# ---------------------------------------------------------------------------
 # Run Local Server
 # ---------------------------------------------------------------------------
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 3001))
     local_ip = get_wifi_ip()
+    mobile_url = f"http://{local_ip}:{port}"
+    generate_mobile_qr(mobile_url)
     
     print("\n" + "=" * 64)
     print("[*] Nilgiris Frame - Production Python Server Active")
     print("=" * 64)
     print(f"[*] Local Computer:      http://localhost:{port}")
-    print(f"[*] Mobile (Wi-Fi):      http://{local_ip}:{port}")
+    print(f"[*] Mobile (Wi-Fi):      {mobile_url}")
+    print(f"[*] Mobile QR Image:     {mobile_url}/mobile-app-qr.png")
     print(f"[*] Analytics Dashboard: http://localhost:{port}/analytics")
     print(f"[*] Admin Studio:        http://localhost:{port}/admin")
     print("=" * 64 + "\n")
     
     app.run(host='0.0.0.0', port=port, debug=False)
+

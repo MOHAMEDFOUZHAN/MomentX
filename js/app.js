@@ -379,38 +379,86 @@
     window.addEventListener('touchend', handleEnd);
   }
 
-  // Native Share or Instagram Modal
+  // Flash status banner inside share modal
+  function showShareStatus(text, duration = 3000) {
+    const pill = document.getElementById('share-status-pill');
+    if (!pill) return;
+    pill.textContent = text;
+    pill.style.display = 'block';
+    setTimeout(() => {
+      pill.style.display = 'none';
+    }, duration);
+  }
+
+  // Trigger Native System Share Sheet (iOS / Android sheet with all installed apps)
+  async function triggerNativeShare() {
+    if (!compositeResult || !navigator.share) return false;
+
+    const shareTitle = activeCampaign.campaignTitle || 'Nilgiris Frame';
+    const shareText = `${activeCampaign.suggestedShareText}\n\n${(activeCampaign.defaultHashtags || []).join(' ')}`;
+
+    // 1. Try sharing with the high-res 1080x1350 JPEG file
+    if (compositeResult.blob) {
+      try {
+        const file = new File([compositeResult.blob], `${activeCampaign.id}-photo-1080x1350.jpg`, { type: 'image/jpeg' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: shareTitle,
+            text: shareText,
+            files: [file]
+          });
+          return true;
+        }
+      } catch (err) {
+        if (err.name === 'AbortError') return true; // User tapped cancel
+        console.warn('Native file share error:', err);
+      }
+    }
+
+    // 2. Fallback: try sharing text & link
+    try {
+      await navigator.share({
+        title: shareTitle,
+        text: shareText,
+        url: window.location.href
+      });
+      return true;
+    } catch (err) {
+      if (err.name === 'AbortError') return true;
+      console.warn('Native text share error:', err);
+    }
+
+    return false;
+  }
+
+  // Open Share Hub Modal
+  function openShareModal() {
+    if (shareModal) {
+      shareModal.classList.add('active');
+    }
+  }
+
+  // Native Share Handler (attempts OS sheet or opens App Share Hub)
   async function handleShare() {
     if (!compositeResult) return;
     trackEvent('photo_share');
 
-    if (navigator.share && compositeResult.blob) {
-      try {
-        const file = new File([compositeResult.blob], `${activeCampaign.id}-moment.jpg`, { type: 'image/jpeg' });
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            title: activeCampaign.campaignTitle,
-            text: `${activeCampaign.suggestedShareText}\n${activeCampaign.defaultHashtags.join(' ')}`,
-            files: [file]
-          });
-          return;
-        }
-      } catch (e) {
-        if (e.name !== 'AbortError') {
-          console.log('Native share error, falling back to modal:', e);
-        } else {
-          return;
-        }
-      }
+    // Attempt Native System Share Menu first (works when browser allows it)
+    if (navigator.share) {
+      const shared = await triggerNativeShare();
+      if (shared) return;
     }
 
-    if (shareModal) shareModal.classList.add('active');
+    // Otherwise, open the interactive Mobile App Share Hub Modal
+    openShareModal();
   }
 
   // 1-Click Download of High-Res 1080x1350 JPEG
-  function downloadPhoto() {
+  function downloadPhoto(options = {}) {
     if (!compositeResult || !compositeResult.dataUrl) return;
-    trackEvent('photo_download');
+    if (!options.silent) {
+      trackEvent('photo_download');
+    }
     const a = document.createElement('a');
     a.href = compositeResult.dataUrl;
     a.download = `${activeCampaign.id}-photo-1080x1350.jpg`;
@@ -419,18 +467,49 @@
     document.body.removeChild(a);
   }
 
+  // Mobile Origin Resolver (replaces localhost with actual LAN Wi-Fi IP for phones)
+  let cachedMobileOrigin = null;
+
+  async function resolveMobileOrigin() {
+    if (cachedMobileOrigin) return cachedMobileOrigin;
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (!isLocal) {
+      cachedMobileOrigin = window.location.origin;
+      return cachedMobileOrigin;
+    }
+    try {
+      const res = await fetch('/api/network-info');
+      const data = await res.json();
+      if (data && data.mobile_url) {
+        cachedMobileOrigin = data.mobile_url;
+        return cachedMobileOrigin;
+      }
+    } catch (e) {}
+    // Fallback to detected Wi-Fi IP
+    cachedMobileOrigin = `http://10.43.118.113:${window.location.port || '3001'}`;
+    return cachedMobileOrigin;
+  }
+
   // Display QR Code Modal for Scanning with Mobile
-  function openQrModal(frameId) {
-    const frame = getFrameById(frameId) || activeCampaign;
+  async function openQrModal(frameId) {
+    const origin = await resolveMobileOrigin();
+    const frame = (frameId && frameId !== 'app') ? getFrameById(frameId) : null;
     const qrContainer = document.getElementById('qr-code-display');
     const qrLabel = document.getElementById('qr-modal-title');
     const qrSub = document.getElementById('qr-modal-sub');
     const qrDirectLink = document.getElementById('qr-direct-link');
 
-    if (qrLabel) qrLabel.textContent = `${frame.badgeIcon || '✦'} ${frame.name}`;
-    if (qrSub) qrSub.textContent = `Scan to launch the ${frame.name} camera on your phone!`;
+    let targetUrl;
+    if (frame) {
+      if (qrLabel) qrLabel.textContent = `${frame.badgeIcon || '✦'} ${frame.name}`;
+      if (qrSub) qrSub.textContent = `Scan with your phone to launch the ${frame.name} camera experience!`;
+      targetUrl = `${origin}/q/${frame.id}`;
+    } else {
+      if (qrLabel) qrLabel.textContent = `📱 Open Nilgiris Frame Experience`;
+      if (qrSub) qrSub.textContent = `Scan with your smartphone camera to operate the full touch photo app on your phone!`;
+      targetUrl = `${origin}/`;
+    }
 
-    const targetUrl = `${window.location.origin}/q/${frame.id}`;
     if (qrDirectLink) {
       qrDirectLink.href = targetUrl;
       qrDirectLink.textContent = targetUrl;
@@ -453,6 +532,22 @@
 
   // Wire Event Listeners
   function initEvents() {
+    // Overall App QR Triggers
+    const appQrBtns = ['btn-open-mobile-qr', 'btn-banner-scan-qr', 'btn-landing-phone-qr'];
+    appQrBtns.forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (id === 'btn-landing-phone-qr' && activeCampaign) {
+            openQrModal(activeCampaign.id);
+          } else {
+            openQrModal(null);
+          }
+        });
+      }
+    });
+
     // Portal Launch Buttons
     document.addEventListener('click', (e) => {
       const launchBtn = e.target.closest('[data-launch-frame]');
@@ -624,6 +719,124 @@
           copyCaptionBtn.textContent = '✓ Caption Copied!';
           setTimeout(() => { copyCaptionBtn.textContent = 'Copy Instagram Caption'; }, 2000);
         });
+      });
+    }
+
+    // QR Modal: Copy Link
+    const copyQrLinkBtn = document.getElementById('btn-copy-qr-link');
+    if (copyQrLinkBtn) {
+      copyQrLinkBtn.addEventListener('click', () => {
+        const linkEl = document.getElementById('qr-direct-link');
+        const url = linkEl ? linkEl.href : window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+          copyQrLinkBtn.innerHTML = '<span>✓ Link Copied to Clipboard!</span>';
+          setTimeout(() => { copyQrLinkBtn.innerHTML = '<span>📋 Copy Mobile Link</span>'; }, 2000);
+        });
+      });
+    }
+
+    // Share Modal: System Share Sheet Button
+    const sysShareBtn = document.getElementById('btn-trigger-system-share');
+    if (sysShareBtn) {
+      sysShareBtn.addEventListener('click', async () => {
+        if (navigator.share) {
+          const success = await triggerNativeShare();
+          if (success) return;
+        }
+        showShareStatus('✦ Tap WhatsApp or Instagram below to share directly!');
+      });
+    }
+
+    // Share Modal: Save Photo to Device
+    const modalDlBtn = document.getElementById('btn-modal-download-hd');
+    if (modalDlBtn) {
+      modalDlBtn.addEventListener('click', () => {
+        downloadPhoto();
+        showShareStatus('✓ 1080×1350 Photo saved to your device gallery!');
+      });
+    }
+
+    // Share App 1: WhatsApp
+    const waBtn = document.getElementById('share-btn-whatsapp');
+    if (waBtn) {
+      waBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        downloadPhoto({ silent: true });
+        const caption = `${activeCampaign.suggestedShareText}\n\n${(activeCampaign.defaultHashtags || []).join(' ')}`;
+        navigator.clipboard?.writeText(caption);
+        showShareStatus('✓ Photo saved! Opening WhatsApp...');
+        const waUrl = `whatsapp://send?text=${encodeURIComponent(caption)}`;
+        window.location.href = waUrl;
+        setTimeout(() => {
+          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(caption)}`, '_blank');
+        }, 1200);
+      });
+    }
+
+    // Share App 2: Instagram
+    const igBtn = document.getElementById('share-btn-instagram');
+    if (igBtn) {
+      igBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        downloadPhoto({ silent: true });
+        const caption = `${activeCampaign.suggestedShareText}\n\n${(activeCampaign.defaultHashtags || []).join(' ')}`;
+        navigator.clipboard?.writeText(caption);
+        showShareStatus('✓ Caption copied & Photo saved! Opening Instagram...');
+        window.location.href = 'instagram://app';
+        setTimeout(() => {
+          window.open('https://www.instagram.com', '_blank');
+        }, 1200);
+      });
+    }
+
+    // Share App 3: Telegram
+    const tgBtn = document.getElementById('share-btn-telegram');
+    if (tgBtn) {
+      tgBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        downloadPhoto({ silent: true });
+        const caption = `${activeCampaign.suggestedShareText}\n\n${(activeCampaign.defaultHashtags || []).join(' ')}`;
+        navigator.clipboard?.writeText(caption);
+        showShareStatus('✓ Photo saved! Opening Telegram...');
+        window.location.href = `tg://msg?text=${encodeURIComponent(caption)}`;
+        setTimeout(() => {
+          window.open(`https://t.me/share/url?text=${encodeURIComponent(caption)}`, '_blank');
+        }, 1200);
+      });
+    }
+
+    // Share App 4: Messages / SMS
+    const smsBtn = document.getElementById('share-btn-sms');
+    if (smsBtn) {
+      smsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        downloadPhoto({ silent: true });
+        const text = `${activeCampaign.suggestedShareText} ${(activeCampaign.defaultHashtags || []).join(' ')}`;
+        showShareStatus('✓ Photo saved! Opening Messages...');
+        window.location.href = `sms:?&body=${encodeURIComponent(text)}`;
+      });
+    }
+
+    // Share App 5: Twitter / X
+    const twBtn = document.getElementById('share-btn-twitter');
+    if (twBtn) {
+      twBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        downloadPhoto({ silent: true });
+        const text = `${activeCampaign.suggestedShareText}\n\n${(activeCampaign.defaultHashtags || []).join(' ')}`;
+        showShareStatus('✓ Opening X / Twitter...');
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+      });
+    }
+
+    // Share App 6: Facebook
+    const fbBtn = document.getElementById('share-btn-facebook');
+    if (fbBtn) {
+      fbBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        downloadPhoto({ silent: true });
+        showShareStatus('✓ Opening Facebook...');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}`, '_blank');
       });
     }
 
