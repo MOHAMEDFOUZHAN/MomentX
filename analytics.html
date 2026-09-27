@@ -142,6 +142,14 @@
   </style>
 </head>
 <body>
+  <!-- Auth guard: redirect to login if no valid session token -->
+  <script>
+    (function() {
+      if (sessionStorage.getItem('nlg_admin_token') !== 'nlg_auth_ok') {
+        window.location.replace('/login?next=/analytics');
+      }
+    })();
+  </script>
   <div class="admin-container">
     <!-- Top Header -->
     <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(212, 175, 55, 0.25);">
@@ -159,7 +167,17 @@
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 0.6rem;">
+      <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+        <!-- Admin Navigation Switcher -->
+        <div style="display: inline-flex; align-items: center; background: rgba(8, 13, 11, 0.9); padding: 0.25rem; border-radius: 999px; border: 1px solid rgba(226, 190, 108, 0.35); gap: 0.3rem;">
+          <a href="analytics.html" class="btn-gold" style="font-size: 0.75rem; padding: 0.45rem 0.85rem; border-radius: 999px; text-decoration: none; font-weight: 700;">
+            📊 Analytics
+          </a>
+          <a href="admin.html" class="btn-secondary" style="font-size: 0.75rem; padding: 0.45rem 0.85rem; border-radius: 999px; border: none; text-decoration: none;">
+            ⚙️ Studio
+          </a>
+        </div>
+
         <div style="display: flex; gap: 0.35rem; background: rgba(8, 28, 21, 0.85); padding: 0.25rem; border-radius: 999px; border: 1px solid rgba(212, 175, 55, 0.25);">
           <button class="time-filter-pill active" data-timeframe="all">All Time</button>
           <button class="time-filter-pill" data-timeframe="30d">30 Days</button>
@@ -170,9 +188,10 @@
         <button id="btn-refresh-stats" class="btn-gold" style="font-size: 0.75rem; padding: 0.55rem 0.85rem;">
           🔄 Refresh Live
         </button>
-        <a href="admin.html" class="btn-secondary" style="font-size: 0.75rem; padding: 0.55rem 0.85rem;">
-          ⚙️ Studio
-        </a>
+
+        <button onclick="sessionStorage.removeItem('nlg_admin_token'); window.location.replace('/login');" class="btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 0.85rem; border-radius: 999px;" title="Sign out of Admin">
+          🔒 Sign Out
+        </button>
       </div>
     </header>
 
@@ -559,7 +578,10 @@
       // Initial Load & Polling
       loadStats();
       loadRecentEvents();
-      setInterval(loadRecentEvents, 10000); // Live sync every 10s
+      setInterval(() => {
+        loadStats();
+        loadRecentEvents();
+      }, 10000); // Live sync every 10s
     })();
   </script>
 </body>

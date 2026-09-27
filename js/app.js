@@ -599,6 +599,9 @@
     if (startBtn) {
       startBtn.addEventListener('click', launchCamera);
     }
+    if (landingTeaserWindow) {
+      landingTeaserWindow.addEventListener('click', launchCamera);
+    }
 
     // Viewfinder: Close / Back to Landing
     const closeCamBtn = document.getElementById('btn-close-camera');

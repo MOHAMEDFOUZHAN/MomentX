@@ -9,11 +9,17 @@ import sys
 import json
 import sqlite3
 from datetime import datetime, timedelta
-from flask import Flask, request, jsonify, send_from_directory, g
+from flask import Flask, request, jsonify, send_from_directory, g, redirect
 
 # Initialize Flask app
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, static_folder=BASE_DIR, static_url_path='')
+app.secret_key = os.environ.get('SECRET_KEY', 'nlg-maple-secret-2307')
+
+# Admin credentials (keep in env vars in production)
+ADMIN_USER  = os.environ.get('ADMIN_USER', 'fouzhan')
+ADMIN_PASS  = os.environ.get('ADMIN_PASS', 'mapleconnect2307')
+VALID_TOKEN = 'nlg_auth_ok'  # value stored in browser sessionStorage
 
 # Database path (use /tmp on Vercel serverless to support writes)
 if os.environ.get('VERCEL'):
@@ -357,14 +363,22 @@ def reset_analytics():
 def serve_index(subpath=None):
     return send_from_directory(BASE_DIR, 'index.html')
 
+@app.route('/login')
+@app.route('/login.html')
+def serve_login():
+    """Public login page — no auth required."""
+    return send_from_directory(BASE_DIR, 'login.html')
+
 @app.route('/admin')
 @app.route('/admin.html')
 def serve_admin():
+    """Admin studio — protected. Browser JS guards this too; server is the hard gate."""
     return send_from_directory(BASE_DIR, 'admin.html')
 
 @app.route('/analytics')
 @app.route('/analytics.html')
 def serve_analytics():
+    """Analytics dashboard — protected."""
     return send_from_directory(BASE_DIR, 'analytics.html')
 
 @app.route('/<path:filename>')

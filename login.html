@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#081c15" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin Login | Nilgiris Frame</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(11, 18, 14, 0.88);
+      border: 1px solid rgba(226, 190, 108, 0.3);
+      border-radius: 2rem;
+      padding: 2.5rem 2rem;
+      box-shadow:
+        0 0 0 1px rgba(226, 190, 108, 0.08),
+        0 30px 70px rgba(0, 0, 0, 0.75),
+        0 0 60px rgba(226, 190, 108, 0.07);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      animation: card-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes card-rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-logo {
+      width: 3.5rem;
+      height: 3.5rem;
+      margin: 0 auto 1.35rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(226, 190, 108, 0.18), rgba(14, 23, 19, 0.9));
+      border: 1.5px solid rgba(226, 190, 108, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 0 28px rgba(226, 190, 108, 0.3);
+    }
+
+    .login-title {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.3rem;
+      background: linear-gradient(135deg, #ffffff 0%, #fae6ba 30%, #e2be6c 65%, #9b7119 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .login-sub {
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(251, 248, 242, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 2rem;
+    }
+
+    .field-group { margin-bottom: 1.15rem; }
+
+    .field-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--lux-gold-champagne);
+      margin-bottom: 0.45rem;
+    }
+
+    .field-wrap { position: relative; }
+
+    .field-icon {
+      position: absolute;
+      left: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .field-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(226, 190, 108, 0.22);
+      border-radius: 0.85rem;
+      padding: 0.8rem 0.9rem 0.8rem 2.6rem;
+      color: var(--lux-cream);
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      -webkit-appearance: none;
+    }
+
+    .field-input::placeholder { color: rgba(251, 248, 242, 0.3); }
+
+    .field-input:focus {
+      border-color: rgba(226, 190, 108, 0.65);
+      background: rgba(226, 190, 108, 0.06);
+      box-shadow: 0 0 0 3px rgba(226, 190, 108, 0.12);
+    }
+
+    .toggle-pw {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      opacity: 0.45;
+      transition: opacity 0.15s;
+      padding: 0.25rem;
+      touch-action: manipulation;
+    }
+    .toggle-pw:hover { opacity: 0.85; }
+
+    .error-banner {
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.78rem;
+      color: #fca5a5;
+      margin-bottom: 1.1rem;
+    }
+
+    .error-banner.visible {
+      display: flex;
+      animation: shake 0.35s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25%       { transform: translateX(-6px); }
+      75%       { transform: translateX(6px); }
+    }
+
+    #btn-login {
+      width: 100%;
+      padding: 0.95rem;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .spinner {
+      display: none;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba(7, 10, 9, 0.3);
+      border-top-color: #070a09;
+      border-radius: 50%;
+      animation: spin-btn 0.7s linear infinite;
+    }
+
+    @keyframes spin-btn { to { transform: rotate(360deg); } }
+
+    #btn-login.loading .btn-label { display: none; }
+    #btn-login.loading .spinner  { display: block; }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.65rem;
+      color: rgba(251, 248, 242, 0.3);
+      letter-spacing: 0.06em;
+    }
+
+    .ambient-ring {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(226, 190, 108, 0.07) 0%, transparent 65%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-ring"></div>
+
+  <div class="login-card">
+
+    <div class="login-logo">✦</div>
+    <h1 class="login-title">Admin Access</h1>
+    <p class="login-sub">Nilgiris Frame &middot; Secure Portal</p>
+
+    <div id="error-banner" class="error-banner" role="alert">
+      <span>&#128274;</span>
+      <span id="error-text">Invalid username or password.</span>
+    </div>
+
+    <form id="login-form" novalidate>
+
+      <div class="field-group">
+        <label class="field-label" for="input-username">Username</label>
+        <div class="field-wrap">
+          <span class="field-icon">&#128100;</span>
+          <input
+            type="text"
+            id="input-username"
+            class="field-input"
+            placeholder="Enter username"
+            autocomplete="username"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="input-password">Password</label>
+        <div class="field-wrap">
+          <span class="field-icon">&#128273;</span>
+          <input
+            type="password"
+            id="input-password"
+            class="field-input"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            required
+          />
+          <button type="button" class="toggle-pw" id="toggle-pw-btn" aria-label="Show/hide password">&#128065;&#65039;</button>
+        </div>
+      </div>
+
+      <button type="submit" id="btn-login" class="btn-gold">
+        <span class="spinner"></span>
+        <span class="btn-label">&#10022; Sign In to Admin Panel</span>
+      </button>
+
+    </form>
+
+    <p class="login-footer">&#128274; This portal is restricted to authorised administrators only.</p>
+  </div>
+
+  <script>
+    const SESSION_KEY = 'nlg_admin_token';
+    const VALID_TOKEN = 'nlg_auth_ok';
+
+    // Destination after login (defaults to /admin)
+    const params = new URLSearchParams(window.location.search);
+    const redirectTo = params.get('next') || '/admin';
+
+    // Already logged in? Skip the form
+    if (sessionStorage.getItem(SESSION_KEY) === VALID_TOKEN) {
+      window.location.replace(redirectTo);
+    }
+
+    // Password show/hide toggle
+    const pwInput   = document.getElementById('input-password');
+    const toggleBtn = document.getElementById('toggle-pw-btn');
+    toggleBtn.addEventListener('click', () => {
+      const show = pwInput.type === 'password';
+      pwInput.type = show ? 'text' : 'password';
+      toggleBtn.textContent = show ? '\uD83D\uDE48' : '\uD83D\uDC41\uFE0F';
+    });
+
+    // Enter on username -> focus password
+    document.getElementById('input-username').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); pwInput.focus(); }
+    });
+
+    // Form submit
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn         = document.getElementById('btn-login');
+      const errorBanner = document.getElementById('error-banner');
+      const errorText   = document.getElementById('error-text');
+      const username    = document.getElementById('input-username').value.trim();
+      const password    = document.getElementById('input-password').value;
+
+      btn.classList.add('loading');
+      btn.disabled = true;
+      errorBanner.classList.remove('visible');
+
+      // Small delay for natural feel
+      await new Promise(r => setTimeout(r, 480));
+
+      if (username === 'fouzhan' && password === 'mapleconnect2307') {
+        // Success
+        sessionStorage.setItem(SESSION_KEY, VALID_TOKEN);
+        btn.classList.remove('loading');
+        btn.innerHTML = '<span class="btn-label">\u2713 Access Granted \u2014 Redirecting\u2026</span>';
+        btn.style.background = 'linear-gradient(135deg, #4ade80, #16a34a)';
+        await new Promise(r => setTimeout(r, 650));
+        window.location.replace(redirectTo);
+      } else {
+        // Failure
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        btn.innerHTML = '<span class="btn-label">\u2756 Sign In to Admin Panel</span>';
+        errorText.textContent = 'Invalid username or password. Please try again.';
+        errorBanner.classList.add('visible');
+        pwInput.value = '';
+        pwInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>
