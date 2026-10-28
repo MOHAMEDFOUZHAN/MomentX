@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nilgiris Valley | Factory QR Code & Print Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #06110d;
+      --panel-dark: rgba(13, 27, 21, 0.85);
+      --gold-primary: #e2be6c;
+      --gold-light: #f7e6b5;
+      --gold-accent: #b8923a;
+      --text-light: #faf7f0;
+      --text-muted: rgba(250, 247, 240, 0.7);
+      --border-gold: rgba(226, 190, 108, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #102a1e 0%, #06110d 60%, #030806 100%);
+      color: var(--text-light);
+      min-height: 100vh;
+      padding: 2.5rem 1.25rem 4rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(226, 190, 108, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 0%, #fae8be 50%, #e2be6c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.03em;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* Live Link Banner */
+    .link-banner {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      max-width: 650px;
+      margin: 0 auto 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .link-text {
+      font-family: monospace;
+      font-size: 1.05rem;
+      color: var(--gold-light);
+      word-break: break-all;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #e2be6c 0%, #b8923a 100%);
+      color: #06110d;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(226, 190, 108, 0.3);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(226, 190, 108, 0.5);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-light);
+      border: 1px solid var(--border-gold);
+      box-shadow: none;
+    }
+    .btn-outline:hover {
+      background: rgba(226, 190, 108, 0.15);
+      border-color: var(--gold-primary);
+    }
+
+    /* Standee Showcase Banner */
+    .standee-feature-card {
+      background: linear-gradient(135deg, rgba(16, 59, 44, 0.7) 0%, rgba(8, 28, 21, 0.95) 100%);
+      border: 2px solid var(--gold-primary);
+      border-radius: 22px;
+      padding: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 60px rgba(226, 190, 108, 0.15);
+    }
+
+    .standee-feature-info {
+      flex: 1;
+      min-width: 280px;
+    }
+    .standee-feature-info h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.85rem;
+      color: var(--gold-light);
+      margin-bottom: 0.6rem;
+    }
+    .standee-feature-info p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    /* QR Grid */
+    .qr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.75rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .qr-card {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .qr-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold-primary);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 30px rgba(226, 190, 108, 0.2);
+    }
+
+    .badge-tag {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(226, 190, 108, 0.15);
+      color: var(--gold-primary);
+      border: 1px solid rgba(226, 190, 108, 0.3);
+    }
+
+    .preview-box {
+      width: 190px;
+      height: 190px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1.25rem 0 1.5rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+    .preview-box.dark-box {
+      background: #081c15;
+      border: 1px solid var(--border-gold);
+    }
+
+    .preview-box img,
+    .preview-box svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .qr-card h3 {
+      font-size: 1.2rem;
+      color: var(--gold-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .qr-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    /* Print Specs Section */
+    .specs-panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+    .specs-panel h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: var(--gold-light);
+      margin-bottom: 1rem;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .spec-item {
+      background: rgba(255,255,255,0.03);
+      padding: 1rem;
+      border-radius: 12px;
+      border-left: 3px solid var(--gold-primary);
+    }
+    .spec-item h4 {
+      font-size: 0.88rem;
+      color: var(--gold-primary);
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .spec-item p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand-badge">✦ Nilgiris Valley Official ✦</div>
+      <h1>Factory QR Print & Display Portal</h1>
+      <p class="subtitle">
+        High-Resolution, Vector & Print-Ready QR Codes for large factory displays, entrance standees, flex banners, acrylic plaques, and tourist guideboards.
+      </p>
+
+      <div class="link-banner">
+        <div>
+          <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-accent); display: block; margin-bottom: 0.2rem;">Live Deployed Link</span>
+          <span class="link-text" id="live-url">https://moment-x-seven.vercel.app/</span>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-outline" onclick="copyLink()">📋 Copy Link</button>
+          <a href="https://moment-x-seven.vercel.app/" target="_blank" class="btn">🚀 Visit Site</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Standee Poster Spotlight -->
+    <section class="standee-feature-card">
+      <div class="standee-feature-info">
+        <span class="brand-badge">Recommended for Factory</span>
+        <h2>Printable Factory Standee Poster</h2>
+        <p>
+          A ready-to-print exhibition standee layout (A3, A4, or flex proportions). Features the giant QR code, Nilgiris Valley heritage branding, step-by-step visitor instructions ("No App Download Required"), and photo frame previews.
+        </p>
+        <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+          <a href="factory_standee_poster.html" target="_blank" class="btn">
+            🖨️ Open & Print Standee Poster
+          </a>
+          <button class="btn btn-outline" onclick="window.open('factory_standee_poster.html?print=true')">
+            📄 Save as PDF
+          </button>
+        </div>
+      </div>
+      <div style="width: 180px; height: 180px; background: #fff; border-radius: 16px; padding: 12px; border: 4px solid var(--gold-primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <img src="nilgiris_factory_qr_4k.png" alt="QR Preview" style="width: 100%; height: 100%; object-fit: contain;" />
+      </div>
+    </section>
+
+    <!-- 4 QR Formats Grid -->
+    <section class="qr-grid">
+      <!-- 1. Vector SVG -->
+      <article class="qr-card">
+        <span class="badge-tag">Infinite Scale</span>
+        <div class="preview-box">
+          <img src="nilgiris_factory_qr_vector.svg" alt="Vector SVG" />
+        </div>
+        <h3>Vector SVG</h3>
+        <p>Mathematical vector path. Scales to any size (5 ft, 10 ft, 20 ft) with zero pixelation. Best for flex printers, billboards, and laser/CNC engraving.</p>
+        <a href="nilgiris_factory_qr_vector.svg" download="nilgiris_factory_qr_vector.svg" class="btn">
+          ⬇️ Download SVG
+        </a>
+      </article>
+
+      <!-- 2. Ultra 4K PNG -->
+      <article class="qr-card">
+        <span class="badge-tag">300 DPI • 4000px</span>
+        <div class="preview-box">
+          <img src="nilgiris_factory_qr_4k.png" alt="4K High-Res" />
+        </div>
+        <h3>Ultra 4K Crisp PNG</h3>
+        <p>Pure high-contrast black on white (4000×4000 px at 300 DPI). Highest optical scan reliability across all phone cameras even in factory lighting.</p>
+        <a href="nilgiris_factory_qr_4k.png" download="nilgiris_factory_qr_4k.png" class="btn">
+          ⬇️ Download 4K PNG
+        </a>
+      </article>
+
+      <!-- 3. Branded Gold Edition -->
+      <article class="qr-card">
+        <span class="badge-tag">Homewood Tea Crest</span>
+        <div class="preview-box dark-box">
+          <img src="nilgiris_factory_qr_branded.png" alt="Branded QR" />
+        </div>
+        <h3>Branded Luxury 4K</h3>
+        <p>Deep Nilgiris forest emerald modules with champagne gold and porcelain Homewood Tea emblem. Perfect for luxury acrylic table stands and gift box inserts.</p>
+        <a href="nilgiris_factory_qr_branded.png" download="nilgiris_factory_qr_branded.png" class="btn">
+          ⬇️ Download Branded PNG
+        </a>
+      </article>
+
+      <!-- 4. Artisan Organic Homewood QR -->
+      <article class="qr-card">
+        <span class="badge-tag">Artisan Rounded</span>
+        <div class="preview-box">
+          <img src="nilgiris_unique_artisan_qr.png" alt="Artisan Homewood QR" />
+        </div>
+        <h3>Artisan Homewood Tea QR</h3>
+        <p>Smooth organic tea-drop modules with radial emerald-jade gradient and centered Homewood Tea medallion. Verified 100% scannable on all phones.</p>
+        <a href="nilgiris_unique_artisan_qr.png" download="nilgiris_unique_artisan_qr.png" class="btn">
+          ⬇️ Download Artisan QR
+        </a>
+      </article>
+
+      <!-- 5. Presentation Plaque Edition -->
+      <article class="qr-card">
+        <span class="badge-tag">Framed Plaque</span>
+        <div class="preview-box">
+          <img src="nilgiris_unique_artisan_plaque.png" alt="Plaque Edition" />
+        </div>
+        <h3>Artisan Framed Plaque</h3>
+        <p>Presentation edition framed with champagne gold corner brackets and visitor instruction callout. Ready for wall mount plaques & photo booths.</p>
+        <a href="nilgiris_unique_artisan_plaque.png" download="nilgiris_unique_artisan_plaque.png" class="btn">
+          ⬇️ Download Plaque PNG
+        </a>
+      </article>
+
+      <!-- 6. Transparent PNG -->
+      <article class="qr-card">
+        <span class="badge-tag">Transparent</span>
+        <div class="preview-box">
+          <img src="nilgiris_factory_qr_transparent.png" alt="Transparent QR" />
+        </div>
+        <h3>Transparent PNG</h3>
+        <p>4000×4000 px with alpha transparency. Easy drop-in for graphic designers using Photoshop, Canva, or Illustrator into existing banner artwork.</p>
+        <a href="nilgiris_factory_qr_transparent.png" download="nilgiris_factory_qr_transparent.png" class="btn">
+          ⬇️ Download Transparent
+        </a>
+      </article>
+    </section>
+
+    <!-- Factory Printing Specs -->
+    <section class="specs-panel">
+      <h3>Recommended Factory Placement & Printing Guidelines</h3>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <h4>Standee Size</h4>
+          <p>For entrance roll-up standees (2.5 ft × 6 ft), make the QR code at least 25 cm × 25 cm so visitors can scan from 3–5 meters away.</p>
+        </div>
+        <div class="spec-item">
+          <h4>Acrylic Table Stands</h4>
+          <p>For reception and tasting counters, print on A5/A4 photo paper or back-lit acrylic boards with minimum 10 cm × 10 cm QR size.</p>
+        </div>
+        <div class="spec-item">
+          <h4>Lighting & Finish</h4>
+          <p>Use a matte or semi-matte lamination on vinyl to prevent glare from factory ceiling lights from interfering with phone cameras.</p>
+        </div>
+        <div class="spec-item">
+          <h4>Error Correction Level H</h4>
+          <p>All generated QR codes use Level H (30% ECC), guaranteeing reliable scanning even with dust, slight scratches, or reflections.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function copyLink() {
+      const url = document.getElementById('live-url').textContent;
+      navigator.clipboard.writeText(url).then(() => {
+        alert('Copied URL to clipboard: ' + url);
+      });
+    }
+  </script>
+</body>
+</html>
