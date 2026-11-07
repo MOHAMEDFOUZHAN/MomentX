@@ -853,6 +853,30 @@
 
     // Initialize Draggable Adjuster
     setupDraggableAdjuster();
+
+    // Secret Admin Access via Brand Crest (Tap 5 times rapidly)
+    let crestClicks = 0;
+    let crestClickTimer = null;
+    const brandCrest = document.querySelector('.brand-crest');
+    if (brandCrest) {
+      brandCrest.style.cursor = 'pointer';
+      brandCrest.addEventListener('click', () => {
+        crestClicks++;
+        clearTimeout(crestClickTimer);
+        crestClickTimer = setTimeout(() => { crestClicks = 0; }, 2000);
+        if (crestClicks >= 5) {
+          crestClicks = 0;
+          window.location.href = '/analytics';
+        }
+      });
+    }
+
+    // Secret Admin Access via Keyboard Shortcut (Alt + A)
+    window.addEventListener('keydown', (e) => {
+      if ((e.altKey && (e.key === 'a' || e.key === 'A')) || (e.ctrlKey && e.shiftKey && (e.key === 'a' || e.key === 'A'))) {
+        window.location.href = '/analytics';
+      }
+    });
   }
 
   // Initialize Application

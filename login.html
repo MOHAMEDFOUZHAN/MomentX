@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#081c15" />
+  <meta name="theme-color" content="#fbfaf6" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Admin Login | Nilgiris Frame</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="shortcut icon" href="logo.ico" />
+  <link rel="apple-touch-icon" href="logo.png" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
     body {
@@ -20,16 +23,13 @@
     .login-card {
       width: 100%;
       max-width: 420px;
-      background: rgba(11, 18, 14, 0.88);
-      border: 1px solid rgba(226, 190, 108, 0.3);
+      background: #ffffff;
+      border: 1.5px solid rgba(17, 69, 48, 0.16);
       border-radius: 2rem;
       padding: 2.5rem 2rem;
       box-shadow:
-        0 0 0 1px rgba(226, 190, 108, 0.08),
-        0 30px 70px rgba(0, 0, 0, 0.75),
-        0 0 60px rgba(226, 190, 108, 0.07);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
+        0 20px 50px -10px rgba(9, 36, 24, 0.12),
+        0 0 30px rgba(194, 151, 56, 0.15);
       animation: card-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
       position: relative;
       z-index: 1;
@@ -41,17 +41,23 @@
     }
 
     .login-logo {
-      width: 3.5rem;
-      height: 3.5rem;
+      width: 4.2rem;
+      height: 4.2rem;
       margin: 0 auto 1.35rem;
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(226, 190, 108, 0.18), rgba(14, 23, 19, 0.9));
-      border: 1.5px solid rgba(226, 190, 108, 0.55);
+      background: linear-gradient(135deg, #eaf4ed 0%, #ffffff 100%);
+      border: 1.5px solid rgba(194, 151, 56, 0.55);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 0 28px rgba(226, 190, 108, 0.3);
+      padding: 6px;
+      box-shadow: 0 4px 18px rgba(194, 151, 56, 0.25);
+    }
+    
+    .login-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .login-title {
@@ -60,15 +66,13 @@
       font-weight: 700;
       text-align: center;
       margin-bottom: 0.3rem;
-      background: linear-gradient(135deg, #ffffff 0%, #fae6ba 30%, #e2be6c 65%, #9b7119 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #092418;
     }
 
     .login-sub {
       text-align: center;
       font-size: 0.75rem;
-      color: rgba(251, 248, 242, 0.5);
+      color: #50695d;
       text-transform: uppercase;
       letter-spacing: 0.14em;
       margin-bottom: 2rem;
@@ -79,10 +83,10 @@
     .field-label {
       display: block;
       font-size: 0.7rem;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--lux-gold-champagne);
+      color: #17543a;
       margin-bottom: 0.45rem;
     }
 
@@ -100,11 +104,11 @@
 
     .field-input {
       width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(226, 190, 108, 0.22);
+      background: #fbfaf6;
+      border: 1.5px solid rgba(17, 69, 48, 0.2);
       border-radius: 0.85rem;
       padding: 0.8rem 0.9rem 0.8rem 2.6rem;
-      color: var(--lux-cream);
+      color: #092418;
       font-family: var(--font-sans);
       font-size: 0.92rem;
       outline: none;
@@ -112,12 +116,12 @@
       -webkit-appearance: none;
     }
 
-    .field-input::placeholder { color: rgba(251, 248, 242, 0.3); }
+    .field-input::placeholder { color: #8fa097; }
 
     .field-input:focus {
-      border-color: rgba(226, 190, 108, 0.65);
-      background: rgba(226, 190, 108, 0.06);
-      box-shadow: 0 0 0 3px rgba(226, 190, 108, 0.12);
+      border-color: #277e56;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(39, 126, 86, 0.15);
     }
 
     .toggle-pw {
@@ -140,12 +144,12 @@
       display: none;
       align-items: center;
       gap: 0.6rem;
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(220, 38, 38, 0.08);
+      border: 1px solid rgba(220, 38, 38, 0.35);
       border-radius: 0.75rem;
       padding: 0.65rem 0.85rem;
       font-size: 0.78rem;
-      color: #fca5a5;
+      color: #b91c1c;
       margin-bottom: 1.1rem;
     }
 
@@ -190,7 +194,7 @@
       text-align: center;
       margin-top: 1.5rem;
       font-size: 0.65rem;
-      color: rgba(251, 248, 242, 0.3);
+      color: #7b9487;
       letter-spacing: 0.06em;
     }
 
@@ -214,7 +218,9 @@
 
   <div class="login-card">
 
-    <div class="login-logo">✦</div>
+    <div class="login-logo">
+      <img src="logo.png" alt="Homewood Tea Logo" />
+    </div>
     <h1 class="login-title">Admin Access</h1>
     <p class="login-sub">Nilgiris Frame &middot; Secure Portal</p>
 
