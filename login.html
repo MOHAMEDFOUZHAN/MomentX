@@ -279,9 +279,9 @@
     const SESSION_KEY = 'nlg_admin_token';
     const VALID_TOKEN = 'nlg_auth_ok';
 
-    // Destination after login (defaults to /admin)
+    // Destination after login (defaults to admin.html)
     const params = new URLSearchParams(window.location.search);
-    const redirectTo = params.get('next') || '/admin';
+    const redirectTo = params.get('next') || 'admin.html';
 
     // Already logged in? Skip the form
     if (sessionStorage.getItem(SESSION_KEY) === VALID_TOKEN) {

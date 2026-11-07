@@ -866,7 +866,7 @@
         crestClickTimer = setTimeout(() => { crestClicks = 0; }, 2000);
         if (crestClicks >= 5) {
           crestClicks = 0;
-          window.location.href = '/analytics';
+          window.location.href = 'analytics.html';
         }
       });
     }
@@ -874,7 +874,7 @@
     // Secret Admin Access via Keyboard Shortcut (Alt + A)
     window.addEventListener('keydown', (e) => {
       if ((e.altKey && (e.key === 'a' || e.key === 'A')) || (e.ctrlKey && e.shiftKey && (e.key === 'a' || e.key === 'A'))) {
-        window.location.href = '/analytics';
+        window.location.href = 'analytics.html';
       }
     });
   }

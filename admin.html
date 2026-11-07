@@ -16,7 +16,7 @@
   <script>
     (function() {
       if (sessionStorage.getItem('nlg_admin_token') !== 'nlg_auth_ok') {
-        window.location.replace('/login?next=/admin');
+        window.location.replace('login.html?next=admin.html');
       }
     })();
   </script>
@@ -52,7 +52,7 @@
           🖼️ Export Transparent Frame PNG
         </button>
 
-        <button onclick="sessionStorage.removeItem('nlg_admin_token'); window.location.replace('/login');" class="btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 0.85rem; border-radius: 999px;" title="Sign out of Admin">
+        <button onclick="sessionStorage.removeItem('nlg_admin_token'); window.location.replace('login.html');" class="btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 0.85rem; border-radius: 999px;" title="Sign out of Admin">
           🔒 Sign Out
         </button>
       </div>
