@@ -9,6 +9,7 @@
   let currentStep = 'portal'; // 'portal' | 'landing' | 'camera' | 'adjust' | 'compositing' | 'preview'
   let capturedPhoto = null;
   let compositeResult = null;
+  let portalFilter = 'all';
 
   // Adjuster state
   let adjustScale = 1.0;
@@ -169,34 +170,65 @@
     }
   }
 
+  // Coarse style group for the portal filter row:
+  // "Feminine / Aesthetic" -> "Feminine", "Adventure & Rugged" -> "Adventure"
+  function frameGroup(frame) {
+    return (frame.category || 'Other').split('/')[0].split('&')[0].trim();
+  }
+
+  // 1. Portal Frames Grid (respects the active category filter)
+  function renderPortalGrid() {
+    const portalGrid = document.getElementById('portal-frames-grid');
+    if (!portalGrid) return;
+    const frames = getAllFrames().filter(f => portalFilter === 'all' || frameGroup(f) === portalFilter);
+    portalGrid.innerHTML = frames.map(f => `
+      <div class="frame-card ${f.id === activeCampaign.id ? 'active' : ''}" data-frame-id="${f.id}">
+        <div class="frame-card-badge">${f.badgeIcon || '✦'} ${f.tag || f.category}</div>
+        <div class="frame-card-img-wrap">
+          <img src="${f.thumbImage || f.frameImage}" alt="${f.name}" loading="lazy" />
+        </div>
+        <div class="frame-card-info">
+          <h4 class="frame-card-title">${f.name}</h4>
+          <p class="frame-card-sub">${f.campaignSubtitle}</p>
+        </div>
+        <div class="frame-card-actions">
+          <button class="btn-gold" data-launch-frame="${f.id}" style="flex: 1; font-size: 0.85rem; padding: 0.75rem 0.9rem;">
+            <span>📸 Launch Frame</span>
+          </button>
+          <button class="btn-secondary" data-show-qr="${f.id}" style="padding: 0.75rem 0.9rem;" title="Scan on Mobile">
+            <span>📱 QR</span>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Category filter chips, derived from the frames themselves
+  function renderPortalFilters() {
+    const wrap = document.getElementById('portal-frame-filters');
+    if (!wrap) return;
+
+    const groups = [];
+    getAllFrames().forEach(f => {
+      const group = frameGroup(f);
+      if (group && !groups.includes(group)) groups.push(group);
+    });
+    if (portalFilter !== 'all' && !groups.includes(portalFilter)) portalFilter = 'all';
+
+    wrap.innerHTML = ['all', ...groups].map(group => `
+      <button type="button" class="filter-chip${group === portalFilter ? ' active' : ''}"
+              data-portal-filter="${group}" aria-pressed="${group === portalFilter}">
+        ${group === 'all' ? 'All frames' : group}
+      </button>
+    `).join('');
+  }
+
   // Populate Dynamic Multi-Frame Selectors in UI
   function renderAllFrameSelectors() {
     const frames = getAllFrames();
 
-    // 1. Portal Frames Grid
-    const portalGrid = document.getElementById('portal-frames-grid');
-    if (portalGrid) {
-      portalGrid.innerHTML = frames.map(f => `
-        <div class="frame-card ${f.id === activeCampaign.id ? 'active' : ''}" data-frame-id="${f.id}">
-          <div class="frame-card-badge">${f.badgeIcon || '✦'} ${f.tag || f.category}</div>
-          <div class="frame-card-img-wrap">
-            <img src="${f.thumbImage || f.frameImage}" alt="${f.name}" loading="lazy" />
-          </div>
-          <div class="frame-card-info">
-            <h4 class="frame-card-title">${f.name}</h4>
-            <p class="frame-card-sub">${f.campaignSubtitle}</p>
-          </div>
-          <div class="frame-card-actions">
-            <button class="btn-gold" data-launch-frame="${f.id}" style="flex: 1; font-size: 0.85rem; padding: 0.75rem 0.9rem;">
-              <span>📸 Launch Frame</span>
-            </button>
-            <button class="btn-secondary" data-show-qr="${f.id}" style="padding: 0.75rem 0.9rem;" title="Scan on Mobile">
-              <span>📱 QR</span>
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
+    renderPortalGrid();
+    renderPortalFilters();
 
     // 2. Landing Frame Carousel
     const landingCarousel = document.getElementById('landing-frame-carousel');
@@ -550,6 +582,15 @@
 
     // Portal Launch Buttons
     document.addEventListener('click', (e) => {
+      const filterBtn = e.target.closest('[data-portal-filter]');
+      if (filterBtn) {
+        e.preventDefault();
+        portalFilter = filterBtn.getAttribute('data-portal-filter') || 'all';
+        renderPortalFilters();
+        renderPortalGrid();
+        return;
+      }
+
       const launchBtn = e.target.closest('[data-launch-frame]');
       if (launchBtn) {
         e.preventDefault();

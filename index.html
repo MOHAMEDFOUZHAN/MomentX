@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
-  <meta name="theme-color" content="#fbfaf6" />
-  <title>Nilgiris Frame | Branded Photo Experience</title>
-  <meta name="description" content="Capture and frame high-resolution on-site branded visitor moments with instant social sharing." />
+  <meta name="theme-color" content="#f6f1e8" />
+  <title>Nilgiris Frame | Homewood Tea</title>
+  <meta name="description" content="Frame your visit to Homewood Tea in the Nilgiris. Nine handcrafted 1080×1350 souvenir frames, ready to share." />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="shortcut icon" href="logo.ico" />
   <link rel="apple-touch-icon" href="logo.png" />
@@ -13,535 +13,328 @@
 </head>
 <body>
 
-  <!-- Visual Shutter Flash Overlay -->
   <div id="flash-overlay" class="flash-overlay"></div>
-
-  <!-- Hidden Camera/Gallery File Input -->
   <input type="file" id="file-input" accept="image/*" capture="user" style="display: none;" />
 
-  <!-- ================================================================= -->
-  <!-- SCREEN 0: PORTAL / HOME (Browse Campaigns & Mobile QR Codes)     -->
-  <!-- ================================================================= -->
-  <main id="screen-portal" class="screen-step active" style="flex-direction: column; justify-content: space-between; max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem;">
-    <!-- Top Navigation -->
-    <header class="portal-header">
-      <div style="display: flex; align-items: center; gap: 0.85rem;">
-        <div class="brand-crest" title="Nilgiris Valley Crest">
-          <img src="logo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; padding: 2px;" />
+  <!-- ============================== PORTAL ============================== -->
+  <main id="screen-portal" class="screen screen--portal active">
+    <div class="shell">
+
+      <header class="topbar">
+        <a class="brand" href="/">
+          <span class="brand-crest" title="Homewood Tea">
+            <img src="logo.png" alt="Homewood Tea" />
+          </span>
+          <span class="brand-text">
+            <strong>Nilgiris Frame</strong>
+            <small>Homewood Tea · Ooty</small>
+          </span>
+        </a>
+        <button id="btn-open-mobile-qr" class="btn btn-gold btn-sm">
+          <span class="dot"></span> Open on phone
+        </button>
+      </header>
+
+      <section class="hero">
+        <p class="eyebrow"><span class="dot"></span> Nine frames · 1080 × 1350</p>
+        <h1 class="display">Your moment,<br /><em>framed.</em></h1>
+        <p class="lede">
+          Pick a handcrafted souvenir frame, take a photo with your phone, and take home
+          a print-ready portrait from the Nilgiris.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#frames">Choose a frame</a>
+          <button id="btn-banner-scan-qr" class="btn btn-ghost">Scan QR to continue on phone</button>
+        </div>
+      </section>
+
+      <section id="frames">
+        <div class="section-head">
+          <h2>The collection</h2>
+          <p>Tap a frame to start</p>
+        </div>
+        <div id="portal-frame-filters" class="frame-filters" role="group" aria-label="Filter frames by style">
+          <!-- Rendered by js/app.js -->
+        </div>
+        <div id="portal-frames-grid" class="frames-grid">
+          <!-- Rendered by js/app.js -->
+        </div>
+      </section>
+
+      <footer class="specs">
+        <div>
+          <strong>Handcrafted frames</strong>
+          <span>Botanical, heritage and modern</span>
         </div>
         <div>
-          <h1 class="font-serif gold-shimmer-text" style="font-size: 1.25rem; font-weight: 700; letter-spacing: 0.02em;">Nilgiris Frame</h1>
-          <p style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--tea-forest); font-weight: 600;">Official Heritage Experience • Homewood Tea</p>
-        </div>
-      </div>
-      <div class="portal-nav-actions">
-        <button id="btn-open-mobile-qr" class="btn-gold" style="font-size: 0.78rem; padding: 0.5rem 1.05rem; border-radius: 999px;">
-          <span class="pulse-dot"></span>
-          <span>📱 Open on Phone</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section style="margin: 2rem 0 1.5rem; text-align: center;">
-      <div class="badge-pill" style="margin-bottom: 0.95rem;">
-        <span class="pulse-dot"></span>
-        <span style="font-weight: 600; letter-spacing: 0.06em;">✨ 9 Handcrafted Souvenir Frames Available</span>
-      </div>
-      <h2 class="font-serif gold-shimmer-text" style="font-size: clamp(1.85rem, 6vw, 2.45rem); font-weight: 700; line-height: 1.22; margin-bottom: 0.85rem;">
-        Choose Your Frame. <br />Capture Your Moment.
-      </h2>
-      <p style="font-size: clamp(0.88rem, 2.6vw, 0.98rem); color: var(--tea-text-muted); max-width: 580px; margin: 0 auto; line-height: 1.65;">
-        Ultra-crisp 1080×1350 souvenir photo frames for the Nilgiris and Homewood Tea. Select any handcrafted frame below to snap and share!
-      </p>
-    </section>
-
-    <!-- Mobile Quick Launch Experience Card -->
-    <section class="mobile-experience-card glass-panel" style="margin-bottom: 2.25rem; padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border: 1.5px solid rgba(17, 69, 48, 0.15); background: linear-gradient(135deg, #ffffff 0%, #f4f8f5 100%); box-shadow: 0 14px 35px -8px rgba(9, 36, 24, 0.08);">
-      <div style="display: flex; align-items: center; gap: 1.15rem; flex: 1; min-width: 250px;">
-        <div style="width: 3.2rem; height: 3.2rem; border-radius: 1rem; background: #eaf4ed; border: 1.5px solid rgba(39, 126, 86, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; box-shadow: 0 4px 15px rgba(39, 126, 86, 0.15);">
-          📱
+          <strong>1080 × 1350</strong>
+          <span>Instagram portrait, print ready</span>
         </div>
         <div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-            <span class="badge-pill" style="font-size: 0.62rem; padding: 0.2rem 0.6rem; border-color: rgba(39, 126, 86, 0.35); color: #103d2b; background: #ffffff;">
-              ● Mobile Optimized
-            </span>
-            <span style="font-size: 0.72rem; color: var(--tea-forest); font-weight: 600;">Touch & Gestures</span>
-          </div>
-          <h3 class="font-serif" style="font-size: 1.1rem; color: var(--tea-emerald-deep); font-weight: 700; margin-bottom: 0.2rem;">
-            Open on Your Smartphone
-          </h3>
-          <p style="font-size: 0.8rem; color: var(--tea-text-muted); line-height: 1.45;">
-            Scan the QR code to use your phone's full-screen camera, touch & pinch adjuster, and 1-tap HD download.
-          </p>
+          <strong>Works on any phone</strong>
+          <span>Camera, gallery or demo portrait</span>
         </div>
-      </div>
-
-      <div>
-        <button id="btn-banner-scan-qr" class="btn-gold" style="font-size: 0.85rem; padding: 0.7rem 1.35rem;">
-          <span>📱 Scan QR for Phone</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Multi-Frame Catalog Section -->
-    <section style="width: 100%; margin-bottom: 2.5rem;">
-      <div class="section-title-wrap">
-        <div class="section-eyebrow">✦ Select Your Preferred Style ✦</div>
-        <h3 class="font-serif gold-shimmer-text" style="font-size: 1.7rem; font-weight: 700;">
-          The Official Nilgiris Collection
-        </h3>
-      </div>
-
-      <!-- Dynamically Populated 5 Frames Grid -->
-      <div id="portal-frames-grid" class="frames-grid">
-        <!-- Rendered by js/app.js -->
-      </div>
-    </section>
-
-    <!-- Bottom Specs Footer -->
-    <footer style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1rem; padding-top: 1.6rem; border-top: 1px solid rgba(17, 69, 48, 0.12); text-align: center;">
-      <div class="glass-card" style="padding: 0.85rem 1.25rem; flex: 1; min-width: 140px;">
-        <div style="font-weight: 700; color: var(--tea-forest); font-size: 1rem; margin-bottom: 0.2rem;">5 Handcrafted Frames</div>
-        <div style="font-size: 0.72rem; color: var(--tea-text-muted);">Botanical, Vintage & Gold</div>
-      </div>
-      <div class="glass-card" style="padding: 0.85rem 1.25rem; flex: 1; min-width: 140px;">
-        <div style="font-weight: 700; color: var(--tea-forest); font-size: 1rem; margin-bottom: 0.2rem;">1080 × 1350 HD</div>
-        <div style="font-size: 0.72rem; color: var(--tea-text-muted);">Instagram Portrait Ratio</div>
-      </div>
-      <div class="glass-card" style="padding: 0.85rem 1.25rem; flex: 1; min-width: 140px;">
-        <div style="font-weight: 700; color: var(--tea-forest); font-size: 1rem; margin-bottom: 0.2rem;">100% Mobile Ready</div>
-        <div style="font-size: 0.72rem; color: var(--tea-text-muted);">Touch & Native Camera</div>
-      </div>
-    </footer>
+      </footer>
+      <p class="site-foot">© Homewood Tea · Nilgiris Valley, Tamil Nadu</p>
+    </div>
   </main>
 
+  <!-- ============================== LANDING ============================= -->
+  <main id="screen-landing" class="screen screen--landing">
+    <div class="phone-shell">
 
-  <!-- ================================================================= -->
-  <!-- SCREEN 1: CAMPAIGN LANDING (Mobile Brand Onboarding)             -->
-  <!-- ================================================================= -->
-  <main id="screen-landing" class="screen-step" style="flex-direction: column; justify-content: space-between; max-width: 440px; margin: 0 auto; padding: 1.25rem 1rem;">
-    <!-- Brand Header -->
-    <header style="text-align: center; padding-top: 0.35rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
-        <button id="btn-back-to-portal" class="btn-secondary" style="font-size: 0.72rem; padding: 0.38rem 0.85rem; border-radius: 999px;">
-          ← All Frames
-        </button>
-        <div class="badge-pill" id="brand-client-name-badge">
-          <span>✦</span>
-          <span id="brand-client-name">Sagar Nilgiri Products</span>
-          <span>✦</span>
-        </div>
-        <button id="btn-landing-phone-qr" class="btn-secondary" style="font-size: 0.72rem; padding: 0.38rem 0.85rem; border-radius: 999px;" title="Open this frame on Phone">
-          📱 QR
-        </button>
+      <header class="landing-head">
+        <button id="btn-back-to-portal" class="btn btn-ghost btn-sm">← All frames</button>
+        <span id="brand-client-name" class="chip">Homewood Tea</span>
+        <button id="btn-landing-phone-qr" class="btn btn-ghost btn-sm" aria-label="Open this frame on your phone">QR</button>
+      </header>
+
+      <div class="landing-titles">
+        <p id="brand-subtitle-badge" class="eyebrow">✦ Heritage collection ✦</p>
+        <h2 id="brand-campaign-title" class="display display--md">A moment from the Nilgiris</h2>
+        <p id="brand-tagline" class="lede lede--sm">Where nature feels like home.</p>
       </div>
 
-      <h2 id="brand-campaign-title" class="font-serif gold-shimmer-text" style="font-size: clamp(1.4rem, 5.5vw, 1.75rem); font-weight: 700; line-height: 1.25; margin-bottom: 0.25rem;">
-        A Moment from the Nilgiris
-      </h2>
-      <p id="brand-tagline" style="font-size: 0.82rem; color: var(--tea-text-muted); font-weight: 400;">
-        Nature Lives in Every Detail
-      </p>
-    </header>
-
-    <!-- Frame Picker Carousel (Landing) -->
-    <div style="margin: 0.95rem 0 0.45rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; padding: 0 0.25rem;">
-        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--tea-forest); font-weight: 700;">
-          ✦ Choose Frame Style
-        </span>
-        <span id="landing-frame-counter" style="font-size: 0.68rem; color: var(--tea-text-muted); font-weight: 600;">
-          Frame 1 of 5
-        </span>
+      <div class="rail-head">
+        <span class="label">Choose frame</span>
+        <span id="landing-frame-counter" class="counter">Frame 1 of 9</span>
       </div>
       <div id="landing-frame-carousel" class="landing-frame-picker">
         <!-- Rendered by js/app.js -->
       </div>
-    </div>
 
-    <!-- Interactive Teaser Frame Overlay -->
-    <div class="glass-panel" style="position: relative; aspect-ratio: 1080 / 1350; width: 100%; max-width: 325px; margin: 0.65rem auto 1.15rem; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid rgba(194, 151, 56, 0.4); box-shadow: var(--shadow-luxury); border-radius: 1.65rem; background: #fbf9f4; cursor: pointer;">
-      <!-- Teaser placeholder window -->
-      <div id="landing-teaser-window" style="position: absolute; border: 1.5px dashed rgba(39, 126, 86, 0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1.25rem; background: radial-gradient(circle at center, #ffffff 0%, #eef5f1 100%); z-index: 2; border-radius: 1.15rem; box-shadow: 0 4px 18px rgba(9, 36, 24, 0.06);">
-        <div style="width: 3.4rem; height: 3.4rem; border-radius: 50%; background: #eaf4ed; border: 1.5px solid rgba(194, 151, 56, 0.55); display: flex; align-items: center; justify-content: center; font-size: 1.45rem; margin-bottom: 0.6rem; box-shadow: 0 4px 15px rgba(194, 151, 56, 0.2);">
-          📷
+      <div class="teaser">
+        <div id="landing-teaser-window" class="teaser__window">
+          <span class="teaser-ico" aria-hidden="true">📷</span>
+          <strong>Tap to frame yourself</strong>
+          <span>Use your camera or pick a photo from your gallery</span>
         </div>
-        <p class="font-serif" style="font-size: 0.95rem; font-weight: 700; color: var(--tea-emerald-deep); letter-spacing: 0.02em;">Tap to Frame Yourself</p>
-        <p style="font-size: 0.72rem; color: var(--tea-forest); margin-top: 0.35rem; line-height: 1.4; font-weight: 500;">Live phone camera or choose from photo gallery</p>
+        <img id="landing-teaser-frame-img" src="new frames/frame_nilgiris-valley.png" class="teaser__frame" alt="" />
       </div>
 
-      <!-- Real Selected Frame Overlay -->
-      <img id="landing-teaser-frame-img" src="frames/frame_1.png" alt="Frame Preview" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; pointer-events: none; z-index: 5;" />
-    </div>
+      <div class="actions">
+        <button id="btn-start-camera" class="btn btn-gold btn-lg">Take a photo</button>
+        <button data-action="upload-photo" class="btn btn-secondary">Choose from gallery</button>
+        <button data-action="sample-portrait" class="link-btn">Try a demo portrait</button>
+      </div>
 
-    <!-- Actions -->
-    <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
-      <button id="btn-start-camera" class="btn-gold btn-pulse" style="width: 100%; font-size: 1rem; padding: 1rem;">
-        <span>📸 Open Camera & Frame Photo</span>
-      </button>
-
-      <button data-action="upload-photo" class="btn-secondary" style="width: 100%; font-size: 0.88rem; padding: 0.82rem;">
-        <span>🖼️ Choose from Gallery</span>
-      </button>
-
-      <button data-action="sample-portrait" class="btn-secondary" style="width: 100%; font-size: 0.78rem; background: #eaf4ed; border-color: rgba(39, 126, 86, 0.3); color: var(--tea-forest); padding: 0.7rem;">
-        <span>✨ Instant Demo Sample Portrait</span>
-      </button>
     </div>
   </main>
 
+  <!-- ============================== CAMERA ============================== -->
+  <main id="screen-camera" class="screen screen--camera">
+    <video id="camera-video" playsinline autoplay muted></video>
 
-  <!-- ================================================================= -->
-  <!-- SCREEN 2: CAMERA VIEWFINDER                                      -->
-  <!-- ================================================================= -->
-  <main id="screen-camera" class="screen-step" style="flex-direction: column; position: fixed; inset: 0; background: #000000; z-index: 100;">
-    <!-- Top Viewfinder Toolbar -->
-    <div class="camera-top-toolbar" style="position: absolute; top: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);">
-      <button id="btn-close-camera" class="btn-icon" style="width: 2.6rem; height: 2.6rem; background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4);" title="Close">✕</button>
-      <div id="camera-client-label" class="badge-pill" style="font-size: 0.7rem; border-color: rgba(212, 175, 55, 0.5); background: rgba(8, 28, 21, 0.8); color: #fff;">
-        SAGAR NILGIRI PRODUCTS
-      </div>
-      <button data-action="sample-portrait" class="btn-icon" style="width: 2.6rem; height: 2.6rem; background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4);" title="Sample Portrait">✨</button>
+    <div class="cam-top">
+      <button id="btn-close-camera" class="btn-icon btn-icon--light" aria-label="Close camera">✕</button>
+      <span id="camera-client-label" class="chip chip--dark">Homewood Tea</span>
+      <button data-action="sample-portrait" class="btn-icon btn-icon--light" aria-label="Use a demo portrait">✦</button>
     </div>
 
-    <!-- Center Video & Framing Guide -->
-    <div style="position: relative; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-      <video id="camera-video" playsinline autoplay muted style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"></video>
-
-      <!-- Framing Guide Cutout Mask -->
-      <div class="framing-guide">
-        <div class="corner-tick tick-tl"></div>
-        <div class="corner-tick tick-tr"></div>
-        <div class="corner-tick tick-bl"></div>
-        <div class="corner-tick tick-br"></div>
-
-        <div style="position: absolute; top: 1rem; width: 100%; text-align: center;">
-          <span style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--tea-gold-champagne); background: rgba(8, 28, 21, 0.75); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(212, 175, 55, 0.4);">
-            ✦ Center Face Inside ✦
-          </span>
-        </div>
-      </div>
-
-      <!-- Mobile Camera Notice (if HTTP or camera permission needed) -->
-      <div id="camera-error-banner" style="display: none; position: absolute; inset: 0; z-index: 25; background: rgba(8, 28, 21, 0.95); flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center;">
-        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📷</div>
-        <h3 class="font-serif" style="font-size: 1.25rem; font-weight: 700; color: #fdf4d8; margin-bottom: 0.5rem;">Camera Permission Notice</h3>
-        <p id="camera-error-text" style="font-size: 0.8rem; color: rgba(251, 248, 242, 0.75); margin-bottom: 1.5rem; line-height: 1.5; max-width: 320px;">
-          Tap below to capture directly using your mobile phone camera!
-        </p>
-        <button data-action="upload-photo" class="btn-gold" style="width: 100%; max-width: 280px; margin-bottom: 0.75rem;">
-          <span>📸 Snap Photo with Device</span>
-        </button>
-        <button data-action="sample-portrait" class="btn-secondary" style="width: 100%; max-width: 280px;">
-          <span>✨ Test with Demo Portrait</span>
-        </button>
-      </div>
+    <div class="framing-guide">
+      <span class="hint">Centre your face in the frame</span>
+      <span class="corner-tick tick-tl"></span>
+      <span class="corner-tick tick-tr"></span>
+      <span class="corner-tick tick-bl"></span>
+      <span class="corner-tick tick-br"></span>
     </div>
 
-    <!-- Bottom Controls -->
-    <div class="camera-bottom-toolbar" style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-around; align-items: center; padding: 1.5rem 2rem 2.5rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
-      <button data-action="upload-photo" class="btn-icon" style="background: rgba(255,255,255,0.25); color: #fff;" title="Upload from Gallery">🖼️</button>
-
-      <!-- Main Shutter Button -->
-      <div id="btn-shutter" class="shutter-btn-container" title="Take Photo">
-        <div class="shutter-ring"></div>
-        <div class="shutter-core">
-          <span style="font-size: 1.5rem;">📷</span>
-        </div>
-      </div>
-
-      <button id="btn-flip-camera" class="btn-icon" style="background: rgba(255,255,255,0.25); color: #fff;" title="Flip Camera">🔄</button>
-    </div>
-  </main>
-
-
-  <!-- ================================================================= -->
-  <!-- SCREEN 3: PHOTO ADJUSTER (Touch Drag, Zoom & Mirror)             -->
-  <!-- ================================================================= -->
-  <main id="screen-adjust" class="screen-step" style="flex-direction: column; justify-content: space-between; max-width: 440px; margin: 0 auto; padding: 1.25rem; overflow-y: auto; -webkit-overflow-scrolling: touch;">
-    <header style="text-align: center; padding-top: 0.5rem;">
-      <h2 class="font-serif gold-shimmer-text" style="font-size: 1.6rem; font-weight: 700;">Adjust Your Photo</h2>
-      <p style="font-size: 0.78rem; color: var(--tea-text-muted); margin-top: 0.25rem;">
-        👆 Drag to center inside frame • Slide to scale & zoom
+    <div id="camera-error-banner" class="cam-error">
+      <h3>Camera unavailable</h3>
+      <p id="camera-error-text">
+        Tap below to capture with your phone's camera, or pick an existing photo.
       </p>
-    </header>
-
-    <!-- Adjuster Stage with Live Frame Overlay -->
-    <div style="width: 100%; display: flex; justify-content: center; margin: 0.65rem 0;">
-      <div id="adjuster-frame-wrapper" class="adjuster-frame-wrapper">
-        <div id="adjuster-stage" class="adjuster-stage">
-          <img id="adjuster-img" alt="Customer photo adjustment" />
-        </div>
-        <img id="adjuster-frame-overlay-img" src="frames/frame_1.png" class="adjuster-frame-overlay" alt="Live Frame Overlay" />
-      </div>
+      <button data-action="upload-photo" class="btn btn-gold">Take or upload a photo</button>
+      <button data-action="sample-portrait" class="btn btn-secondary">Use a demo portrait</button>
     </div>
 
-    <!-- Choose Frame in Adjuster -->
-    <div style="width: 100%; margin: 0.35rem 0 0.7rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; padding: 0 0.3rem;">
-        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--tea-forest); font-weight: 700;">
-          ✦ Switch Frame
-        </span>
-        <span id="adjust-frame-label" style="font-size: 0.68rem; color: var(--tea-text-muted); font-weight: 600;">
-          Nilgiris Valley
-        </span>
+    <div class="cam-bottom">
+      <button data-action="upload-photo" class="btn-icon btn-icon--light" aria-label="Choose from gallery">🖼</button>
+      <button id="btn-shutter" class="shutter" aria-label="Take photo"><span></span></button>
+      <button id="btn-flip-camera" class="btn-icon btn-icon--light" aria-label="Flip camera">⟲</button>
+    </div>
+  </main>
+
+  <!-- ============================== ADJUST ============================== -->
+  <main id="screen-adjust" class="screen screen--adjust">
+    <div class="phone-shell">
+
+      <header class="screen-head">
+        <h2 class="display display--md">Adjust</h2>
+        <p class="lede lede--xs">Drag to reposition · slide to zoom</p>
+      </header>
+
+      <div class="stage-wrap">
+        <div id="adjuster-frame-wrapper" class="stage-frame">
+          <div id="adjuster-stage" class="stage">
+            <img id="adjuster-img" alt="Your photo, awaiting adjustment" />
+          </div>
+          <img id="adjuster-frame-overlay-img" src="new frames/frame_nilgiris-valley.png" class="stage-overlay" alt="" />
+        </div>
+      </div>
+
+      <div class="rail-head">
+        <span class="label">Switch frame</span>
+        <span id="adjust-frame-label" class="counter">Nilgiris Valley</span>
       </div>
       <div id="adjust-frame-bar" class="adjuster-frame-bar">
         <!-- Rendered by js/app.js -->
       </div>
-    </div>
 
-    <!-- Adjust Controls -->
-    <div class="glass-panel" style="padding: 0.95rem 1.25rem; margin-bottom: 0.85rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.82rem;">
-        <span style="color: var(--tea-forest); font-weight: 700; letter-spacing: 0.04em;">Scale & Zoom</span>
-        <span id="zoom-val-text" style="color: var(--tea-emerald-deep); font-weight: 700; background: #eaf4ed; padding: 0.15rem 0.5rem; border-radius: 999px; border: 1px solid rgba(39,126,86,0.25);">1.0x</span>
+      <div class="panel">
+        <div class="panel__row">
+          <span class="label">Zoom</span>
+          <span id="zoom-val-text" class="value">1.0x</span>
+        </div>
+        <input type="range" id="zoom-slider" min="0.7" max="2.5" step="0.05" value="1.0" />
+        <div class="panel__row panel__row--buttons">
+          <button id="btn-mirror-photo" class="btn btn-secondary btn-sm">Mirror</button>
+          <button id="btn-retake-photo" class="btn btn-secondary btn-sm">Retake</button>
+        </div>
       </div>
-      <input type="range" id="zoom-slider" min="0.7" max="2.5" step="0.05" value="1.0" />
 
-      <div style="display: flex; justify-content: space-between; gap: 0.75rem; margin-top: 0.85rem;">
-        <button id="btn-mirror-photo" class="btn-secondary" style="flex: 1; font-size: 0.78rem; padding: 0.65rem;">
-          <span>🪞 Mirror Flip</span>
-        </button>
-        <button id="btn-retake-photo" class="btn-secondary" style="flex: 1; font-size: 0.78rem; padding: 0.65rem;">
-          <span>🔄 Retake</span>
-        </button>
-      </div>
+      <button id="btn-confirm-adjust" class="btn btn-gold btn-lg btn-block">Use this photo</button>
     </div>
-
-    <!-- Confirm Button -->
-    <button id="btn-confirm-adjust" class="btn-gold btn-pulse" style="width: 100%; font-size: 1.02rem; padding: 1rem;">
-      <span>✦ Confirm & Frame Photo ✦</span>
-    </button>
   </main>
 
-
-  <!-- ================================================================= -->
-  <!-- SCREEN 4: COMPOSITING ANIMATION                                  -->
-  <!-- ================================================================= -->
-  <main id="screen-compositing" class="screen-step" style="flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; min-height: 100dvh; text-align: center; padding: 2rem; background: var(--tea-porcelain);">
-    <!-- Dual Ring Luxury Aperture Mechanism -->
-    <div style="position: relative; width: 6rem; height: 6rem; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
-      <div style="position: absolute; inset: 0; border-radius: 50%; border: 2px dashed rgba(194, 151, 56, 0.45); animation: spinClockwise 9s infinite linear;"></div>
-      <div style="position: absolute; inset: 6px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--tea-forest); border-bottom-color: var(--tea-gold); animation: spinClockwise 1.5s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);"></div>
-      <div style="position: absolute; inset: 16px; border-radius: 50%; border: 1.5px solid rgba(39, 126, 86, 0.35); animation: spinCounter 4s infinite linear;"></div>
-      <div style="font-size: 1.5rem; color: var(--tea-gold); filter: drop-shadow(0 0 10px rgba(194, 151, 56, 0.5));">
-        ✦
-      </div>
-    </div>
-    <h3 class="font-serif gold-shimmer-text" style="font-size: 1.55rem; font-weight: 700; margin-bottom: 0.6rem;">
-      Crafting High-Resolution Frame
-    </h3>
-    <p style="font-size: 0.82rem; color: var(--tea-text-muted); max-width: 320px; line-height: 1.6;">
-      Applying 24K gold foil accents, botanical flourishes, and official authenticity verification...
+  <!-- ============================ COMPOSITING =========================== -->
+  <main id="screen-compositing" class="screen screen--compositing">
+    <div class="loader" aria-hidden="true"></div>
+    <h3 class="display display--md">Compositing your portrait</h3>
+    <p class="lede lede--sm" style="text-align: center; margin-top: 0.5rem;">
+      Applying the frame and exporting a 1080 × 1350 image.
     </p>
-    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem; background: #eaf4ed; border: 1px solid rgba(39, 126, 86, 0.25); border-radius: 999px; padding: 0.35rem 0.95rem; font-size: 0.72rem; color: var(--tea-forest); font-weight: 600;">
-      <span class="pulse-dot"></span>
-      <span>1080 × 1350 Master Canvas Generation</span>
+    <span class="tagline"><span class="pulse-dot"></span> High-resolution export</span>
+  </main>
+
+  <!-- ============================== PREVIEW ============================= -->
+  <main id="screen-preview" class="screen screen--preview">
+    <div class="phone-shell">
+
+      <header class="screen-head">
+        <div class="preview-badge">
+          <span class="badge-pill"><span class="dot"></span> 1080 × 1350 ready</span>
+        </div>
+        <h2 id="preview-title" class="display display--md">Your branded moment</h2>
+      </header>
+
+      <div class="composite">
+        <img id="final-composite-img" alt="Your framed photo" />
+      </div>
+
+      <div>
+        <div class="rail-head" style="margin-bottom: 0.35rem;">
+          <span class="label">Try another frame</span>
+          <span class="counter">Instant re-frame</span>
+        </div>
+        <div id="preview-frame-strip" class="preview-frame-strip">
+          <!-- Rendered by js/app.js -->
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btn-download-hd" class="btn btn-gold btn-lg">Download HD photo</button>
+        <div class="panel__row panel__row--buttons" style="margin-top: 0;">
+          <button id="btn-share" class="btn btn-secondary">Share / post</button>
+          <button id="btn-take-another" class="btn btn-secondary">Take another</button>
+        </div>
+        <a id="cta-brand-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+          <span id="cta-brand-text">Explore Homewood Tea</span>
+        </a>
+      </div>
+
     </div>
   </main>
 
-
-  <!-- ================================================================= -->
-  <!-- SCREEN 5: FINAL PREVIEW & SHARING                                -->
-  <!-- ================================================================= -->
-  <main id="screen-preview" class="screen-step" style="flex-direction: column; justify-content: space-between; max-width: 440px; margin: 0 auto; padding: 1.25rem;">
-    <header style="text-align: center; padding-top: 0.5rem;">
-      <div class="badge-pill" style="margin-bottom: 0.65rem;">
-        <span class="pulse-dot"></span>
-        <span>✓ High-Resolution 1080×1350 Ready</span>
-      </div>
-      <h2 id="preview-title" class="font-serif gold-shimmer-text" style="font-size: 1.7rem; font-weight: 700;">
-        Your Branded Moment
-      </h2>
-    </header>
-
-    <!-- Final Composite Display -->
-    <div style="width: 100%; margin: 0.85rem 0; border-radius: 1.65rem; overflow: hidden; box-shadow: 0 20px 50px -10px rgba(9, 36, 24, 0.16), 0 0 25px rgba(194, 151, 56, 0.25); border: 2px solid rgba(194, 151, 56, 0.45); background: #ffffff;">
-      <img id="final-composite-img" alt="Branded photo composite" style="width: 100%; height: auto; display: block;" />
-    </div>
-
-    <!-- Switch Frame Style (Re-compositing without retake) -->
-    <div class="glass-panel" style="padding: 0.75rem 0.95rem; margin-bottom: 0.85rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-        <span style="font-size: 0.72rem; font-weight: 700; color: var(--tea-forest); letter-spacing: 0.06em;">
-          ✦ Try Another Frame Style
-        </span>
-        <span style="font-size: 0.64rem; color: var(--tea-text-muted); font-weight: 600;">
-          Instant 1-Tap Re-frame
-        </span>
-      </div>
-      <div id="preview-frame-strip" class="preview-frame-strip">
-        <!-- Rendered by js/app.js -->
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
-      <button id="btn-download-hd" class="btn-gold btn-pulse" style="width: 100%; font-size: 1.02rem; padding: 1rem;">
-        <span>⬇️ Download HD Photo (1080×1350)</span>
-      </button>
-
-      <div style="display: flex; gap: 0.75rem;">
-        <button id="btn-share" class="btn-secondary" style="flex: 1; font-size: 0.88rem; padding: 0.88rem;">
-          <span>📤 Share / Post</span>
-        </button>
-        <button id="btn-take-another" class="btn-secondary" style="flex: 1; font-size: 0.88rem; padding: 0.88rem;">
-          <span>📸 Take Another</span>
-        </button>
-      </div>
-
-      <!-- Brand CTA Link -->
-      <a id="cta-brand-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="text-align: center; font-size: 0.82rem; background: #eaf4ed; border-color: rgba(39, 126, 86, 0.3); color: var(--tea-forest); text-decoration: none; padding: 0.82rem; font-weight: 600;">
-        <span id="cta-brand-text">Explore Nilgiri Reserve Blends →</span>
-      </a>
-    </div>
-  </main>
-
-
-  <!-- ================================================================= -->
-  <!-- MODAL: INSTAGRAM & SOCIAL SHARING                                -->
-  <!-- ================================================================= -->
+  <!-- ============================= SHARE MODAL ========================== -->
   <div id="share-modal" class="modal-backdrop">
-    <div class="modal-box" style="max-width: 440px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+      <div class="modal-head">
         <div>
-          <h3 class="font-serif gold-gradient-text" style="font-size: 1.25rem; font-weight: 700;">Share Your Moment</h3>
-          <p style="font-size: 0.72rem; color: var(--tea-text-muted); margin-top: 0.15rem;">Tap any app below to open and share instantly</p>
+          <h3 id="share-modal-title">Share your moment</h3>
+          <p>Save the photo, then post it anywhere.</p>
         </div>
-        <button data-close-modal class="btn-icon" style="width: 2.2rem; height: 2.2rem;">✕</button>
+        <button data-close-modal class="btn-icon" aria-label="Close">✕</button>
       </div>
 
-      <!-- Live Share Notice Status -->
-      <div id="share-status-pill" style="display: none; padding: 0.55rem 0.85rem; border-radius: 0.85rem; background: #eaf4ed; border: 1px solid rgba(39, 126, 86, 0.4); color: var(--tea-forest); font-size: 0.72rem; font-weight: 600; text-align: center; margin-bottom: 0.75rem;">
-        ✓ Opening app...
-      </div>
+      <div id="share-status-pill" role="status" aria-live="polite">Opening app…</div>
 
-      <!-- Native System Share Trigger -->
-      <button id="btn-trigger-system-share" class="btn-gold" style="width: 100%; font-size: 0.85rem; padding: 0.75rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-        <span>📱 Open Phone's Share Menu (All Apps)</span>
+      <button id="btn-trigger-system-share" class="btn btn-gold btn-block" style="margin-bottom: 0.75rem;">
+        Open your phone's share menu
       </button>
 
-      <!-- Apps Grid (Direct Deep Links) -->
       <div class="share-apps-grid">
-        <!-- WhatsApp -->
-        <div id="share-btn-whatsapp" class="share-app-item">
-          <div class="share-app-icon" style="background: #25D366;">
-            💬
-          </div>
+        <button type="button" id="share-btn-whatsapp" class="share-app-item">
+          <span class="share-app-icon" style="background: #25D366;">💬</span>
           <span class="share-app-label">WhatsApp</span>
-          <span class="share-app-sub">Chat & Status</span>
-        </div>
-
-        <!-- Instagram -->
-        <div id="share-btn-instagram" class="share-app-item">
-          <div class="share-app-icon" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
-            📸
-          </div>
+          <span class="share-app-sub">Chat &amp; status</span>
+        </button>
+        <button type="button" id="share-btn-instagram" class="share-app-item">
+          <span class="share-app-icon" style="background: linear-gradient(45deg, #f09433 0%, #dc2743 50%, #bc1888 100%);">📸</span>
           <span class="share-app-label">Instagram</span>
-          <span class="share-app-sub">Story & Feed</span>
-        </div>
-
-        <!-- Telegram -->
-        <div id="share-btn-telegram" class="share-app-item">
-          <div class="share-app-icon" style="background: #0088cc;">
-            ✈️
-          </div>
+          <span class="share-app-sub">Story &amp; feed</span>
+        </button>
+        <button type="button" id="share-btn-telegram" class="share-app-item">
+          <span class="share-app-icon" style="background: #0088cc;">✈️</span>
           <span class="share-app-label">Telegram</span>
-          <span class="share-app-sub">Send Message</span>
-        </div>
-
-        <!-- Messages / SMS -->
-        <div id="share-btn-sms" class="share-app-item">
-          <div class="share-app-icon" style="background: #34C759;">
-            ✉️
-          </div>
+          <span class="share-app-sub">Send message</span>
+        </button>
+        <button type="button" id="share-btn-sms" class="share-app-item">
+          <span class="share-app-icon" style="background: #34C759;">✉️</span>
           <span class="share-app-label">Messages</span>
           <span class="share-app-sub">iMessage / SMS</span>
-        </div>
-
-        <!-- Twitter / X -->
-        <div id="share-btn-twitter" class="share-app-item">
-          <div class="share-app-icon" style="background: #000000; border: 1px solid rgba(255,255,255,0.25);">
-            𝕏
-          </div>
-          <span class="share-app-label">X / Twitter</span>
-          <span class="share-app-sub">Post Tweet</span>
-        </div>
-
-        <!-- Facebook -->
-        <div id="share-btn-facebook" class="share-app-item">
-          <div class="share-app-icon" style="background: #1877F2;">
-            📘
-          </div>
+        </button>
+        <button type="button" id="share-btn-twitter" class="share-app-item">
+          <span class="share-app-icon" style="background: #111;">𝕏</span>
+          <span class="share-app-label">X</span>
+          <span class="share-app-sub">Post</span>
+        </button>
+        <button type="button" id="share-btn-facebook" class="share-app-item">
+          <span class="share-app-icon" style="background: #1877F2;">f</span>
           <span class="share-app-label">Facebook</span>
-          <span class="share-app-sub">Feed Post</span>
-        </div>
-      </div>
-
-      <!-- Caption Preview & Copy -->
-      <div style="background: #fbf9f4; border: 1px solid rgba(17, 69, 48, 0.16); border-radius: 1rem; padding: 0.75rem 0.85rem; margin-top: 0.5rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-          <span style="font-size: 0.65rem; color: var(--tea-forest); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">✦ Instagram Caption</span>
-          <button id="btn-copy-caption" class="btn-secondary" style="font-size: 0.65rem; padding: 0.25rem 0.65rem; border-radius: 999px;">
-            📋 Copy Caption
-          </button>
-        </div>
-        <p id="caption-text-preview" style="font-size: 0.7rem; color: var(--tea-text-body); white-space: pre-line; line-height: 1.35; max-height: 65px; overflow-y: auto;"></p>
-      </div>
-
-      <!-- Save Photo Button -->
-      <button id="btn-modal-download-hd" class="btn-secondary" style="width: 100%; font-size: 0.78rem; margin-top: 0.75rem; padding: 0.65rem;">
-        <span>💾 Save 1080×1350 Photo to Device Gallery</span>
-      </button>
-    </div>
-  </div>
-
-
-  <!-- ================================================================= -->
-  <!-- MODAL: SCAN ON MOBILE (Dynamic QR Code)                          -->
-  <!-- ================================================================= -->
-  <div id="qr-modal" class="modal-backdrop">
-    <div class="modal-box" style="text-align: center;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 id="qr-modal-title" class="font-serif gold-gradient-text" style="font-size: 1.2rem; font-weight: 700;">
-          Scan with Mobile Camera
-        </h3>
-        <button data-close-modal class="btn-icon" style="width: 2.2rem; height: 2.2rem;">✕</button>
-      </div>
-      <p id="qr-modal-sub" style="font-size: 0.8rem; color: var(--tea-text-muted); margin-bottom: 1.25rem;">
-        Point your phone camera at this QR code to launch the camera experience on your mobile device!
-      </p>
-
-      <!-- Dynamic QR Canvas Container -->
-      <div style="display: flex; justify-content: center; margin: 1.25rem 0;">
-        <div id="qr-code-display" style="padding: 1rem; background: #ffffff; border-radius: 1.25rem; box-shadow: 0 10px 30px rgba(9, 36, 24, 0.12); border: 2px solid rgba(194, 151, 56, 0.4);"></div>
-      </div>
-
-      <div style="font-size: 0.75rem; color: var(--tea-text-muted); margin-bottom: 0.85rem; word-break: break-all;">
-        Or open direct link:<br />
-        <a id="qr-direct-link" href="#" target="_blank" style="color: var(--tea-forest); text-decoration: underline; font-weight: 600;"></a>
-      </div>
-
-      <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
-        <button id="btn-copy-qr-link" class="btn-gold" style="flex: 1; font-size: 0.78rem; padding: 0.6rem;">
-          <span>📋 Copy Mobile Link</span>
+          <span class="share-app-sub">Feed post</span>
         </button>
       </div>
 
-      <p style="font-size: 0.68rem; color: var(--tea-text-dim); margin-bottom: 1rem;">
-        ✦ Tip: Ensure your mobile phone is connected to the same Wi-Fi network.
-      </p>
+      <div class="caption-box">
+        <div class="caption-box__head">
+          <span>Caption</span>
+          <button id="btn-copy-caption" class="btn btn-secondary btn-sm">Copy</button>
+        </div>
+        <p id="caption-text-preview"></p>
+      </div>
 
-      <button data-close-modal class="btn-secondary" style="width: 100%; font-size: 0.8rem;">
-        Close
+      <button id="btn-modal-download-hd" class="btn btn-secondary btn-block" style="margin-top: 0.75rem;">
+        Save photo to device
       </button>
     </div>
   </div>
 
-  <!-- Pure JavaScript Application Scripts -->
+  <!-- ============================== QR MODAL ============================ -->
+  <div id="qr-modal" class="modal-backdrop">
+    <div class="modal-box modal-box--qr" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+      <div class="modal-head" style="margin-bottom: 0.5rem;">
+        <h3 id="qr-modal-title">Scan with your phone</h3>
+        <button data-close-modal class="btn-icon" aria-label="Close">✕</button>
+      </div>
+      <p id="qr-modal-sub" class="lede lede--xs">
+        Point your phone camera at the code to open this experience on your device.
+      </p>
+
+      <div style="display: flex; justify-content: center; margin: 1.1rem 0;">
+        <div id="qr-code-display"></div>
+      </div>
+
+      <p class="qr-link">
+        Or open:<br />
+        <a id="qr-direct-link" href="#" target="_blank"></a>
+      </p>
+
+      <button id="btn-copy-qr-link" class="btn btn-gold btn-block">Copy link</button>
+      <p class="qr-hint">Your phone must be on the same Wi-Fi network as this computer.</p>
+    </div>
+  </div>
+
   <script src="js/qrcode.min.js"></script>
   <script src="js/campaigns.js"></script>
   <script src="js/canvas-composer.js"></script>

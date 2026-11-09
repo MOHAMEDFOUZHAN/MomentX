@@ -6,23 +6,114 @@ Compatible with local execution and Vercel Serverless Functions.
 
 import os
 import sys
+import csv
+import io
 import json
+import time
+import hmac
 import sqlite3
-from datetime import datetime, timedelta
-from flask import Flask, request, jsonify, send_from_directory, g, redirect
+from datetime import datetime, timedelta, date
+from functools import wraps
+from urllib.parse import quote
+from flask import Flask, request, jsonify, send_from_directory, g, redirect, session, Response
 
-# Initialize Flask app
+# Initialize Flask app.
+# static_folder is deliberately disabled: every asset goes through the guarded
+# catch-all route at the bottom of this file, so private files (analytics.db,
+# server.py, requirements.txt, ...) can never be downloaded.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-app = Flask(__name__, static_folder=BASE_DIR, static_url_path='')
+app = Flask(__name__, static_folder=None)
 app.secret_key = os.environ.get('SECRET_KEY', 'nlg-maple-secret-2307')
 
-# Admin credentials (keep in env vars in production)
-ADMIN_USER  = os.environ.get('ADMIN_USER', 'fouzhan')
-ADMIN_PASS  = os.environ.get('ADMIN_PASS', 'mapleconnect2307')
-VALID_TOKEN = 'nlg_auth_ok'  # value stored in browser sessionStorage
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SECURE=bool(os.environ.get('VERCEL')),  # HTTPS-only in production
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=12),
+)
 
-# Database path (use /tmp on Vercel serverless to support writes)
-if os.environ.get('VERCEL'):
+# Admin credentials (override with env vars in production)
+ADMIN_USER = os.environ.get('ADMIN_USER', 'fouzhan')
+ADMIN_PASS = os.environ.get('ADMIN_PASS', 'mapleconnect2307')
+
+if not os.environ.get('SECRET_KEY'):
+    print('[security] SECRET_KEY is not set - using the built-in default. '
+          'Set SECRET_KEY in the environment before deploying.')
+
+# ---------------------------------------------------------------------------
+# Auth & Static Asset Guards
+# ---------------------------------------------------------------------------
+# Only these file types may ever be served to the public.
+PUBLIC_EXTENSIONS = {
+    '.html', '.css', '.js', '.json',
+    '.png', '.jpg', '.jpeg', '.svg', '.webp', '.gif', '.ico',
+    '.woff', '.woff2', '.ttf', '.otf',
+}
+# Defence in depth: never serve these even though they match an extension above.
+BLOCKED_FILES = {'vercel.json'}
+
+
+def is_public_asset(filename):
+    """True only for real front-end assets, never for data or source files."""
+    if not filename:
+        return False
+    normalized = filename.replace('\\', '/')
+    if normalized.startswith('.') or '/.' in normalized:
+        return False
+    if '..' in normalized.split('/'):
+        return False
+    if normalized.lower() in BLOCKED_FILES:
+        return False
+    if '__pycache__' in normalized.lower():
+        return False
+    return os.path.splitext(normalized.lower())[1] in PUBLIC_EXTENSIONS
+
+
+def constant_time_eq(value, expected):
+    """Compare strings without leaking length/timing information."""
+    return hmac.compare_digest(value.encode('utf-8'), expected.encode('utf-8'))
+
+
+def login_required(view):
+    """Hard gate for admin pages and analytics APIs, backed by the server session."""
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        if session.get('admin_authenticated') is True:
+            return view(*args, **kwargs)
+        if request.path.startswith('/api/'):
+            return jsonify({'status': 'error', 'message': 'Authentication required'}), 401
+        return redirect('/login?next=' + quote(request.path))
+    return wrapped
+
+
+def safe_next(target, default='/admin'):
+    """Prevent open redirects - only our own admin pages are allowed."""
+    if target and target.startswith('/') and not target.startswith('//'):
+        if target.startswith(('/admin', '/analytics')):
+            return target
+    return default
+
+
+# Simple in-memory brute-force throttle (per client IP)
+LOGIN_WINDOW_SECONDS = 300
+LOGIN_MAX_ATTEMPTS = 5
+login_attempts = {}
+
+
+def login_throttled(ip):
+    now = time.time()
+    recent = [t for t in login_attempts.get(ip, []) if now - t < LOGIN_WINDOW_SECONDS]
+    login_attempts[ip] = recent
+    return len(recent) >= LOGIN_MAX_ATTEMPTS
+
+
+def record_login_failure(ip):
+    login_attempts.setdefault(ip, []).append(time.time())
+
+# Database path (ANALYTICS_DB overrides it; /tmp on Vercel serverless to support writes)
+if os.environ.get('ANALYTICS_DB'):
+    DB_PATH = os.environ['ANALYTICS_DB']
+elif os.environ.get('VERCEL'):
     DB_PATH = '/tmp/analytics.db'
     seed_db = os.path.join(BASE_DIR, 'analytics.db')
     if os.path.exists(seed_db) and not os.path.exists(DB_PATH):
@@ -162,6 +253,47 @@ def generate_mobile_qr(url):
 # ---------------------------------------------------------------------------
 # API Routes
 # ---------------------------------------------------------------------------
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    """Verify credentials server-side and start an HttpOnly session cookie."""
+    data = request.get_json(silent=True) or {}
+    username = (data.get('username') or '').strip()
+    password = data.get('password') or ''
+
+    ip_addr = request.headers.get('X-Forwarded-For', request.remote_addr) or ''
+    ip_addr = ip_addr.split(',')[0].strip()
+
+    if login_throttled(ip_addr):
+        return jsonify({'status': 'error', 'message': 'Too many attempts. Please try again in a few minutes.'}), 429
+
+    user_ok = constant_time_eq(username, ADMIN_USER)
+    pass_ok = constant_time_eq(password, ADMIN_PASS)
+
+    if not (user_ok and pass_ok):
+        record_login_failure(ip_addr)
+        time.sleep(0.4)  # dampen rapid brute-force attempts
+        return jsonify({'status': 'error', 'message': 'Invalid username or password.'}), 401
+
+    login_attempts.pop(ip_addr, None)
+    session.clear()
+    session.permanent = True
+    session['admin_authenticated'] = True
+    session['admin_user'] = username
+    return jsonify({'status': 'ok', 'redirect': safe_next(data.get('next'))})
+
+
+@app.route('/api/logout', methods=['POST'])
+def api_logout():
+    session.clear()
+    return jsonify({'status': 'ok'})
+
+
+@app.route('/api/session', methods=['GET'])
+def api_session():
+    """Lets the login page skip the form when a valid session already exists."""
+    return jsonify({'authenticated': session.get('admin_authenticated') is True})
+
+
 @app.route('/api/network-info', methods=['GET'])
 def get_network_info():
     """Return local Wi-Fi IP and URLs for mobile testing."""
@@ -225,7 +357,328 @@ def save_lead():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+# ---------------------------------------------------------------------------
+# Reporting engine - daily / weekly scan reports for the owner
+# ---------------------------------------------------------------------------
+# created_at is stored in UTC (SQLite CURRENT_TIMESTAMP); reports group by the
+# server's local calendar day so "scans per day" matches the booth's clock.
+LOCAL_DAY = "date(created_at, 'localtime')"
+REPORT_MAX_LEADS = 25
+
+
+def resolve_report_range(key):
+    """Translate a UI range key into concrete local calendar dates."""
+    today = date.today()
+    key = (key or '7d').strip().lower()
+    if key == 'today':
+        return key, 'Today', today, today
+    if key == 'week':
+        return key, 'This week', today - timedelta(days=today.weekday()), today
+    if key == '30d':
+        return key, 'Last 30 days', today - timedelta(days=29), today
+    if key == '90d':
+        return key, 'Last 90 days', today - timedelta(days=89), today
+    if key == 'all':
+        return key, 'All time', None, today
+    return '7d', 'Last 7 days', today - timedelta(days=6), today
+
+
+def _range_clause(start, end):
+    if start is None:
+        return '', []
+    return f" AND {LOCAL_DAY} BETWEEN ? AND ?", [start.isoformat(), end.isoformat()]
+
+
+def _int(value):
+    return int(value or 0)
+
+
+def _rate(part, whole):
+    return round(part / whole * 100, 1) if whole else 0.0
+
+
+def _summary_for(cursor, start, end, days):
+    clause, params = _range_clause(start, end)
+    cursor.execute(f'''
+        SELECT
+            SUM(event_type = 'page_view')      AS scans,
+            SUM(event_type = 'camera_open')    AS camera_opens,
+            SUM(event_type = 'photo_snap')     AS photos,
+            SUM(event_type = 'photo_download') AS downloads,
+            SUM(event_type = 'photo_share')    AS shares,
+            SUM(event_type = 'cta_click')      AS cta_clicks,
+            COUNT(DISTINCT CASE WHEN event_type = 'page_view'
+                  THEN COALESCE(ip_address, '') || '|' || COALESCE(user_agent, '') END) AS unique_devices
+        FROM events
+        WHERE 1 = 1 {clause}
+    ''', params)
+    row = cursor.fetchone()
+    cursor.execute(f"SELECT COUNT(*) AS c FROM leads WHERE 1 = 1 {clause}", params)
+    leads = _int(cursor.fetchone()['c'])
+
+    scans = _int(row['scans'])
+    photos = _int(row['photos'])
+    downloads = _int(row['downloads'])
+    return {
+        'scans': scans,
+        'unique_devices': _int(row['unique_devices']),
+        'camera_opens': _int(row['camera_opens']),
+        'photos': photos,
+        'downloads': downloads,
+        'shares': _int(row['shares']),
+        'cta_clicks': _int(row['cta_clicks']),
+        'leads': leads,
+        'scan_to_photo_pct': _rate(photos, scans),
+        'photo_to_download_pct': _rate(downloads, photos),
+        'scan_to_download_pct': _rate(downloads, scans),
+        'avg_scans_per_day': round(scans / days, 1) if days else 0.0,
+    }
+
+
+def _breakdown(cursor, column, clause, params):
+    """Count events grouped by one column (column is always a literal here)."""
+    cursor.execute(
+        f"SELECT {column} AS label, COUNT(*) AS count FROM events"
+        f" WHERE 1 = 1 {clause} GROUP BY label ORDER BY count DESC", params)
+    return {(row['label'] or 'Unknown'): row['count'] for row in cursor.fetchall()}
+
+
+def build_report(range_key):
+    """Full scan report: summary, previous period, daily, weekly and breakdowns."""
+    range_key, label, start, end = resolve_report_range(range_key)
+    db = get_db()
+    cursor = db.cursor()
+
+    if start is None:
+        first = cursor.execute(f"SELECT MIN({LOCAL_DAY}) AS first FROM events").fetchone()
+        start = date.fromisoformat(first['first']) if first and first['first'] else end
+    days = (end - start).days + 1
+
+    summary = _summary_for(cursor, start, end, days)
+    clause, params = _range_clause(start, end)
+
+    previous = None
+    if range_key != 'all':
+        previous_end = start - timedelta(days=1)
+        previous_start = previous_end - timedelta(days=days - 1)
+        previous = _summary_for(cursor, previous_start, previous_end, days)
+        previous['start'] = previous_start.isoformat()
+        previous['end'] = previous_end.isoformat()
+
+    # Daily matrix: one row per event type per local day.
+    cursor.execute(f'''
+        SELECT {LOCAL_DAY} AS day, event_type, COUNT(*) AS count
+        FROM events
+        WHERE 1 = 1 {clause}
+        GROUP BY day, event_type
+    ''', params)
+    by_day = {}
+    for row in cursor.fetchall():
+        by_day.setdefault(row['day'], {})[row['event_type']] = row['count']
+
+    cursor.execute(f'''
+        SELECT {LOCAL_DAY} AS day,
+               COUNT(DISTINCT COALESCE(ip_address, '') || '|' || COALESCE(user_agent, '')) AS unique_devices
+        FROM events
+        WHERE event_type = 'page_view' {clause}
+        GROUP BY day
+    ''', params)
+    unique_by_day = {row['day']: row['unique_devices'] for row in cursor.fetchall()}
+
+    daily = []
+    day = start
+    while day <= end:
+        iso = day.isoformat()
+        counts = by_day.get(iso, {})
+        daily.append({
+            'date': iso,
+            'weekday': day.strftime('%a'),
+            'scans': counts.get('page_view', 0),
+            'unique_devices': unique_by_day.get(iso, 0),
+            'camera_opens': counts.get('camera_open', 0),
+            'photos': counts.get('photo_snap', 0),
+            'downloads': counts.get('photo_download', 0),
+            'shares': counts.get('photo_share', 0),
+        })
+        day += timedelta(days=1)
+
+    # Weekly buckets (ISO weeks, Monday start) from the daily series.
+    weeks = {}
+    for item in daily:
+        current = date.fromisoformat(item['date'])
+        week_start = current - timedelta(days=current.weekday())
+        iso_year, iso_week, _ = current.isocalendar()
+        week_key = f"{iso_year}-W{iso_week:02d}"
+        bucket = weeks.setdefault(week_key, {
+            'week': week_key,
+            'start': week_start.isoformat(),
+            'end': (week_start + timedelta(days=6)).isoformat(),
+            'scans': 0,
+            'photos': 0,
+            'downloads': 0,
+            'shares': 0,
+            'days_in_range': 0,
+        })
+        bucket['days_in_range'] += 1
+        for field in ('scans', 'photos', 'downloads', 'shares'):
+            bucket[field] += item[field]
+    weekly = []
+    for bucket in sorted(weeks.values(), key=lambda w: w['start']):
+        bucket['avg_scans_per_day'] = round(bucket['scans'] / bucket['days_in_range'], 1) if bucket['days_in_range'] else 0.0
+        weekly.append(bucket)
+
+    # Hour of day and day of week, based on scans only.
+    cursor.execute(f'''
+        SELECT CAST(strftime('%H', created_at, 'localtime') AS INTEGER) AS hour,
+               COUNT(*) AS count
+        FROM events
+        WHERE event_type = 'page_view' {clause}
+        GROUP BY hour
+    ''', params)
+    hour_counts = {row['hour']: row['count'] for row in cursor.fetchall()}
+    hourly = [{'hour': hour, 'scans': hour_counts.get(hour, 0)} for hour in range(24)]
+
+    weekday_names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    weekday_counts = {name: 0 for name in weekday_names}
+    for item in daily:
+        weekday_counts[item['weekday']] += item['scans']
+    weekdays = [{'weekday': name, 'scans': weekday_counts[name]} for name in weekday_names]
+
+    # Per-frame performance.
+    cursor.execute(f'''
+        SELECT campaign_id,
+               SUM(event_type = 'page_view')      AS scans,
+               SUM(event_type = 'camera_open')    AS camera_opens,
+               SUM(event_type = 'photo_snap')     AS photos,
+               SUM(event_type = 'photo_download') AS downloads,
+               SUM(event_type = 'photo_share')    AS shares
+        FROM events
+        WHERE 1 = 1 {clause}
+        GROUP BY campaign_id
+        ORDER BY scans DESC, downloads DESC
+    ''', params)
+    frames = []
+    for row in cursor.fetchall():
+        frame_scans = _int(row['scans'])
+        frames.append({
+            'id': row['campaign_id'] or 'unknown',
+            'scans': frame_scans,
+            'camera_opens': _int(row['camera_opens']),
+            'photos': _int(row['photos']),
+            'downloads': _int(row['downloads']),
+            'shares': _int(row['shares']),
+            'scan_to_download_pct': _rate(_int(row['downloads']), frame_scans),
+        })
+
+    busy = max(daily, key=lambda item: item['scans']) if daily else None
+    if busy and busy['scans']:
+        summary['busiest_day'] = {'date': busy['date'], 'weekday': busy['weekday'], 'scans': busy['scans']}
+    else:
+        summary['busiest_day'] = None
+
+    peak = max(hourly, key=lambda item: item['scans']) if hourly else None
+    summary['peak_hour'] = peak['hour'] if peak and peak['scans'] else None
+
+    cursor.execute(f'''
+        SELECT name, phone, email, campaign_id, created_at
+        FROM leads
+        WHERE 1 = 1 {clause}
+        ORDER BY id DESC
+        LIMIT {REPORT_MAX_LEADS}
+    ''', params)
+    leads = [dict(row) for row in cursor.fetchall()]
+
+    return {
+        'status': 'ok',
+        'range': {
+            'key': range_key,
+            'label': label,
+            'start': start.isoformat(),
+            'end': end.isoformat(),
+            'days': days,
+        },
+        'generated_at': datetime.now().strftime('%Y-%m-%d %H:%M'),
+        'summary': summary,
+        'previous': previous,
+        'daily': daily,
+        'weekly': weekly,
+        'hourly': hourly,
+        'weekdays': weekdays,
+        'frames': frames,
+        'funnel': [
+            {'step': 'QR scans / visits', 'count': summary['scans'], 'pct': 100 if summary['scans'] else 0},
+            {'step': 'Camera opened', 'count': summary['camera_opens'], 'pct': _rate(summary['camera_opens'], summary['scans'])},
+            {'step': 'Photos snapped', 'count': summary['photos'], 'pct': _rate(summary['photos'], summary['scans'])},
+            {'step': 'HD downloads', 'count': summary['downloads'], 'pct': _rate(summary['downloads'], summary['scans'])},
+            {'step': 'Social shares', 'count': summary['shares'], 'pct': _rate(summary['shares'], summary['scans'])},
+        ],
+        'devices': _breakdown(cursor, 'device_type', clause, params),
+        'operating_systems': _breakdown(cursor, 'os_name', clause, params),
+        'browsers': _breakdown(cursor, 'browser', clause, params),
+        'leads': leads,
+    }
+
+
+def build_report_csv(report):
+    """Scan counts only: totals, one row per day and one row per week."""
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+
+    meta = report['range']
+    summary = report['summary']
+    writer.writerow(['Nilgiris Frame - scan counts'])
+    writer.writerow(['Range', meta['label']])
+    writer.writerow(['From', meta['start']])
+    writer.writerow(['To', meta['end']])
+    writer.writerow(['Days', meta['days']])
+    writer.writerow(['Generated', report['generated_at']])
+    writer.writerow([])
+
+    writer.writerow(['Total scans', summary['scans']])
+    writer.writerow(['Average scans per day', summary['avg_scans_per_day']])
+    writer.writerow([])
+
+    writer.writerow(['Scans per day'])
+    writer.writerow(['Date', 'Weekday', 'Scans'])
+    for item in report['daily']:
+        writer.writerow([item['date'], item['weekday'], item['scans']])
+    writer.writerow([])
+
+    writer.writerow(['Scans per week'])
+    writer.writerow(['Week', 'Week start', 'Week end', 'Scans', 'Average scans per day'])
+    for item in report['weekly']:
+        writer.writerow([item['week'], item['start'], item['end'], item['scans'], item['avg_scans_per_day']])
+
+    filename = f"nilgiris-scan-counts-{meta['key']}-{meta['end'].replace('-', '')}.csv"
+    return filename, '\ufeff' + buffer.getvalue()
+
+
+@app.route('/api/analytics/report', methods=['GET'])
+@login_required
+def get_analytics_report():
+    """Full scan report for the dashboard (daily, weekly, frames, devices, leads)."""
+    try:
+        return jsonify(build_report(request.args.get('range', '7d')))
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@app.route('/api/analytics/report.csv', methods=['GET'])
+@login_required
+def download_analytics_report():
+    """Download the same report as CSV (opens in Excel / Google Sheets)."""
+    try:
+        filename, payload = build_report_csv(build_report(request.args.get('range', '7d')))
+        return Response(payload, content_type='text/csv; charset=utf-8', headers={
+            'Content-Disposition': f'attachment; filename="{filename}"',
+            'Cache-Control': 'no-store',
+        })
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
 @app.route('/api/analytics/stats', methods=['GET'])
+@login_required
 def get_analytics_stats():
     """Return aggregated metrics, funnel data, and timeline charts."""
     timeframe = request.args.get('timeframe', 'all')  # 'today', '7d', '30d', 'all'
@@ -325,6 +778,7 @@ def get_analytics_stats():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/api/analytics/recent', methods=['GET'])
+@login_required
 def get_recent_events():
     """Return the most recent 40 events for the live log."""
     try:
@@ -342,6 +796,7 @@ def get_recent_events():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/api/analytics/reset', methods=['POST'])
+@login_required
 def reset_analytics():
     """Reset event and lead records (useful for fresh testing)."""
     try:
@@ -371,18 +826,23 @@ def serve_login():
 
 @app.route('/admin')
 @app.route('/admin.html')
+@login_required
 def serve_admin():
-    """Admin studio — protected. Browser JS guards this too; server is the hard gate."""
+    """Admin studio — gated by the server session."""
     return send_from_directory(BASE_DIR, 'admin.html')
 
 @app.route('/analytics')
 @app.route('/analytics.html')
+@login_required
 def serve_analytics():
-    """Analytics dashboard — protected."""
+    """Analytics dashboard — gated by the server session."""
     return send_from_directory(BASE_DIR, 'analytics.html')
 
 @app.route('/<path:filename>')
 def serve_static(filename):
+    """Serve front-end assets only. Data, source and config files are never exposed."""
+    if not is_public_asset(filename):
+        return jsonify({'status': 'error', 'message': 'Not found'}), 404
     return send_from_directory(BASE_DIR, filename)
 
 # ---------------------------------------------------------------------------

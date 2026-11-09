@@ -19,6 +19,14 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon',
 };
 
+// Only front-end assets may be served. Data, source and config files stay private.
+const PUBLIC_EXTENSIONS = new Set([
+  '.html', '.css', '.js', '.json',
+  '.png', '.jpg', '.jpeg', '.svg', '.webp', '.gif', '.ico',
+  '.woff', '.woff2', '.ttf', '.otf',
+]);
+const BLOCKED_PATHS = new Set(['/vercel.json']);
+
 // Retrieve prioritized network IPv4 addresses (Wi-Fi first)
 function getNetworkIps() {
   const interfaces = os.networkInterfaces();
@@ -50,11 +58,26 @@ const server = http.createServer((req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
   let pathname = parsedUrl.pathname;
 
+  // Admin surfaces require the Flask server, which enforces authentication.
+  if (['/admin', '/admin.html', '/analytics', '/analytics.html'].includes(pathname)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('403 Forbidden - run "python server.py" for the authenticated admin studio.');
+    return;
+  }
+
   // SPA Route Rewrites
   if (pathname.startsWith('/q/') || pathname === '/' || pathname === '/index.html') {
     pathname = '/index.html';
-  } else if (pathname === '/admin' || pathname === '/admin.html') {
-    pathname = '/admin.html';
+  }
+
+  // Block data, source and config files (this static server has no auth layer).
+  const requestedExt = path.extname(pathname).toLowerCase();
+  if (!PUBLIC_EXTENSIONS.has(requestedExt) ||
+      BLOCKED_PATHS.has(pathname.toLowerCase()) ||
+      pathname.startsWith('/.') || pathname.includes('/.')) {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('404 Not Found');
+    return;
   }
 
   let filePath = path.join(PUBLIC_DIR, pathname);

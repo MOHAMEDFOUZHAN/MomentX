@@ -3,589 +3,519 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#fbfaf6" />
-  <title>Homewood Tea | Visitor Analytics & Performance</title>
+  <meta name="theme-color" content="#12100e" />
+  <title>Scan counts | Homewood Tea Nilgiris</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <link rel="shortcut icon" href="logo.ico" />
-  <link rel="apple-touch-icon" href="logo.png" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <style>
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.1rem;
-      margin: 1.75rem 0;
+    .analytics {
+      --panel: #1a1714;
+      --panel-2: #221d19;
+      --hair: rgba(255, 255, 255, 0.08);
+      --hair-strong: rgba(255, 255, 255, 0.16);
+      --txt: #efe6dc;
+      --txt-dim: #a99e92;
     }
-    .kpi-card {
-      background: rgba(14, 23, 19, 0.75);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(226, 190, 108, 0.26);
-      border-radius: 1.35rem;
-      padding: 1.35rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 36px rgba(0, 0, 0, 0.6);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+    .an-header {
+      display: flex; flex-wrap: wrap; align-items: flex-start;
+      justify-content: space-between; gap: 1rem;
+      padding-bottom: 1.25rem; border-bottom: 1px solid var(--hair);
     }
-    .kpi-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(226, 190, 108, 0.6);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 22px 48px rgba(0, 0, 0, 0.75), 0 0 20px rgba(226, 190, 108, 0.2);
+    .an-brand { display: flex; align-items: center; gap: 0.9rem; }
+    .an-brand img {
+      width: 46px; height: 46px; object-fit: contain; border-radius: 50%;
+      background: #fff; padding: 3px; border: 1px solid var(--hair-strong); flex: 0 0 auto;
     }
-    .kpi-title {
-      font-size: 0.72rem;
-      color: var(--lux-pearl-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.45rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .kpi-value {
+    .an-brand h1 {
       font-family: var(--font-serif);
-      font-size: 2.15rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #ffffff 0%, #fae6ba 35%, #e2be6c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.1;
+      font-size: clamp(1.25rem, 3vw, 1.6rem);
+      font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
     }
-    .kpi-sub {
-      font-size: 0.7rem;
-      color: var(--lux-gold-champagne);
-      margin-top: 0.45rem;
-      letter-spacing: 0.02em;
+    .an-caption { font-size: 0.75rem; color: var(--txt-dim); margin-top: 0.25rem; }
+    .an-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; }
+
+    .an-tabs { display: flex; gap: 0.3rem; margin: 1rem 0 1.4rem; flex-wrap: wrap; }
+    .an-tab {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.5rem 0.95rem; border-radius: 999px;
+      border: 1px solid var(--hair); background: transparent;
+      color: var(--txt-dim); font-size: 0.78rem; font-weight: 500; text-decoration: none;
+    }
+    .an-tab:hover { color: var(--txt); border-color: var(--hair-strong); }
+    .an-tab.active { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; }
+
+    .range-pills {
+      display: flex; gap: 0.25rem; padding: 0.22rem;
+      background: #100e0c; border: 1px solid var(--hair); border-radius: 999px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .range-pills::-webkit-scrollbar { display: none; }
+    .range-pill {
+      border: 0; background: transparent; color: var(--txt-dim);
+      padding: 0.42rem 0.8rem; border-radius: 999px; cursor: pointer;
+      font-family: inherit; font-size: 0.74rem; font-weight: 500; white-space: nowrap;
+    }
+    .range-pill:hover { color: var(--txt); }
+    .range-pill.active { background: var(--accent); color: var(--on-accent); font-weight: 700; }
+
+    .an-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.5rem 0.85rem; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--hair-strong); background: var(--panel-2); color: var(--txt);
+      font-family: inherit; font-size: 0.75rem; font-weight: 600; text-decoration: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .an-btn:hover { background: #2b2520; border-color: rgba(255, 255, 255, 0.28); color: #fff; }
+    .an-btn--accent { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+    .an-btn--accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); color: var(--on-accent); }
+    .an-btn--danger { background: transparent; border-color: rgba(255, 99, 92, 0.4); color: #ff8b80; }
+    .an-btn--danger:hover { background: rgba(255, 99, 92, 0.12); border-color: #ff8b80; color: #ffb0a8; }
+    .an-btn[disabled] { opacity: 0.55; cursor: default; }
+
+    .an-alert {
+      display: none; align-items: center; justify-content: space-between; gap: 0.75rem;
+      margin: 1rem 0; padding: 0.75rem 1rem; border-radius: 12px;
+      background: rgba(255, 99, 92, 0.1); border: 1px solid rgba(255, 99, 92, 0.35);
+      color: #ffc9c3; font-size: 0.78rem;
+    }
+    .an-alert.show { display: flex; }
+    .an-alert a { color: #ffd8d3; text-decoration: underline; }
+
+    /* Big number cards ------------------------------------------------------- */
+    .an-kpis {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 0.9rem; margin: 1.4rem 0 1.6rem;
+    }
+    .an-kpi {
+      background: var(--panel); border: 1px solid var(--hair); border-radius: 16px;
+      padding: 1rem 1.05rem; display: flex; flex-direction: column; gap: 0.15rem;
+    }
+    .an-kpi:hover { border-color: var(--hair-strong); }
+    .an-kpi-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--txt-dim);
+    }
+    .an-kpi-value {
+      font-family: var(--font-serif);
+      font-size: 2.3rem; font-weight: 700; line-height: 1.05;
+      color: var(--heading-strong); letter-spacing: -0.02em; margin-top: 0.35rem;
+    }
+    .an-kpi-sub { font-size: 0.68rem; color: var(--txt-dim); margin-top: auto; padding-top: 0.35rem; }
+
+    /* Panels ----------------------------------------------------------------- */
+    .an-panel {
+      background: var(--panel); border: 1px solid var(--hair); border-radius: 18px;
+      padding: 1.1rem 1.2rem 1.25rem; margin-bottom: 1rem; min-width: 0;
+    }
+    .an-panel-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;
+    }
+    .an-panel-head h2 {
+      font-family: var(--font-serif); font-size: 1.05rem; font-weight: 600;
+      color: var(--heading-strong); letter-spacing: -0.01em;
+    }
+    .an-panel-note { font-size: 0.7rem; color: var(--txt-dim); }
+    .empty { color: var(--txt-dim); font-size: 0.78rem; padding: 1rem 0; text-align: center; }
+
+    /* Bars ------------------------------------------------------------------- */
+    .chart-bars {
+      display: flex; align-items: stretch; gap: 4px;
+      height: 220px; overflow-x: auto; overflow-y: hidden; padding-bottom: 2px;
+    }
+    .bar-col { flex: 1 1 0; min-width: 12px; display: flex; flex-direction: column; justify-content: flex-end; }
+    .bar-track { flex: 1; display: flex; align-items: flex-end; }
+    .bar-fill {
+      width: 100%; min-height: 2px;
+      background: linear-gradient(180deg, #ff9a6b, var(--accent));
+      border-radius: 3px 3px 0 0; transition: height 0.25s ease;
+    }
+    .bar-col:hover .bar-fill { background: var(--accent); }
+    .bar-value { font-size: 0.6rem; color: var(--txt-dim); text-align: center; height: 14px; line-height: 14px; }
+    .bar-label {
+      font-size: 0.6rem; color: var(--txt-dim); text-align: center;
+      height: 16px; line-height: 16px; white-space: nowrap;
+    }
+    .chart-empty {
+      display: flex; align-items: center; justify-content: center;
+      height: 190px; color: var(--txt-dim); font-size: 0.82rem; text-align: center;
     }
 
-    /* Funnel Styles */
-    .funnel-step {
-      margin-bottom: 1.1rem;
+    /* Weekly table ----------------------------------------------------------- */
+    .table-scroll { overflow-x: auto; }
+    .an-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .an-table th {
+      text-align: left; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--txt-dim); font-weight: 700; padding: 0 0.7rem 0.55rem;
+      white-space: nowrap; border-bottom: 1px solid var(--hair);
     }
-    .funnel-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.82rem;
-      margin-bottom: 0.4rem;
-      color: #faf7f0;
+    .an-table td {
+      padding: 0.65rem 0.7rem; border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+      color: var(--txt); vertical-align: middle;
     }
-    .funnel-bar-bg {
-      width: 100%;
-      height: 9px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .funnel-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #cfa03c, #fae6ba);
-      border-radius: 999px;
-      box-shadow: 0 0 12px rgba(226, 190, 108, 0.5);
-      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    .an-table tbody tr:last-child td { border-bottom: 0; }
+    .an-table tbody tr:hover td { background: rgba(255, 255, 255, 0.025); }
+    .an-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .an-table .muted { color: var(--txt-dim); }
+    .week-cell { white-space: nowrap; }
+    .bar-track-cell { min-width: 90px; }
+    .cell-bar { display: block; height: 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
+    .cell-bar i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+
+    .an-foot {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-top: 1.5rem; padding-top: 1rem;
+      border-top: 1px solid var(--hair); font-size: 0.7rem; color: var(--txt-dim);
     }
 
-    /* Activity Feed */
-    .activity-feed {
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      max-height: 380px;
-      overflow-y: auto;
-      padding-right: 0.35rem;
+    @media (max-width: 620px) {
+      .an-actions { width: 100%; }
+      .range-pills { width: 100%; }
+      .an-kpi-value { font-size: 1.9rem; }
     }
-    .activity-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.7rem 0.95rem;
-      background: rgba(10, 16, 13, 0.75);
-      border: 1px solid rgba(226, 190, 108, 0.18);
-      border-radius: 0.95rem;
-      font-size: 0.78rem;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      transition: border-color 0.2s ease;
-    }
-    .activity-item:hover {
-      border-color: rgba(226, 190, 108, 0.45);
-    }
-    .activity-badge {
-      padding: 0.22rem 0.6rem;
-      border-radius: 999px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .badge-view { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.35); }
-    .badge-snap { background: rgba(226, 190, 108, 0.18); color: #fae6ba; border: 1px solid rgba(226, 190, 108, 0.45); }
-    .badge-download { background: rgba(34, 197, 94, 0.15); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.35); }
-    .badge-share { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.35); }
 
-    /* Time Filter Pill Buttons */
-    .time-filter-pill {
-      background: transparent;
-      border: 1px solid rgba(226, 190, 108, 0.25);
-      color: var(--lux-pearl-dim);
-      padding: 0.38rem 0.95rem;
-      border-radius: 999px;
-      font-size: 0.74rem;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .time-filter-pill.active, .time-filter-pill:hover {
-      background: linear-gradient(135deg, #fef4db 0%, #e6c16c 50%, #cfa03c 100%);
-      color: #070a09;
-      font-weight: 700;
-      border-color: rgba(255, 255, 255, 0.4);
-      box-shadow: 0 2px 12px rgba(226, 190, 108, 0.4);
+    @media print {
+      @page { margin: 12mm; }
+      body { background: #fff !important; color: #111 !important; }
+      .analytics { max-width: 100%; padding: 0; }
+      .no-print, .an-tabs, .range-pills, .an-actions, .an-alert { display: none !important; }
+      .an-brand h1, .an-kpi-value, .an-panel-head h2, .an-table td { color: #111 !important; }
+      .an-caption, .an-kpi-label, .an-kpi-sub, .an-panel-note, .an-table th, .an-table .muted, .bar-label, .an-foot { color: #555 !important; }
+      .an-kpi, .an-panel { background: #fff !important; border: 1px solid #ddd !important; box-shadow: none !important; }
+      .an-kpis { grid-template-columns: repeat(4, 1fr); }
+      .bar-fill, .cell-bar i { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .an-table td { border-color: #eee !important; }
     }
   </style>
 </head>
 <body>
-  <!-- Auth guard: redirect to login if no valid session token -->
-  <script>
-    (function() {
-      if (sessionStorage.getItem('nlg_admin_token') !== 'nlg_auth_ok') {
-        window.location.replace('login.html?next=analytics.html');
-      }
-    })();
-  </script>
-  <div class="admin-container">
-    <!-- Top Header -->
-    <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(212, 175, 55, 0.25);">
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <a href="index.html" class="btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 0.85rem;">
-          ← Visitor Experience
-        </a>
-        <img src="logo.png" alt="Homewood Tea" style="width: 44px; height: 44px; object-fit: contain; border-radius: 50%; background: #ffffff; padding: 3px; box-shadow: 0 0 14px rgba(226, 190, 108, 0.45); border: 1.5px solid rgba(226, 190, 108, 0.6);" />
+  <div class="admin-container analytics">
+
+    <header class="an-header">
+      <div class="an-brand">
+        <img src="logo.png" alt="Homewood Tea" />
         <div>
-          <h1 class="font-serif gold-gradient-text" style="font-size: 1.35rem; font-weight: 700;">
-            Visitor Analytics & Footfall
-          </h1>
-          <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.65);">
-            Live tracking for Homewood Tea & Nilgiris Valley • QR Scans, Photos & Engagement
-          </p>
+          <h1>Scan counts</h1>
+          <p id="range-caption" class="an-caption">Loading…</p>
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-        <!-- Admin Navigation Switcher -->
-        <div style="display: inline-flex; align-items: center; background: rgba(8, 13, 11, 0.9); padding: 0.25rem; border-radius: 999px; border: 1px solid rgba(226, 190, 108, 0.35); gap: 0.3rem;">
-          <a href="analytics.html" class="btn-gold" style="font-size: 0.75rem; padding: 0.45rem 0.85rem; border-radius: 999px; text-decoration: none; font-weight: 700;">
-            📊 Analytics
-          </a>
-          <a href="admin.html" class="btn-secondary" style="font-size: 0.75rem; padding: 0.45rem 0.85rem; border-radius: 999px; border: none; text-decoration: none;">
-            ⚙️ Studio
-          </a>
+      <div class="an-actions no-print">
+        <div class="range-pills" role="group" aria-label="Report date range">
+          <button type="button" class="range-pill" data-range="today">Today</button>
+          <button type="button" class="range-pill active" data-range="7d">7 days</button>
+          <button type="button" class="range-pill" data-range="30d">30 days</button>
+          <button type="button" class="range-pill" data-range="90d">90 days</button>
+          <button type="button" class="range-pill" data-range="all">All time</button>
         </div>
-
-        <div style="display: flex; gap: 0.35rem; background: rgba(8, 28, 21, 0.85); padding: 0.25rem; border-radius: 999px; border: 1px solid rgba(212, 175, 55, 0.25);">
-          <button class="time-filter-pill active" data-timeframe="all">All Time</button>
-          <button class="time-filter-pill" data-timeframe="30d">30 Days</button>
-          <button class="time-filter-pill" data-timeframe="7d">7 Days</button>
-          <button class="time-filter-pill" data-timeframe="today">Today</button>
-        </div>
-
-        <button id="btn-refresh-stats" class="btn-gold" style="font-size: 0.75rem; padding: 0.55rem 0.85rem;">
-          🔄 Refresh Live
-        </button>
-
-        <button onclick="sessionStorage.removeItem('nlg_admin_token'); window.location.replace('login.html');" class="btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 0.85rem; border-radius: 999px;" title="Sign out of Admin">
-          🔒 Sign Out
-        </button>
+        <button type="button" id="btn-refresh" class="an-btn">↻ Refresh</button>
+        <a id="btn-export" class="an-btn an-btn--accent" href="/api/analytics/report.csv?range=7d" download>⤓ CSV</a>
+        <button type="button" id="btn-print" class="an-btn">🖨 Print</button>
+        <button type="button" id="btn-signout" class="an-btn">Sign out</button>
       </div>
     </header>
 
-    <!-- Top KPI Grid -->
-    <div class="kpi-grid">
-      <!-- 1. Visits -->
-      <div class="kpi-card">
-        <div class="kpi-title">
-          <span>QR Scans / Visits</span>
-          <span>👁️</span>
-        </div>
-        <div id="stat-visits" class="kpi-value">0</div>
-        <div class="kpi-sub">Total visitor sessions</div>
-      </div>
+    <nav class="an-tabs no-print">
+      <a href="analytics.html" class="an-tab active">📊 Scan counts</a>
+      <a href="admin.html" class="an-tab">⚙️ Frame studio</a>
+    </nav>
 
-      <!-- 2. Camera Opened -->
-      <div class="kpi-card">
-        <div class="kpi-title">
-          <span>Camera Launched</span>
-          <span>📸</span>
-        </div>
-        <div id="stat-camera" class="kpi-value">0</div>
-        <div class="kpi-sub">Viewfinder engagement</div>
-      </div>
-
-      <!-- 3. Photos Snapped -->
-      <div class="kpi-card">
-        <div class="kpi-title">
-          <span>Photos Snapped</span>
-          <span>✨</span>
-        </div>
-        <div id="stat-snaps" class="kpi-value">0</div>
-        <div class="kpi-sub">Shutter clicks recorded</div>
-      </div>
-
-      <!-- 4. Downloads -->
-      <div class="kpi-card">
-        <div class="kpi-title">
-          <span>HD Downloads</span>
-          <span>⬇️</span>
-        </div>
-        <div id="stat-downloads" class="kpi-value">0</div>
-        <div class="kpi-sub">1080×1350 framed photos</div>
-      </div>
-
-      <!-- 5. Shares -->
-      <div class="kpi-card">
-        <div class="kpi-title">
-          <span>Social Shares</span>
-          <span>📤</span>
-        </div>
-        <div id="stat-shares" class="kpi-value">0</div>
-        <div class="kpi-sub">Instagram & WhatsApp</div>
-      </div>
-
-      <!-- 6. Conversion -->
-      <div class="kpi-card">
-        <div class="kpi-title">
-          <span>Download Rate</span>
-          <span>🎯</span>
-        </div>
-        <div id="stat-conversion" class="kpi-value">0%</div>
-        <div class="kpi-sub">Visits converted to photos</div>
-      </div>
+    <div id="load-error" class="an-alert" role="alert">
+      <span id="load-error-text">Could not load the report.</span>
+      <a href="/login?next=/analytics">Sign in again</a>
     </div>
 
-    <!-- Main Content Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-      <!-- Left Column: Funnel & Performance -->
-      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-        <!-- Funnel Card -->
-        <div class="admin-panel">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-            <h3 class="font-serif gold-gradient-text" style="font-size: 1.15rem; font-weight: 700;">
-              Visitor Engagement Funnel
-            </h3>
-            <span class="badge-pill" style="font-size: 0.65rem;">End-to-End</span>
-          </div>
-
-          <div id="funnel-container">
-            <!-- Funnel steps generated dynamically -->
-            <div style="text-align: center; color: rgba(251, 248, 242, 0.5); padding: 2rem;">
-              Loading funnel data...
-            </div>
-          </div>
-        </div>
-
-        <!-- Daily Activity Card -->
-        <div class="admin-panel">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3 class="font-serif gold-gradient-text" style="font-size: 1.15rem; font-weight: 700;">
-              Recent Daily Activity
-            </h3>
-            <span style="font-size: 0.7rem; color: rgba(251, 248, 242, 0.6);">Last 7 Days</span>
-          </div>
-          
-          <div id="timeline-container" style="min-height: 180px; display: flex; flex-direction: column; justify-content: flex-end;">
-            <!-- Render dynamic chart bars -->
-            <div style="text-align: center; color: rgba(251, 248, 242, 0.5); padding: 2rem;">
-              Loading daily timeline...
-            </div>
-          </div>
-        </div>
+    <section class="an-kpis" aria-label="Scan totals">
+      <div class="an-kpi">
+        <div class="an-kpi-label">Scans in period</div>
+        <div id="kpi-total" class="an-kpi-value">0</div>
+        <div id="sub-total" class="an-kpi-sub">QR scans</div>
       </div>
-
-      <!-- Right Column: Devices & Live Activity -->
-      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-        <!-- Devices Breakdown -->
-        <div class="admin-panel">
-          <h3 class="font-serif gold-gradient-text" style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">
-            Device & Platform Distribution
-          </h3>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <div>
-              <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.7); margin-bottom: 0.5rem; text-transform: uppercase;">
-                Device Type
-              </p>
-              <div id="device-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem;">
-                <!-- Populated via JS -->
-              </div>
-            </div>
-            <div>
-              <p style="font-size: 0.75rem; color: rgba(251, 248, 242, 0.7); margin-bottom: 0.5rem; text-transform: uppercase;">
-                Operating System
-              </p>
-              <div id="os-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem;">
-                <!-- Populated via JS -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Real-time Event Feed -->
-        <div class="admin-panel" style="flex: 1;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3 class="font-serif gold-gradient-text" style="font-size: 1.15rem; font-weight: 700;">
-              Live Activity Stream
-            </h3>
-            <span style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.65rem; color: #4ade80;">
-              <span style="width: 6px; height: 6px; border-radius: 50%; background: #4ade80;"></span> Live Sync
-            </span>
-          </div>
-
-          <div id="activity-feed" class="activity-feed">
-            <div style="text-align: center; color: rgba(251, 248, 242, 0.5); padding: 2rem;">
-              Listening for visitor events...
-            </div>
-          </div>
-        </div>
+      <div class="an-kpi">
+        <div class="an-kpi-label">Today</div>
+        <div id="kpi-today" class="an-kpi-value">0</div>
+        <div id="sub-today" class="an-kpi-sub">scans so far today</div>
       </div>
-    </div>
+      <div class="an-kpi">
+        <div class="an-kpi-label">This week</div>
+        <div id="kpi-week" class="an-kpi-value">0</div>
+        <div id="sub-week" class="an-kpi-sub">Monday to today</div>
+      </div>
+      <div class="an-kpi">
+        <div class="an-kpi-label">Average per day</div>
+        <div id="kpi-avg" class="an-kpi-value">0</div>
+        <div id="sub-avg" class="an-kpi-sub">in this period</div>
+      </div>
+    </section>
 
-    <!-- Bottom Actions Footer -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid rgba(212, 175, 55, 0.2); font-size: 0.75rem; color: rgba(251, 248, 242, 0.6);">
-      <div>
-        <span>Sagar Nilgiri Products • On-Site Marketing Analytics Engine</span>
+    <section class="an-panel">
+      <div class="an-panel-head">
+        <h2>Scans per day</h2>
+        <span id="daily-meta" class="an-panel-note"></span>
       </div>
-      <div>
-        <button id="btn-reset-data" style="background: transparent; border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 0.35rem 0.75rem; border-radius: 999px; cursor: pointer; font-size: 0.7rem;">
-          ⚠️ Reset Test Data
-        </button>
+      <div id="daily-chart" class="chart-empty">Loading…</div>
+    </section>
+
+    <section class="an-panel">
+      <div class="an-panel-head">
+        <h2>Scans per week</h2>
+        <span id="weekly-meta" class="an-panel-note"></span>
       </div>
-    </div>
+      <div class="table-scroll">
+        <table class="an-table">
+          <thead>
+            <tr>
+              <th>Week</th>
+              <th class="num">Scans</th>
+              <th class="bar-track-cell"></th>
+              <th class="num">Average per day</th>
+            </tr>
+          </thead>
+          <tbody id="weekly-body">
+            <tr><td colspan="4" class="empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="an-foot">
+      <span id="foot-note">Homewood Tea · Nilgiris Frame</span>
+      <button type="button" id="btn-reset-data" class="an-btn an-btn--danger no-print">⚠ Delete all scan data</button>
+    </footer>
   </div>
 
-  <!-- Analytics JavaScript Engine -->
   <script>
     (function () {
-      let currentTimeframe = 'all';
+      'use strict';
 
-      // Elements
-      const statVisits = document.getElementById('stat-visits');
-      const statCamera = document.getElementById('stat-camera');
-      const statSnaps = document.getElementById('stat-snaps');
-      const statDownloads = document.getElementById('stat-downloads');
-      const statShares = document.getElementById('stat-shares');
-      const statConversion = document.getElementById('stat-conversion');
+      const RANGES = ['today', '7d', '30d', '90d', 'all'];
+      const state = { range: '7d', loading: false };
 
-      const funnelContainer = document.getElementById('funnel-container');
-      const timelineContainer = document.getElementById('timeline-container');
-      const deviceList = document.getElementById('device-list');
-      const osList = document.getElementById('os-list');
-      const activityFeed = document.getElementById('activity-feed');
-      const btnRefresh = document.getElementById('btn-refresh-stats');
-      const btnReset = document.getElementById('btn-reset-data');
+      const $ = (id) => document.getElementById(id);
 
-      // Fetch aggregated stats from Python backend
-      async function loadStats() {
-        try {
-          const res = await fetch(`/api/analytics/stats?timeframe=${currentTimeframe}`);
-          if (!res.ok) throw new Error('Failed to fetch analytics');
-          const data = await res.json();
-          renderStats(data);
-        } catch (e) {
-          console.warn('Analytics API offline or not responding:', e);
-          // Demo fallback if backend is offline
-          renderDemoStats();
-        }
+      function fmt(value) {
+        return Number(value || 0).toLocaleString('en-IN');
       }
 
-      // Fetch live activity stream
-      async function loadRecentEvents() {
-        try {
-          const res = await fetch('/api/analytics/recent');
-          if (!res.ok) return;
-          const data = await res.json();
-          renderRecentEvents(data.events || []);
-        } catch (e) {
-          console.warn('Could not load live events:', e);
-        }
+      function shortDate(iso) {
+        const d = new Date(iso + 'T00:00:00');
+        if (isNaN(d)) return iso;
+        return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
       }
 
-      function renderStats(data) {
-        const s = data.summary || {};
-        statVisits.textContent = (s.total_visits || 0).toLocaleString();
-        statCamera.textContent = (s.camera_opens || 0).toLocaleString();
-        statSnaps.textContent = (s.photos_snapped || 0).toLocaleString();
-        statDownloads.textContent = (s.total_downloads || 0).toLocaleString();
-        statShares.textContent = (s.total_shares || 0).toLocaleString();
-        statConversion.textContent = `${s.conversion_rate || 0}%`;
-
-        // Render Funnel
-        const funnel = data.funnel || [];
-        if (funnel.length > 0) {
-          funnelContainer.innerHTML = funnel.map(item => `
-            <div class="funnel-step">
-              <div class="funnel-header">
-                <span>${item.step}</span>
-                <span style="font-weight: 600; color: var(--nilgiri-gold);">${item.count} (${item.pct}%)</span>
-              </div>
-              <div class="funnel-bar-bg">
-                <div class="funnel-bar-fill" style="width: ${Math.max(item.pct, 2)}%;"></div>
-              </div>
-            </div>
-          `).join('');
-        }
-
-        // Render Devices
-        const devices = data.devices || {};
-        deviceList.innerHTML = Object.entries(devices).length > 0
-          ? Object.entries(devices).map(([d, count]) => `
-            <div style="display: flex; justify-content: space-between; padding: 0.35rem 0.5rem; background: rgba(8, 28, 21, 0.5); border-radius: 0.5rem;">
-              <span style="text-transform: capitalize;">${d === 'mobile' ? '📱 Mobile' : d === 'tablet' ? '📟 Tablet' : '💻 Desktop'}</span>
-              <span style="color: var(--nilgiri-gold); font-weight: 600;">${count}</span>
-            </div>
-          `).join('')
-          : '<div style="color: rgba(251,248,242,0.5);">No device data yet</div>';
-
-        // Render OS
-        const os = data.operating_systems || {};
-        osList.innerHTML = Object.entries(os).length > 0
-          ? Object.entries(os).map(([name, count]) => `
-            <div style="display: flex; justify-content: space-between; padding: 0.35rem 0.5rem; background: rgba(8, 28, 21, 0.5); border-radius: 0.5rem;">
-              <span>${name}</span>
-              <span style="color: var(--nilgiri-gold); font-weight: 600;">${count}</span>
-            </div>
-          `).join('')
-          : '<div style="color: rgba(251,248,242,0.5);">No OS data yet</div>';
-
-        // Render Timeline
-        const timeline = data.timeline || [];
-        if (timeline.length > 0) {
-          const maxVisits = Math.max(...timeline.map(t => Math.max(t.visits, t.downloads, 1)));
-          timelineContainer.innerHTML = `
-            <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 0.5rem; height: 140px; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(212, 175, 55, 0.2);">
-              ${timeline.map(t => {
-                const visitHeight = Math.max((t.visits / maxVisits) * 110, 8);
-                const dlHeight = Math.max((t.downloads / maxVisits) * 110, 4);
-                return `
-                  <div style="display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; gap: 0.2rem;" title="${t.day}: ${t.visits} visits, ${t.downloads} downloads">
-                    <div style="display: flex; align-items: flex-end; gap: 2px; width: 100%; justify-content: center;">
-                      <div style="width: 40%; max-width: 14px; height: ${visitHeight}px; background: rgba(59, 130, 246, 0.85); border-radius: 4px 4px 0 0;"></div>
-                      <div style="width: 40%; max-width: 14px; height: ${dlHeight}px; background: var(--nilgiri-gold); border-radius: 4px 4px 0 0;"></div>
-                    </div>
-                    <span style="font-size: 0.6rem; color: rgba(251, 248, 242, 0.6);">${t.day.slice(5)}</span>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-            <div style="display: flex; justify-content: center; gap: 1.5rem; font-size: 0.7rem; margin-top: 0.75rem;">
-              <span style="display: flex; align-items: center; gap: 0.35rem;"><span style="width: 8px; height: 8px; border-radius: 2px; background: rgba(59, 130, 246, 0.85);"></span> Visits</span>
-              <span style="display: flex; align-items: center; gap: 0.35rem;"><span style="width: 8px; height: 8px; border-radius: 2px; background: var(--nilgiri-gold);"></span> Downloads</span>
-            </div>
-          `;
-        } else {
-          timelineContainer.innerHTML = '<div style="text-align: center; color: rgba(251,248,242,0.5); padding: 2rem;">No recent daily activity yet.</div>';
-        }
+      function longDate(iso) {
+        const d = new Date(iso + 'T00:00:00');
+        if (isNaN(d)) return iso;
+        return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
       }
 
-      function renderRecentEvents(events) {
-        if (!events || events.length === 0) {
-          activityFeed.innerHTML = '<div style="text-align: center; color: rgba(251,248,242,0.5); padding: 2rem;">No events logged yet. Scan the QR code to see live events!</div>';
+      function setText(id, text) {
+        const el = $(id);
+        if (el) el.textContent = text;
+      }
+
+      function showError(message) {
+        const banner = $('load-error');
+        const text = $('load-error-text');
+        if (text) text.textContent = message;
+        if (banner) banner.classList.add('show');
+      }
+
+      function clearError() {
+        const banner = $('load-error');
+        if (banner) banner.classList.remove('show');
+      }
+
+      /* Only scans are drawn: no photos, devices or contact details. */
+
+      function renderTotals(data) {
+        const daily = data.daily || [];
+        const summary = data.summary || {};
+        const last = daily.length ? daily[daily.length - 1] : null;
+
+        setText('kpi-total', fmt(summary.scans));
+        setText('kpi-avg', summary.avg_scans_per_day);
+        setText('sub-total', data.range.days === 1 ? '1 day in period' : data.range.days + ' days in period');
+        setText('sub-avg', 'per day in this period');
+
+        setText('kpi-today', fmt(last ? last.scans : 0));
+        setText('sub-today', last ? longDate(last.date) : 'no data yet');
+
+        // "This week" = Monday of the newest day in the series up to that day.
+        let weekTotal = 0;
+        let weekStart = null;
+        if (last) {
+          const end = new Date(last.date + 'T00:00:00');
+          const monday = new Date(end);
+          monday.setDate(end.getDate() - ((end.getDay() + 6) % 7));
+          weekStart = monday;
+          daily.forEach(function (day) {
+            const current = new Date(day.date + 'T00:00:00');
+            if (current >= monday && current <= end) weekTotal += day.scans;
+          });
+        }
+        setText('kpi-week', fmt(weekTotal));
+        setText('sub-week', weekStart
+          ? 'since Mon ' + weekStart.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+          : 'no data yet');
+
+        const range = data.range;
+        setText('range-caption', range.label + ': ' + shortDate(range.start) + ' – ' + longDate(range.end) +
+          ' · ' + range.days + (range.days === 1 ? ' day' : ' days'));
+        setText('foot-note', 'Homewood Tea · Nilgiris Frame · updated ' + data.generated_at);
+      }
+
+      function renderDaily(data) {
+        const el = $('daily-chart');
+        if (!el) return;
+        const daily = data.daily || [];
+        const total = daily.reduce(function (sum, day) { return sum + day.scans; }, 0);
+        setText('daily-meta', fmt(total) + ' scans · ' + daily.length + (daily.length === 1 ? ' day' : ' days'));
+
+        if (!total) {
+          el.className = 'chart-empty';
+          el.textContent = 'No scans in this period yet.';
           return;
         }
 
-        const badgeMap = {
-          'page_view': { text: 'QR Visit', cls: 'badge-view', icon: '👁️' },
-          'camera_open': { text: 'Camera', cls: 'badge-snap', icon: '📷' },
-          'photo_snap': { text: 'Photo Taken', cls: 'badge-snap', icon: '📸' },
-          'photo_download': { text: 'HD Download', cls: 'badge-download', icon: '⬇️' },
-          'photo_share': { text: 'Shared', cls: 'badge-share', icon: '📤' },
-          'cta_click': { text: 'Tea Shop CTA', cls: 'badge-download', icon: '🍃' },
-        };
+        const max = Math.max.apply(null, daily.map(function (day) { return day.scans; }).concat([1]));
+        const step = Math.max(1, Math.ceil(daily.length / 14));
+        el.className = '';
+        el.innerHTML = '<div class="chart-bars">' + daily.map(function (day, index) {
+          const height = day.scans ? Math.max((day.scans / max) * 100, 2) : 0;
+          const label = daily.length <= 31 || index % step === 0 ? shortDate(day.date) : '';
+          return '<div class="bar-col" title="' + shortDate(day.date) + ': ' + day.scans + ' scans">' +
+            '<span class="bar-value">' + (day.scans || '') + '</span>' +
+            '<div class="bar-track"><div class="bar-fill" style="height:' + height + '%"></div></div>' +
+            '<span class="bar-label">' + label + '</span>' +
+            '</div>';
+        }).join('') + '</div>';
+      }
 
-        activityFeed.innerHTML = events.map(e => {
-          const b = badgeMap[e.event_type] || { text: e.event_type, cls: 'badge-view', icon: '✦' };
-          const deviceIcon = e.device_type === 'mobile' ? '📱' : '💻';
-          return `
-            <div class="activity-item">
-              <div style="display: flex; align-items: center; gap: 0.6rem;">
-                <span class="activity-badge ${b.cls}">${b.icon} ${b.text}</span>
-                <span style="color: rgba(251, 248, 242, 0.85);">${deviceIcon} ${e.os_name} • ${e.browser}</span>
-              </div>
-              <span style="color: rgba(251, 248, 242, 0.45); font-size: 0.65rem;">${e.created_at}</span>
-            </div>
-          `;
+      function renderWeekly(data) {
+        const body = $('weekly-body');
+        if (!body) return;
+        const weekly = (data.weekly || []).slice().reverse();
+
+        if (!weekly.length) {
+          body.innerHTML = '<tr><td colspan="4" class="empty">No weekly data yet.</td></tr>';
+          setText('weekly-meta', '');
+          return;
+        }
+
+        const max = Math.max.apply(null, weekly.map(function (week) { return week.scans; }).concat([1]));
+        setText('weekly-meta', weekly.length + (weekly.length === 1 ? ' week' : ' weeks') + ' · newest first');
+        body.innerHTML = weekly.map(function (week) {
+          const width = week.scans ? Math.max((week.scans / max) * 100, 2) : 0;
+          return '<tr>' +
+            '<td class="week-cell">' + shortDate(week.start) + ' – ' + shortDate(week.end) + '</td>' +
+            '<td class="num">' + fmt(week.scans) + '</td>' +
+            '<td><span class="cell-bar"><i style="width:' + width + '%"></i></span></td>' +
+            '<td class="num muted">' + week.avg_scans_per_day + '</td>' +
+            '</tr>';
         }).join('');
       }
 
-      function renderDemoStats() {
-        renderStats({
-          summary: {
-            total_visits: 128,
-            camera_opens: 94,
-            photos_snapped: 82,
-            total_downloads: 65,
-            total_shares: 28,
-            conversion_rate: 50.8
-          },
-          funnel: [
-            { step: 'QR Scans / Visits', count: 128, pct: 100 },
-            { step: 'Camera Opened', count: 94, pct: 73.4 },
-            { step: 'Photos Snapped', count: 82, pct: 64.1 },
-            { step: 'HD Downloads', count: 65, pct: 50.8 },
-            { step: 'Social Shares', count: 28, pct: 21.9 }
-          ],
-          devices: { mobile: 114, desktop: 14 },
-          operating_systems: { iOS: 78, Android: 36, Windows: 14 },
-          timeline: [
-            { day: '2026-09-15', visits: 12, downloads: 6 },
-            { day: '2026-09-16', visits: 18, downloads: 9 },
-            { day: '2026-09-17', visits: 24, downloads: 14 },
-            { day: '2026-09-18', visits: 20, downloads: 11 },
-            { day: '2026-09-19', visits: 32, downloads: 19 },
-            { day: '2026-09-20', visits: 38, downloads: 22 },
-            { day: '2026-09-21', visits: 44, downloads: 25 }
-          ]
+      function renderReport(data) {
+        renderTotals(data);
+        renderDaily(data);
+        renderWeekly(data);
+      }
+
+      async function loadReport(options) {
+        if (state.loading) return;
+        state.loading = true;
+        const button = $('btn-refresh');
+        if (options && options.manual && button) {
+          button.disabled = true;
+          button.textContent = '↻ Loading…';
+        }
+
+        try {
+          const response = await fetch('/api/analytics/report?range=' + encodeURIComponent(state.range), {
+            headers: { Accept: 'application/json' }
+          });
+          if (response.status === 401) {
+            window.location.replace('/login?next=/analytics');
+            return;
+          }
+          const data = await response.json().catch(function () { return null; });
+          if (!response.ok || !data || data.status !== 'ok') {
+            throw new Error((data && data.message) || ('Report request failed (HTTP ' + response.status + ')'));
+          }
+          renderReport(data);
+          clearError();
+        } catch (error) {
+          showError('Could not load the report: ' + error.message +
+            '. Check that the server is running and you are still signed in.');
+        } finally {
+          state.loading = false;
+          if (options && options.manual && button) {
+            button.disabled = false;
+            button.textContent = '↻ Refresh';
+          }
+        }
+      }
+
+      function setRange(range) {
+        state.range = RANGES.indexOf(range) === -1 ? '7d' : range;
+        document.querySelectorAll('.range-pill').forEach(function (pill) {
+          const active = pill.getAttribute('data-range') === state.range;
+          pill.classList.toggle('active', active);
+          pill.setAttribute('aria-pressed', String(active));
+        });
+        const exportLink = $('btn-export');
+        if (exportLink) exportLink.href = '/api/analytics/report.csv?range=' + encodeURIComponent(state.range);
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set('range', state.range);
+          window.history.replaceState({}, '', url);
+        } catch (e) { /* history is optional */ }
+        loadReport();
+      }
+
+      document.querySelectorAll('.range-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () { setRange(pill.getAttribute('data-range')); });
+      });
+
+      const refreshButton = $('btn-refresh');
+      if (refreshButton) {
+        refreshButton.addEventListener('click', function () { loadReport({ manual: true }); });
+      }
+
+      const printButton = $('btn-print');
+      if (printButton) {
+        printButton.addEventListener('click', function () { window.print(); });
+      }
+
+      const signOutButton = $('btn-signout');
+      if (signOutButton) {
+        signOutButton.addEventListener('click', function () {
+          fetch('/api/logout', { method: 'POST' }).finally(function () {
+            window.location.replace('/login');
+          });
         });
       }
 
-      // Time Filter Buttons
-      document.querySelectorAll('.time-filter-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.time-filter-pill').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          currentTimeframe = btn.dataset.timeframe;
-          loadStats();
-        });
-      });
-
-      // Refresh Button
-      btnRefresh.addEventListener('click', () => {
-        btnRefresh.textContent = 'Refreshing...';
-        Promise.all([loadStats(), loadRecentEvents()]).then(() => {
-          setTimeout(() => { btnRefresh.textContent = '🔄 Refresh Live'; }, 400);
-        });
-      });
-
-      // Reset Button
-      btnReset.addEventListener('click', async () => {
-        if (confirm('Are you sure you want to reset all analytics data?')) {
+      const resetButton = $('btn-reset-data');
+      if (resetButton) {
+        resetButton.addEventListener('click', async function () {
+          if (!window.confirm('Delete every recorded scan? This cannot be undone.')) return;
           try {
-            await fetch('/api/analytics/reset', { method: 'POST' });
-            alert('Analytics data reset.');
-            loadStats();
-            loadRecentEvents();
-          } catch (e) {
-            alert('Could not reset data: ' + e.message);
+            const response = await fetch('/api/analytics/reset', { method: 'POST' });
+            const data = await response.json().catch(function () { return null; });
+            if (!response.ok) throw new Error((data && data.message) || 'Reset failed');
+            await loadReport({ manual: true });
+          } catch (error) {
+            window.alert('Could not reset data: ' + error.message);
           }
-        }
-      });
+        });
+      }
 
-      // Initial Load & Polling
-      loadStats();
-      loadRecentEvents();
-      setInterval(() => {
-        loadStats();
-        loadRecentEvents();
-      }, 10000); // Live sync every 10s
+      const initialRange = new URLSearchParams(window.location.search).get('range') || '7d';
+      setRange(RANGES.indexOf(initialRange) === -1 ? '7d' : initialRange);
     })();
   </script>
 </body>
