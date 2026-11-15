@@ -1,7 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap');
 
+@font-face {
+  font-family: 'Godber';
+  src: url('../Font/Godber-Regular.ttf') format('truetype'),
+       url('/Font/Godber-Regular.ttf') format('truetype'),
+       url('Godber-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================================
-   Nilgiris Frame - design tokens
+   m'POSE - design tokens
    Warm paper, near-black ink, one burnt-orange accent. No gradients on text.
    ========================================================================== */
 :root {
@@ -34,6 +44,7 @@
   --r-lg: 24px;
   --r-pill: 999px;
 
+  --font-brand: 'Godber', 'Fraunces', Georgia, serif;
   --font-serif: 'Fraunces', Georgia, serif;
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --heading-strong: var(--ink);
@@ -362,10 +373,14 @@ a:hover { color: var(--accent-deep); }
 .brand-crest img { width: 100%; height: 100%; object-fit: contain; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
 .brand-text strong {
-  font-family: var(--font-serif);
-  font-size: 1.02rem;
+  font-family: var(--font-brand);
+  font-size: 1.18rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
+}
+.brand-name, .font-mpose, .font-brand {
+  font-family: var(--font-brand) !important;
+  letter-spacing: 0.02em;
 }
 .brand-text small {
   font-size: 0.62rem;

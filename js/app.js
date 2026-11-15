@@ -1,5 +1,5 @@
 /**
- * Maple Connect - Main Application Controller
+ * m'POSE - Main Application Controller
  * Connects UI Flow, Multi-Frame Selection, Camera Capture, Touch Photo Adjuster, and Compositor.
  */
 
@@ -426,7 +426,7 @@
   async function triggerNativeShare() {
     if (!compositeResult || !navigator.share) return false;
 
-    const shareTitle = activeCampaign.campaignTitle || 'Nilgiris Frame';
+    const shareTitle = activeCampaign.campaignTitle || "m'POSE";
     const shareText = `${activeCampaign.suggestedShareText}\n\n${(activeCampaign.defaultHashtags || []).join(' ')}`;
 
     // 1. Try sharing with the high-res 1080x1350 JPEG file
@@ -537,8 +537,8 @@
       if (qrSub) qrSub.textContent = `Scan with your phone to launch the ${frame.name} camera experience!`;
       targetUrl = `${origin}/q/${frame.id}`;
     } else {
-      if (qrLabel) qrLabel.textContent = `📱 Open Nilgiris Frame Experience`;
-      if (qrSub) qrSub.textContent = `Scan with your smartphone camera to operate the full touch photo app on your phone!`;
+      if (qrLabel) qrLabel.textContent = `📱 Open m'POSE Experience`;
+      if (qrSub) qrSub.textContent = `Scan with your smartphone camera to operate m'POSE on your phone!`;
       targetUrl = `${origin}/`;
     }
 

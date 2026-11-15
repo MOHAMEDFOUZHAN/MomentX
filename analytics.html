@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#e8e7e3" />
-  <title>Scan counts | Homewood Tea Nilgiris</title>
+  <title>Scan counts | m'POSE · Homewood Tea</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
@@ -197,7 +197,7 @@
       <div class="an-brand">
         <img src="logo.png" alt="Homewood Tea" />
         <div>
-          <h1>Scan counts</h1>
+          <h1><span class="font-mpose" style="margin-right: 0.35rem; font-size: 1.15em;">m'POSE</span>Scan counts</h1>
           <p id="range-caption" class="an-caption">Loading…</p>
         </div>
       </div>
@@ -281,7 +281,7 @@
     </section>
 
     <footer class="an-foot">
-      <span id="foot-note">Homewood Tea · Nilgiris Frame</span>
+      <span id="foot-note">Homewood Tea · <strong class="font-mpose">m'POSE</strong></span>
       <button type="button" id="btn-reset-data" class="an-btn an-btn--danger no-print">⚠ Delete all scan data</button>
     </footer>
   </div>
@@ -364,7 +364,7 @@
         const range = data.range;
         setText('range-caption', range.label + ': ' + shortDate(range.start) + ' – ' + longDate(range.end) +
           ' · ' + range.days + (range.days === 1 ? ' day' : ' days'));
-        setText('foot-note', 'Homewood Tea · Nilgiris Frame · updated ' + data.generated_at);
+        setText('foot-note', "Homewood Tea · m'POSE · updated " + data.generated_at);
       }
 
       function renderDaily(data) {

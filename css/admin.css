@@ -1,8 +1,19 @@
+@font-face {
+  font-family: 'Godber';
+  src: url('../Font/Godber-Regular.ttf') format('truetype'),
+       url('/Font/Godber-Regular.ttf') format('truetype'),
+       url('Godber-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================================
    Admin + analytics surfaces - light counterpart of the visitor theme
    Platinum ground, Dark Moss type, Persian Orange accent.
    ========================================================================== */
 :root {
+  --font-brand: 'Godber', Georgia, serif;
   --accent: #cf8852;
   --accent-deep: #b3703c;
   --accent-soft: #f2dfce;
@@ -15,6 +26,11 @@
   --lux-gold-champagne: var(--accent);
   --nilgiri-gold: var(--accent);
   --nilgiri-emerald: var(--pine);
+}
+
+.font-brand, .brand-name, .font-mpose {
+  font-family: var(--font-brand) !important;
+  letter-spacing: 0.02em;
 }
 
 body {

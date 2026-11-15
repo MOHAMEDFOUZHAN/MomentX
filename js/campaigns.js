@@ -1,5 +1,5 @@
 /**
- * Nilgiris Frame & Homewood Tea - All 9 Master Souvenir Frames
+ * m'POSE · Homewood Tea - All 9 Master Souvenir Frames
  * Handcrafted High-Definition 1080x1350 transparent overlays with tailored Homewood Tea medallions.
  */
 

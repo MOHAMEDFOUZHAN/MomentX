@@ -123,7 +123,7 @@ server.listen(PORT, '0.0.0.0', () => {
   const primaryIp = ips.length > 0 ? ips[0].address : 'localhost';
 
   console.log(`\n================================================================`);
-  console.log(`🌿 Maple Connect - Pure HTML/CSS/JS Experience Running`);
+  console.log(`🌿 m'POSE - Pure HTML/CSS/JS Experience Running`);
   console.log(`================================================================`);
   console.log(`💻 Local Computer:     http://localhost:${PORT}`);
   console.log(`📱 Mobile (Wi-Fi):     http://${primaryIp}:${PORT}`);

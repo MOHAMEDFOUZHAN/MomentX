@@ -1,5 +1,5 @@
 """
-Nilgiris Frame - Production Python Backend & Analytics Engine
+m'POSE - Production Python Backend & Analytics Engine
 Serves the web application and tracks visitor analytics, QR scans, and photo downloads.
 Compatible with local execution and Vercel Serverless Functions.
 """
@@ -626,7 +626,7 @@ def build_report_csv(report):
 
     meta = report['range']
     summary = report['summary']
-    writer.writerow(['Nilgiris Frame - scan counts'])
+    writer.writerow(["m'POSE - scan counts"])
     writer.writerow(['Range', meta['label']])
     writer.writerow(['From', meta['start']])
     writer.writerow(['To', meta['end']])
@@ -855,7 +855,7 @@ if __name__ == '__main__':
     generate_mobile_qr(mobile_url)
     
     print("\n" + "=" * 64)
-    print("[*] Nilgiris Frame - Production Python Server Active")
+    print("[*] m'POSE - Production Python Server Active")
     print("=" * 64)
     print(f"[*] Local Computer:      http://localhost:{port}")
     print(f"[*] Mobile (Wi-Fi):      {mobile_url}")
