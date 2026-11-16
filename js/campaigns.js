@@ -24,8 +24,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Soft blush pink, wild rose petals and delicate gold leaf",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_rose-garden.png",
-    "thumbImage": "new frames/frame_rose-garden_thumb.png",
+    "frameImage": "frames/frame_rose-garden.png",
+    "thumbImage": "frames/frame_rose-garden_thumb.png",
     "theme": {
       "primaryColor": "#8e3852",
       "goldColor": "#dfb85b",
@@ -85,8 +85,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Warm peach & rose-gold gradient with glowing mountain mist",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_sunset-glow.png",
-    "thumbImage": "new frames/frame_sunset-glow_thumb.png",
+    "frameImage": "frames/frame_sunset-glow.png",
+    "thumbImage": "frames/frame_sunset-glow_thumb.png",
     "theme": {
       "primaryColor": "#b85d43",
       "goldColor": "#e5a93b",
@@ -145,8 +145,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Delicate purple blossoms, serene lavender mist and tea flora",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_lavender-serenity.png",
-    "thumbImage": "new frames/frame_lavender-serenity_thumb.png",
+    "frameImage": "frames/frame_lavender-serenity.png",
+    "thumbImage": "frames/frame_lavender-serenity_thumb.png",
     "theme": {
       "primaryColor": "#6b4c7d",
       "goldColor": "#d8b4e2",
@@ -206,8 +206,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Tactical forest green, topographic contours & rugged compass badge",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_high-country.png",
-    "thumbImage": "new frames/frame_high-country_thumb.png",
+    "frameImage": "frames/frame_high-country.png",
+    "thumbImage": "frames/frame_high-country_thumb.png",
     "theme": {
       "primaryColor": "#0a1d13",
       "goldColor": "#c99a3e",
@@ -266,8 +266,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Mountain ridge silhouettes, trail compass and vintage expedition styling",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_nilgiris-adventure.png",
-    "thumbImage": "new frames/frame_nilgiris-adventure_thumb.png",
+    "frameImage": "frames/frame_nilgiris-adventure.png",
+    "thumbImage": "frames/frame_nilgiris-adventure_thumb.png",
     "theme": {
       "primaryColor": "#18241e",
       "goldColor": "#d4a34b",
@@ -327,8 +327,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Sleek matte black & gunmetal bronze with bold factory roast seal",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_dark-roast.png",
-    "thumbImage": "new frames/frame_dark-roast_thumb.png",
+    "frameImage": "frames/frame_dark-roast.png",
+    "thumbImage": "frames/frame_dark-roast_thumb.png",
     "theme": {
       "primaryColor": "#141719",
       "goldColor": "#cd7f32",
@@ -388,8 +388,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Lush green tea gardens, mist and traditional imperial valley seal",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_nilgiris-valley.png",
-    "thumbImage": "new frames/frame_nilgiris-valley_thumb.png",
+    "frameImage": "frames/frame_nilgiris-valley.png",
+    "thumbImage": "frames/frame_nilgiris-valley_thumb.png",
     "theme": {
       "primaryColor": "#0d2b1d",
       "goldColor": "#d4af37",
@@ -450,8 +450,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Imperial champagne gold borders with royal tea crest and crown finials",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_classic-heritage.png",
-    "thumbImage": "new frames/frame_classic-heritage_thumb.png",
+    "frameImage": "frames/frame_classic-heritage.png",
+    "thumbImage": "frames/frame_classic-heritage_thumb.png",
     "theme": {
       "primaryColor": "#16130b",
       "goldColor": "#ffd700",
@@ -512,8 +512,8 @@ const ALL_FRAMES = [
     "campaignSubtitle": "Retro travel scrapbook with gold washi tape, stamps & wide photo window",
     "brandTagline": "Where Nature Feels Like Home",
     "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "new frames/frame_moments-scrapbook.png",
-    "thumbImage": "new frames/frame_moments-scrapbook_thumb.png",
+    "frameImage": "frames/frame_moments-scrapbook.png",
+    "thumbImage": "frames/frame_moments-scrapbook_thumb.png",
     "theme": {
       "primaryColor": "#2d2a26",
       "goldColor": "#e2be6c",
@@ -567,8 +567,8 @@ ALL_FRAMES.forEach(frame => {
   }
 });
 
-const STORAGE_KEY = 'nilgiri_frame_campaigns_v4';
-const SELECTED_FRAME_STORAGE_KEY = 'nilgiri_active_frame_id_v4';
+const STORAGE_KEY = 'nilgiri_frame_campaigns_v5';
+const SELECTED_FRAME_STORAGE_KEY = 'nilgiri_active_frame_id_v5';
 
 function getAllFrames() {
   return ALL_FRAMES;

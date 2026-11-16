@@ -17,6 +17,10 @@ const MIME_TYPES = {
   '.svg': 'image/svg+xml',
   '.webp': 'image/webp',
   '.ico': 'image/x-icon',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.ttf': 'font/ttf',
+  '.otf': 'font/otf',
 };
 
 // Only front-end assets may be served. Data, source and config files stay private.
@@ -55,8 +59,22 @@ function getNetworkIps() {
 }
 
 const server = http.createServer((req, res) => {
-  const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
-  let pathname = parsedUrl.pathname;
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+  } catch (e) {
+    res.writeHead(400, { 'Content-Type': 'text/plain' });
+    res.end('400 Bad Request');
+    return;
+  }
+
+  let rawPathname = parsedUrl.pathname;
+  let pathname = rawPathname;
+  try {
+    pathname = decodeURIComponent(rawPathname);
+  } catch (e) {
+    pathname = rawPathname;
+  }
 
   // Admin surfaces require the Flask server, which enforces authentication.
   if (['/admin', '/admin.html', '/analytics', '/analytics.html'].includes(pathname)) {
@@ -93,8 +111,14 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
-      // Fallback to index.html for client-side routing
-      filePath = path.join(PUBLIC_DIR, 'index.html');
+      // Fallback to index.html ONLY for navigation routes without static extension
+      if (!requestedExt || requestedExt === '.html') {
+        filePath = path.join(PUBLIC_DIR, 'index.html');
+      } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('404 Not Found');
+        return;
+      }
     }
 
     const ext = path.extname(filePath).toLowerCase();

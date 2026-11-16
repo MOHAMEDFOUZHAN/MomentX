@@ -26,9 +26,35 @@ function drawRoundedRect(ctx, x, y, width, height, radius) {
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    if (src && (src.startsWith('http://') || src.startsWith('https://'))) {
+      try {
+        const url = new URL(src, window.location.href);
+        if (url.origin !== window.location.origin) {
+          img.crossOrigin = 'anonymous';
+        }
+      } catch (e) {
+        img.crossOrigin = 'anonymous';
+      }
+    }
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error('Failed to load image: ' + src));
+    img.onerror = () => {
+      // Robust fallback between frames/ and new frames/
+      if (src && src.startsWith('frames/') && !src.includes('?fb=1')) {
+        const fbImg = new Image();
+        fbImg.onload = () => resolve(fbImg);
+        fbImg.onerror = () => reject(new Error('Failed to load image: ' + src));
+        fbImg.src = src.replace('frames/', 'new frames/') + '?fb=1';
+        return;
+      }
+      if (src && src.startsWith('new frames/') && !src.includes('?fb=1')) {
+        const fbImg = new Image();
+        fbImg.onload = () => resolve(fbImg);
+        fbImg.onerror = () => reject(new Error('Failed to load image: ' + src));
+        fbImg.src = src.replace('new frames/', 'frames/') + '?fb=1';
+        return;
+      }
+      reject(new Error('Failed to load image: ' + src));
+    };
     img.src = src;
   });
 }

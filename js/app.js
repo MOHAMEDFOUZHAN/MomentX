@@ -45,6 +45,7 @@
   const screenPreview = document.getElementById('screen-preview');
 
   const cameraVideo = document.getElementById('camera-video');
+  const cameraFrameOverlayImg = document.getElementById('camera-frame-overlay-img');
   const fileInput = document.getElementById('file-input');
   const cameraErrorBanner = document.getElementById('camera-error-banner');
   const cameraErrorText = document.getElementById('camera-error-text');
@@ -128,6 +129,11 @@
     // Update Landing Teaser Frame
     if (landingTeaserImg && frame.frameImage) {
       landingTeaserImg.src = frame.frameImage;
+    }
+
+    // Update Live Camera Frame Overlay
+    if (cameraFrameOverlayImg && frame.frameImage) {
+      cameraFrameOverlayImg.src = frame.frameImage;
     }
 
     // Update landing teaser window geometry

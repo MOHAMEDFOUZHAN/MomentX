@@ -4,7 +4,7 @@
 
 (function () {
   let campaigns = loadAllCampaigns();
-  let selectedCampaignKey = 'nilgiri-tea';
+  let selectedCampaignKey = 'rose-garden';
   let activeTab = 'template';
   let currentPreviewCanvas = null;
 
@@ -51,7 +51,9 @@
 
   // Populate Sliders from Active Campaign
   function syncSlidersFromCampaign() {
-    const camp = campaigns[selectedCampaignKey];
+    const camp = campaigns[selectedCampaignKey] || Object.values(campaigns)[0];
+    if (!camp || !camp.template || !camp.template.photoArea) return;
+    if (selectCampaign) selectCampaign.value = camp.id;
     const pa = camp.template.photoArea;
 
     inputX.value = pa.x; valX.textContent = `${pa.x}px`;
