@@ -855,7 +855,7 @@ if __name__ == '__main__':
     generate_mobile_qr(mobile_url)
     
     print("\n" + "=" * 64)
-    print("[*] m'POSE - Production Python Server Active")
+    print("[*] m'POSE (powered by Maple Pro) - Production Python Server Active")
     print("=" * 64)
     print(f"[*] Local Computer:      http://localhost:{port}")
     print(f"[*] Mobile (Wi-Fi):      {mobile_url}")

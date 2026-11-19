@@ -45,6 +45,7 @@
   --r-pill: 999px;
 
   --font-brand: 'Godber', 'Fraunces', Georgia, serif;
+  --font-maple: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   --font-serif: 'Fraunces', Georgia, serif;
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --heading-strong: var(--ink);
@@ -381,6 +382,32 @@ a:hover { color: var(--accent-deep); }
 .brand-name, .font-mpose, .font-brand {
   font-family: var(--font-brand) !important;
   letter-spacing: 0.02em;
+}
+.font-gillsans, .font-maple-pro, .font-maple {
+  font-family: var(--font-maple) !important;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.brand-badge-img {
+  height: 42px;
+  width: auto;
+  max-width: 145px;
+  object-fit: contain;
+  display: block;
+}
+.powered-by-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  line-height: 1.2;
+}
+.maple-pro-brand {
+  font-family: var(--font-maple) !important;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
 }
 .brand-text small {
   font-size: 0.62rem;

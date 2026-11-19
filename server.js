@@ -147,15 +147,16 @@ server.listen(PORT, '0.0.0.0', () => {
   const primaryIp = ips.length > 0 ? ips[0].address : 'localhost';
 
   console.log(`\n================================================================`);
-  console.log(`🌿 m'POSE - Pure HTML/CSS/JS Experience Running`);
+  console.log(`🌿 m'POSE (powered by Maple Pro) - Pure HTML/CSS/JS Experience Running`);
   console.log(`================================================================`);
   console.log(`💻 Local Computer:     http://localhost:${PORT}`);
   console.log(`📱 Mobile (Wi-Fi):     http://${primaryIp}:${PORT}`);
   console.log(`----------------------------------------------------------------`);
-  console.log(`🍃 Sagar Nilgiri Frame: http://${primaryIp}:${PORT}/q/nilgiri-tea`);
-  console.log(`🍁 Maple Artisan Frame: http://${primaryIp}:${PORT}/q/maple-artisan`);
-  console.log(`🌿 Highland Spice Frame: http://${primaryIp}:${PORT}/q/highland-spice`);
-  console.log(`⚙️  Admin Studio:        http://${primaryIp}:${PORT}/admin`);
+  console.log(`🌸 Rose Garden Frame:    http://${primaryIp}:${PORT}/q/rose-garden`);
+  console.log(`🌅 Sunset Glow Frame:     http://${primaryIp}:${PORT}/q/sunset-glow`);
+  console.log(`🍃 Nilgiris Valley:       http://${primaryIp}:${PORT}/q/nilgiris-valley`);
+  console.log(`☕ Dark Roast Noir:       http://${primaryIp}:${PORT}/q/dark-roast`);
+  console.log(`⚙️  Admin Studio:         http://${primaryIp}:${PORT}/admin`);
   console.log(`================================================================`);
   console.log(`📱 TO USE ON YOUR MOBILE PHONE:`);
   console.log(`1. Ensure your phone and PC are connected to the same Wi-Fi.`);

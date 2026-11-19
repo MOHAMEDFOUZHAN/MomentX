@@ -14,6 +14,7 @@
    ========================================================================== */
 :root {
   --font-brand: 'Godber', Georgia, serif;
+  --font-maple: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   --accent: #cf8852;
   --accent-deep: #b3703c;
   --accent-soft: #f2dfce;
@@ -31,6 +32,12 @@
 .font-brand, .brand-name, .font-mpose {
   font-family: var(--font-brand) !important;
   letter-spacing: 0.02em;
+}
+
+.font-gillsans, .font-maple-pro, .font-maple {
+  font-family: var(--font-maple) !important;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 body {
