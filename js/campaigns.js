@@ -1,5 +1,5 @@
 /**
- * m'POSE · Homewood Tea - All 9 Master Souvenir Frames
+ * m'POSE · Homewood Tea - All 12 Master Souvenir Frames
  * Handcrafted High-Definition 1080x1350 transparent overlays with tailored Homewood Tea medallions.
  */
 
@@ -67,42 +67,42 @@ const ALL_FRAMES = [
     }
   },
   {
-    "id": "sunset-glow",
+    "id": "factory-museum",
     "aliases": [
-      "golden-hour",
-      "homewood-tea-sunset-frame",
-      "sunset",
-      "blush-sunset"
+      "tea-factory-museum",
+      "the-tea-factory",
+      "factory-tour",
+      "museum-visit"
     ],
-    "name": "Golden Sunset Glow",
-    "themeName": "Warm Peach & Sunset Gold",
-    "category": "Feminine / Aesthetic",
-    "tag": "Golden Hour",
-    "badgeIcon": "\ud83c\udf05",
+    "name": "Tea Factory & Museum",
+    "themeName": "Panoramic Tea Factory & Vintage Filmstrip",
+    "category": "Heritage & Factory",
+    "tag": "Factory Tour",
+    "badgeIcon": "\ud83c\udfed",
     "clientId": "homewood-tea",
     "clientName": "Homewood Tea",
-    "campaignTitle": "Chasing Sunsets & Mountain Brews",
-    "campaignSubtitle": "Warm peach & rose-gold gradient with glowing mountain mist",
-    "brandTagline": "Where Nature Feels Like Home",
-    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "frames/frame_sunset-glow.png",
-    "thumbImage": "frames/frame_sunset-glow_thumb.png",
+    "campaignTitle": "A Journey into The World of Tea",
+    "campaignSubtitle": "Iconic tea factory panorama, fresh tea leaves and vintage machinery filmstrip",
+    "brandTagline": "The Original Nilgiris Tea Experience",
+    "locationText": "The Tea Factory & Museum \u2022 Ooty, Nilgiris",
+    "frameImage": "frames/frame_factory-museum.png",
+    "thumbImage": "frames/frame_factory-museum_thumb.png",
     "theme": {
-      "primaryColor": "#b85d43",
-      "goldColor": "#e5a93b",
-      "darkBg": "#2b160e",
-      "accentColor": "#f7c2a5",
-      "textColor": "#fffbf5"
+      "primaryColor": "#1a4731",
+      "goldColor": "#dfb85b",
+      "darkBg": "#0e2117",
+      "accentColor": "#cf8852",
+      "textColor": "#faf7f0"
     },
     "defaultHashtags": [
-      "#GoldenHour",
+      "#TheTeaFactory",
       "#HomewoodTea",
-      "#NilgiriSunset",
-      "#MountainBrews",
-      "#Ooty"
+      "#NilgirisMuseum",
+      "#OotyDiaries",
+      "#TeaLovers"
     ],
-    "suggestedShareText": "Higher elevation, warmer memories. Chasing sunsets with Homewood Tea \ud83c\udf05\u2615 #GoldenHour #HomewoodTea",
-    "ctaText": "Explore Homewood Tea Blends \u2192",
+    "suggestedShareText": "Journey into the world of tea at Homewood Tea Factory & Museum, Ooty \ud83c\udfed\ud83c\udf43 #TheTeaFactory #HomewoodTea",
+    "ctaText": "Explore Factory Museum Tour \u2192",
     "ctaUrl": "https://homewoodtea.example.com",
     "template": {
       "canvas": {
@@ -110,77 +110,17 @@ const ALL_FRAMES = [
         "height": 1350
       },
       "photoArea": {
-        "x": 78,
-        "y": 60,
-        "width": 903,
-        "height": 1063,
+        "x": 135,
+        "y": 170,
+        "width": 762,
+        "height": 701,
         "borderRadius": 0
       },
       "stageAreaPct": {
-        "left": 7.22,
-        "top": 4.44,
-        "width": 83.61,
-        "height": 78.74
-      },
-      "borderWidth": 0,
-      "framePadding": 28,
-      "styleVariant": "image-overlay"
-    }
-  },
-  {
-    "id": "lavender-serenity",
-    "aliases": [
-      "lavender-tea-garden-photo-frame",
-      "purple",
-      "lavender"
-    ],
-    "name": "Lavender Tea Garden",
-    "themeName": "Pastel Lavender & Lilac Mist",
-    "category": "Feminine / Aesthetic",
-    "tag": "Floral Serenity",
-    "badgeIcon": "\ud83e\udebb",
-    "clientId": "homewood-tea",
-    "clientName": "Homewood Tea",
-    "campaignTitle": "Lavender Fields & Mountain Serenity",
-    "campaignSubtitle": "Delicate purple blossoms, serene lavender mist and tea flora",
-    "brandTagline": "Where Nature Feels Like Home",
-    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "frames/frame_lavender-serenity.png",
-    "thumbImage": "frames/frame_lavender-serenity_thumb.png",
-    "theme": {
-      "primaryColor": "#6b4c7d",
-      "goldColor": "#d8b4e2",
-      "darkBg": "#1d1324",
-      "accentColor": "#9b72b0",
-      "textColor": "#faf6fc"
-    },
-    "defaultHashtags": [
-      "#LavenderTea",
-      "#HomewoodTea",
-      "#PurpleSerenity",
-      "#NilgiriGardens",
-      "#OotyFlora"
-    ],
-    "suggestedShareText": "Basking in the gentle lavender breeze at Homewood Tea Gardens \ud83e\udebb\ud83c\udf43 #LavenderTea #HomewoodTea",
-    "ctaText": "Explore Homewood Tea Blends \u2192",
-    "ctaUrl": "https://homewoodtea.example.com",
-    "template": {
-      "canvas": {
-        "width": 1080,
-        "height": 1350
-      },
-      "photoArea": {
-        "x": 113,
-        "y": 91,
-        "width": 826,
-        "height": 1040,
-        "borderRadius": 0
-      },
-      "stageAreaPct": {
-        "left": 10.46,
-        "top": 6.74,
-        "width": 76.48,
-        "height": 77.04
+        "left": 12.5,
+        "top": 12.59,
+        "width": 70.56,
+        "height": 51.93
       },
       "borderWidth": 0,
       "framePadding": 28,
@@ -249,40 +189,102 @@ const ALL_FRAMES = [
     }
   },
   {
-    "id": "nilgiris-adventure",
+    "id": "emerald-gold",
     "aliases": [
-      "adventure",
-      "nilgiris-explorer-tea-adventure-frame",
-      "trail"
+      "nilgiris-emerald-gold",
+      "royal-tea-gardens",
+      "gold-tea-terrace",
+      "luxury-emerald"
     ],
-    "name": "Nilgiris Trail Adventure",
-    "themeName": "Summit Ridge & Antique Compass",
-    "category": "Adventure & Rugged",
-    "tag": "Peak Expedition",
-    "badgeIcon": "\ud83e\udded",
+    "name": "Nilgiris Emerald & Gold",
+    "themeName": "Royal Gold Trim & Misty Tea Terraces",
+    "category": "Luxury & Nature",
+    "tag": "Emerald Luxury",
+    "badgeIcon": "\ud83c\udf43",
     "clientId": "homewood-tea",
     "clientName": "Homewood Tea",
-    "campaignTitle": "Nilgiris Mountain Trail Adventure",
-    "campaignSubtitle": "Mountain ridge silhouettes, trail compass and vintage expedition styling",
+    "campaignTitle": "A Moment from The Nilgiris",
+    "campaignSubtitle": "Imperial gold foil trim, fresh morning tea dew and sweeping mountain terraces",
     "brandTagline": "Where Nature Feels Like Home",
-    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "frames/frame_nilgiris-adventure.png",
-    "thumbImage": "frames/frame_nilgiris-adventure_thumb.png",
+    "locationText": "Homewood Tea Estate & Factory \u2022 Nilgiris",
+    "frameImage": "frames/frame_emerald-gold.png",
+    "thumbImage": "frames/frame_emerald-gold_thumb.png",
     "theme": {
-      "primaryColor": "#18241e",
-      "goldColor": "#d4a34b",
-      "darkBg": "#0d1410",
-      "accentColor": "#2a3d33",
-      "textColor": "#f7f4ea"
+      "primaryColor": "#1a472a",
+      "goldColor": "#e5c158",
+      "darkBg": "#0b2315",
+      "accentColor": "#dfb85b",
+      "textColor": "#fcfbf7"
     },
     "defaultHashtags": [
-      "#NilgiriTrail",
+      "#NilgirisMoment",
+      "#EmeraldGardens",
       "#HomewoodTea",
-      "#PeakAdventure",
-      "#MountainTrek",
-      "#BornWild"
+      "#LuxuryTea",
+      "#TeaTerraces"
     ],
-    "suggestedShareText": "Every trail leads to extraordinary views and great tea \ud83e\udded\u26f0\ufe0f #NilgiriTrail #HomewoodTea",
+    "suggestedShareText": "Basking in the golden morning sun across the emerald tea terraces of Nilgiris \u2728\ud83c\udf43 #HomewoodTea",
+    "ctaText": "Shop Premium Reserve Blends \u2192",
+    "ctaUrl": "https://homewoodtea.example.com",
+    "template": {
+      "canvas": {
+        "width": 1080,
+        "height": 1350
+      },
+      "photoArea": {
+        "x": 184,
+        "y": 185,
+        "width": 728,
+        "height": 885,
+        "borderRadius": 0
+      },
+      "stageAreaPct": {
+        "left": 17.04,
+        "top": 13.7,
+        "width": 67.41,
+        "height": 65.56
+      },
+      "borderWidth": 0,
+      "framePadding": 28,
+      "styleVariant": "image-overlay"
+    }
+  },
+  {
+    "id": "sunset-glow",
+    "aliases": [
+      "golden-hour",
+      "homewood-tea-sunset-frame",
+      "sunset",
+      "blush-sunset"
+    ],
+    "name": "Golden Sunset Glow",
+    "themeName": "Warm Peach & Sunset Gold",
+    "category": "Feminine / Aesthetic",
+    "tag": "Golden Hour",
+    "badgeIcon": "\ud83c\udf05",
+    "clientId": "homewood-tea",
+    "clientName": "Homewood Tea",
+    "campaignTitle": "Chasing Sunsets & Mountain Brews",
+    "campaignSubtitle": "Warm peach & rose-gold gradient with glowing mountain mist",
+    "brandTagline": "Where Nature Feels Like Home",
+    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
+    "frameImage": "frames/frame_sunset-glow.png",
+    "thumbImage": "frames/frame_sunset-glow_thumb.png",
+    "theme": {
+      "primaryColor": "#b85d43",
+      "goldColor": "#e5a93b",
+      "darkBg": "#2b160e",
+      "accentColor": "#f7c2a5",
+      "textColor": "#fffbf5"
+    },
+    "defaultHashtags": [
+      "#GoldenHour",
+      "#HomewoodTea",
+      "#NilgiriSunset",
+      "#MountainBrews",
+      "#Ooty"
+    ],
+    "suggestedShareText": "Higher elevation, warmer memories. Chasing sunsets with Homewood Tea \ud83c\udf05\u2615 #GoldenHour #HomewoodTea",
     "ctaText": "Explore Homewood Tea Blends \u2192",
     "ctaUrl": "https://homewoodtea.example.com",
     "template": {
@@ -291,17 +293,17 @@ const ALL_FRAMES = [
         "height": 1350
       },
       "photoArea": {
-        "x": 117,
-        "y": 130,
-        "width": 828,
-        "height": 970,
+        "x": 78,
+        "y": 60,
+        "width": 903,
+        "height": 1063,
         "borderRadius": 0
       },
       "stageAreaPct": {
-        "left": 10.83,
-        "top": 9.63,
-        "width": 76.67,
-        "height": 71.85
+        "left": 7.22,
+        "top": 4.44,
+        "width": 83.61,
+        "height": 78.74
       },
       "borderWidth": 0,
       "framePadding": 28,
@@ -370,6 +372,127 @@ const ALL_FRAMES = [
     }
   },
   {
+    "id": "vintage-postcard",
+    "aliases": [
+      "tea-factory-postcard",
+      "vintage-factory",
+      "sepia-postcard",
+      "factory-stamp"
+    ],
+    "name": "Vintage Factory Postcard",
+    "themeName": "Classic Sepia Filmstrip & Postal Crest",
+    "category": "Heritage & Scrapbook",
+    "tag": "Vintage Postcard",
+    "badgeIcon": "\ud83d\udcdc",
+    "clientId": "homewood-tea",
+    "clientName": "Homewood Tea",
+    "campaignTitle": "A Visit to the Tea Factory",
+    "campaignSubtitle": "Rustic kraft cardstock, vintage sepia filmstrip and postal factory stamp",
+    "brandTagline": "Memories Brewed in the Hills",
+    "locationText": "Homewood Tea Factory & Museum \u2022 Nilgiris",
+    "frameImage": "frames/frame_vintage-postcard.png",
+    "thumbImage": "frames/frame_vintage-postcard_thumb.png",
+    "theme": {
+      "primaryColor": "#8a5d3b",
+      "goldColor": "#cda869",
+      "darkBg": "#2a1d15",
+      "accentColor": "#d88b48",
+      "textColor": "#fcfaf6"
+    },
+    "defaultHashtags": [
+      "#TeaFactoryVisit",
+      "#VintageNilgiris",
+      "#HomewoodTea",
+      "#OotyMemories",
+      "#PostcardFromOoty"
+    ],
+    "suggestedShareText": "A visit to the historic Tea Factory in the misty Nilgiris \ud83d\udcdc\u2615 #TeaFactoryVisit #HomewoodTea",
+    "ctaText": "Discover Vintage Blends \u2192",
+    "ctaUrl": "https://homewoodtea.example.com",
+    "template": {
+      "canvas": {
+        "width": 1080,
+        "height": 1350
+      },
+      "photoArea": {
+        "x": 193,
+        "y": 161,
+        "width": 722,
+        "height": 679,
+        "borderRadius": 0
+      },
+      "stageAreaPct": {
+        "left": 17.87,
+        "top": 11.93,
+        "width": 66.85,
+        "height": 50.3
+      },
+      "borderWidth": 0,
+      "framePadding": 28,
+      "styleVariant": "image-overlay"
+    }
+  },
+  {
+    "id": "lavender-serenity",
+    "aliases": [
+      "lavender-tea-garden-photo-frame",
+      "purple",
+      "lavender"
+    ],
+    "name": "Lavender Tea Garden",
+    "themeName": "Pastel Lavender & Lilac Mist",
+    "category": "Feminine / Aesthetic",
+    "tag": "Floral Serenity",
+    "badgeIcon": "\ud83e\udebb",
+    "clientId": "homewood-tea",
+    "clientName": "Homewood Tea",
+    "campaignTitle": "Lavender Fields & Mountain Serenity",
+    "campaignSubtitle": "Delicate purple blossoms, serene lavender mist and tea flora",
+    "brandTagline": "Where Nature Feels Like Home",
+    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
+    "frameImage": "frames/frame_lavender-serenity.png",
+    "thumbImage": "frames/frame_lavender-serenity_thumb.png",
+    "theme": {
+      "primaryColor": "#6b4c7d",
+      "goldColor": "#d8b4e2",
+      "darkBg": "#1d1324",
+      "accentColor": "#9b72b0",
+      "textColor": "#faf6fc"
+    },
+    "defaultHashtags": [
+      "#LavenderTea",
+      "#HomewoodTea",
+      "#PurpleSerenity",
+      "#NilgiriGardens",
+      "#OotyFlora"
+    ],
+    "suggestedShareText": "Basking in the gentle lavender breeze at Homewood Tea Gardens \ud83e\udebb\ud83c\udf43 #LavenderTea #HomewoodTea",
+    "ctaText": "Explore Homewood Tea Blends \u2192",
+    "ctaUrl": "https://homewoodtea.example.com",
+    "template": {
+      "canvas": {
+        "width": 1080,
+        "height": 1350
+      },
+      "photoArea": {
+        "x": 113,
+        "y": 91,
+        "width": 826,
+        "height": 1040,
+        "borderRadius": 0
+      },
+      "stageAreaPct": {
+        "left": 10.46,
+        "top": 6.74,
+        "width": 76.48,
+        "height": 77.04
+      },
+      "borderWidth": 0,
+      "framePadding": 28,
+      "styleVariant": "image-overlay"
+    }
+  },
+  {
     "id": "nilgiris-valley",
     "aliases": [
       "heritage",
@@ -424,6 +547,66 @@ const ALL_FRAMES = [
         "top": 8.3,
         "width": 85.83,
         "height": 74.37
+      },
+      "borderWidth": 0,
+      "framePadding": 28,
+      "styleVariant": "image-overlay"
+    }
+  },
+  {
+    "id": "nilgiris-adventure",
+    "aliases": [
+      "adventure",
+      "nilgiris-explorer-tea-adventure-frame",
+      "trail"
+    ],
+    "name": "Nilgiris Trail Adventure",
+    "themeName": "Summit Ridge & Antique Compass",
+    "category": "Adventure & Rugged",
+    "tag": "Peak Expedition",
+    "badgeIcon": "\ud83e\udded",
+    "clientId": "homewood-tea",
+    "clientName": "Homewood Tea",
+    "campaignTitle": "Nilgiris Mountain Trail Adventure",
+    "campaignSubtitle": "Mountain ridge silhouettes, trail compass and vintage expedition styling",
+    "brandTagline": "Where Nature Feels Like Home",
+    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
+    "frameImage": "frames/frame_nilgiris-adventure.png",
+    "thumbImage": "frames/frame_nilgiris-adventure_thumb.png",
+    "theme": {
+      "primaryColor": "#18241e",
+      "goldColor": "#d4a34b",
+      "darkBg": "#0d1410",
+      "accentColor": "#2a3d33",
+      "textColor": "#f7f4ea"
+    },
+    "defaultHashtags": [
+      "#NilgiriTrail",
+      "#HomewoodTea",
+      "#PeakAdventure",
+      "#MountainTrek",
+      "#BornWild"
+    ],
+    "suggestedShareText": "Every trail leads to extraordinary views and great tea \ud83e\udded\u26f0\ufe0f #NilgiriTrail #HomewoodTea",
+    "ctaText": "Explore Homewood Tea Blends \u2192",
+    "ctaUrl": "https://homewoodtea.example.com",
+    "template": {
+      "canvas": {
+        "width": 1080,
+        "height": 1350
+      },
+      "photoArea": {
+        "x": 117,
+        "y": 130,
+        "width": 828,
+        "height": 970,
+        "borderRadius": 0
+      },
+      "stageAreaPct": {
+        "left": 10.83,
+        "top": 9.63,
+        "width": 76.67,
+        "height": 71.85
       },
       "borderWidth": 0,
       "framePadding": 28,
@@ -567,8 +750,8 @@ ALL_FRAMES.forEach(frame => {
   }
 });
 
-const STORAGE_KEY = 'nilgiri_frame_campaigns_v5';
-const SELECTED_FRAME_STORAGE_KEY = 'nilgiri_active_frame_id_v5';
+const STORAGE_KEY = 'nilgiri_frame_campaigns_v6';
+const SELECTED_FRAME_STORAGE_KEY = 'nilgiri_active_frame_id_v6';
 
 function getAllFrames() {
   return ALL_FRAMES;
