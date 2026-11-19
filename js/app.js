@@ -198,11 +198,13 @@
           <p class="frame-card-sub">${f.campaignSubtitle}</p>
         </div>
         <div class="frame-card-actions">
-          <button class="btn-gold" data-launch-frame="${f.id}" style="flex: 1; font-size: 0.85rem; padding: 0.75rem 0.9rem;">
-            <span>📸 Launch Frame</span>
+          <button class="card-btn-action card-btn-launch" data-launch-frame="${f.id}" title="Launch ${f.name}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>Use frame</span>
           </button>
-          <button class="btn-secondary" data-show-qr="${f.id}" style="padding: 0.75rem 0.9rem;" title="Scan on Mobile">
-            <span>📱 QR</span>
+          <button class="card-btn-action card-btn-qr" data-show-qr="${f.id}" title="Scan QR to open on phone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>QR</span>
           </button>
         </div>
       </div>
@@ -543,7 +545,7 @@
       if (qrSub) qrSub.textContent = `Scan with your phone to launch the ${frame.name} camera experience!`;
       targetUrl = `${origin}/q/${frame.id}`;
     } else {
-      if (qrLabel) qrLabel.textContent = `📱 Open m'POSE Experience`;
+      if (qrLabel) qrLabel.textContent = `Open m'POSE Experience`;
       if (qrSub) qrSub.textContent = `Scan with your smartphone camera to operate m'POSE on your phone!`;
       targetUrl = `${origin}/`;
     }
@@ -766,8 +768,10 @@
       copyCaptionBtn.addEventListener('click', () => {
         const caption = `${activeCampaign.suggestedShareText}\n\n${activeCampaign.defaultHashtags.join(' ')}`;
         navigator.clipboard.writeText(caption).then(() => {
-          copyCaptionBtn.textContent = '✓ Caption Copied!';
-          setTimeout(() => { copyCaptionBtn.textContent = 'Copy Instagram Caption'; }, 2000);
+          copyCaptionBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><polyline points="20 6 9 17 4 12"/></svg> <span>Copied!</span>';
+          setTimeout(() => {
+            copyCaptionBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> <span>Copy</span>';
+          }, 2000);
         });
       });
     }
@@ -779,8 +783,10 @@
         const linkEl = document.getElementById('qr-direct-link');
         const url = linkEl ? linkEl.href : window.location.href;
         navigator.clipboard.writeText(url).then(() => {
-          copyQrLinkBtn.innerHTML = '<span>✓ Link Copied to Clipboard!</span>';
-          setTimeout(() => { copyQrLinkBtn.innerHTML = '<span>📋 Copy Mobile Link</span>'; }, 2000);
+          copyQrLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><polyline points="20 6 9 17 4 12"/></svg> <span>Copied to clipboard!</span>';
+          setTimeout(() => {
+            copyQrLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> <span>Copy link</span>';
+          }, 2000);
         });
       });
     }
