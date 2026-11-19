@@ -1,5 +1,5 @@
 /**
- * m'POSE · Homewood Tea - All 12 Master Souvenir Frames
+ * m'POSE · Homewood Tea - All 9 Master Souvenir Frames
  * Handcrafted High-Definition 1080x1350 transparent overlays with tailored Homewood Tea medallions.
  */
 
@@ -128,67 +128,6 @@ const ALL_FRAMES = [
     }
   },
   {
-    "id": "high-country",
-    "aliases": [
-      "mountain",
-      "explorer",
-      "high-country-tea-explorer-frame",
-      "trekker"
-    ],
-    "name": "High Country Explorer",
-    "themeName": "Alpine Forest Pine & Brass",
-    "category": "Adventure & Rugged",
-    "tag": "Mountain Explorer",
-    "badgeIcon": "\u26f0\ufe0f",
-    "clientId": "homewood-tea",
-    "clientName": "Homewood Tea",
-    "campaignTitle": "Born to Roam \u2022 High Country",
-    "campaignSubtitle": "Tactical forest green, topographic contours & rugged compass badge",
-    "brandTagline": "Where Nature Feels Like Home",
-    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "frames/frame_high-country.png",
-    "thumbImage": "frames/frame_high-country_thumb.png",
-    "theme": {
-      "primaryColor": "#0a1d13",
-      "goldColor": "#c99a3e",
-      "darkBg": "#09150d",
-      "accentColor": "#1b2320",
-      "textColor": "#f5f0e1"
-    },
-    "defaultHashtags": [
-      "#HighCountry",
-      "#HomewoodTea",
-      "#BornToRoam",
-      "#NilgiriTrek",
-      "#MountainExplorer"
-    ],
-    "suggestedShareText": "Born to roam the high country. Trekking the misty Nilgiris peaks \u26f0\ufe0f\ud83c\udf32 #HighCountry #HomewoodTea",
-    "ctaText": "Explore Homewood Tea Blends \u2192",
-    "ctaUrl": "https://homewoodtea.example.com",
-    "template": {
-      "canvas": {
-        "width": 1080,
-        "height": 1350
-      },
-      "photoArea": {
-        "x": 88,
-        "y": 77,
-        "width": 901,
-        "height": 1035,
-        "borderRadius": 0
-      },
-      "stageAreaPct": {
-        "left": 8.15,
-        "top": 5.7,
-        "width": 83.43,
-        "height": 76.67
-      },
-      "borderWidth": 0,
-      "framePadding": 28,
-      "styleVariant": "image-overlay"
-    }
-  },
-  {
     "id": "emerald-gold",
     "aliases": [
       "nilgiris-emerald-gold",
@@ -243,67 +182,6 @@ const ALL_FRAMES = [
         "top": 13.7,
         "width": 67.41,
         "height": 65.56
-      },
-      "borderWidth": 0,
-      "framePadding": 28,
-      "styleVariant": "image-overlay"
-    }
-  },
-  {
-    "id": "sunset-glow",
-    "aliases": [
-      "golden-hour",
-      "homewood-tea-sunset-frame",
-      "sunset",
-      "blush-sunset"
-    ],
-    "name": "Golden Sunset Glow",
-    "themeName": "Warm Peach & Sunset Gold",
-    "category": "Feminine / Aesthetic",
-    "tag": "Golden Hour",
-    "badgeIcon": "\ud83c\udf05",
-    "clientId": "homewood-tea",
-    "clientName": "Homewood Tea",
-    "campaignTitle": "Chasing Sunsets & Mountain Brews",
-    "campaignSubtitle": "Warm peach & rose-gold gradient with glowing mountain mist",
-    "brandTagline": "Where Nature Feels Like Home",
-    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "frames/frame_sunset-glow.png",
-    "thumbImage": "frames/frame_sunset-glow_thumb.png",
-    "theme": {
-      "primaryColor": "#b85d43",
-      "goldColor": "#e5a93b",
-      "darkBg": "#2b160e",
-      "accentColor": "#f7c2a5",
-      "textColor": "#fffbf5"
-    },
-    "defaultHashtags": [
-      "#GoldenHour",
-      "#HomewoodTea",
-      "#NilgiriSunset",
-      "#MountainBrews",
-      "#Ooty"
-    ],
-    "suggestedShareText": "Higher elevation, warmer memories. Chasing sunsets with Homewood Tea \ud83c\udf05\u2615 #GoldenHour #HomewoodTea",
-    "ctaText": "Explore Homewood Tea Blends \u2192",
-    "ctaUrl": "https://homewoodtea.example.com",
-    "template": {
-      "canvas": {
-        "width": 1080,
-        "height": 1350
-      },
-      "photoArea": {
-        "x": 78,
-        "y": 60,
-        "width": 903,
-        "height": 1063,
-        "borderRadius": 0
-      },
-      "stageAreaPct": {
-        "left": 7.22,
-        "top": 4.44,
-        "width": 83.61,
-        "height": 78.74
       },
       "borderWidth": 0,
       "framePadding": 28,
@@ -486,67 +364,6 @@ const ALL_FRAMES = [
         "top": 6.74,
         "width": 76.48,
         "height": 77.04
-      },
-      "borderWidth": 0,
-      "framePadding": 28,
-      "styleVariant": "image-overlay"
-    }
-  },
-  {
-    "id": "nilgiris-valley",
-    "aliases": [
-      "heritage",
-      "nilgiris-valley-tea-frame",
-      "valley",
-      "nilgiri-tea"
-    ],
-    "name": "Nilgiris Valley Heritage",
-    "themeName": "British Colonial Tea Green & Gold Leaf",
-    "category": "Universal Heritage",
-    "tag": "Classic Estate",
-    "badgeIcon": "\ud83c\udf43",
-    "clientId": "homewood-tea",
-    "clientName": "Homewood Tea",
-    "campaignTitle": "The Nilgiris Valley Heritage",
-    "campaignSubtitle": "Lush green tea gardens, mist and traditional imperial valley seal",
-    "brandTagline": "Where Nature Feels Like Home",
-    "locationText": "Homewood Tea Factory & Gardens \u2022 Ooty, Nilgiris",
-    "frameImage": "frames/frame_nilgiris-valley.png",
-    "thumbImage": "frames/frame_nilgiris-valley_thumb.png",
-    "theme": {
-      "primaryColor": "#0d2b1d",
-      "goldColor": "#d4af37",
-      "darkBg": "#091c13",
-      "accentColor": "#16432f",
-      "textColor": "#faf7f0"
-    },
-    "defaultHashtags": [
-      "#NilgirisValley",
-      "#HomewoodTea",
-      "#WhereNatureFeelsLikeHome",
-      "#PureTea",
-      "#OotyMoments"
-    ],
-    "suggestedShareText": "Preserving a timeless moment in the misty Nilgiris hills \ud83c\udf43\u2728 #NilgirisValley #HomewoodTea",
-    "ctaText": "Explore Homewood Tea Blends \u2192",
-    "ctaUrl": "https://homewoodtea.example.com",
-    "template": {
-      "canvas": {
-        "width": 1080,
-        "height": 1350
-      },
-      "photoArea": {
-        "x": 75,
-        "y": 112,
-        "width": 927,
-        "height": 1004,
-        "borderRadius": 0
-      },
-      "stageAreaPct": {
-        "left": 6.94,
-        "top": 8.3,
-        "width": 85.83,
-        "height": 74.37
       },
       "borderWidth": 0,
       "framePadding": 28,

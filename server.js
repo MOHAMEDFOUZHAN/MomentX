@@ -153,8 +153,8 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`📱 Mobile (Wi-Fi):     http://${primaryIp}:${PORT}`);
   console.log(`----------------------------------------------------------------`);
   console.log(`🌸 Rose Garden Frame:    http://${primaryIp}:${PORT}/q/rose-garden`);
-  console.log(`🌅 Sunset Glow Frame:     http://${primaryIp}:${PORT}/q/sunset-glow`);
-  console.log(`🍃 Nilgiris Valley:       http://${primaryIp}:${PORT}/q/nilgiris-valley`);
+  console.log(`🏭 Factory & Museum:     http://${primaryIp}:${PORT}/q/factory-museum`);
+  console.log(`🍃 Emerald & Gold:       http://${primaryIp}:${PORT}/q/emerald-gold`);
   console.log(`☕ Dark Roast Noir:       http://${primaryIp}:${PORT}/q/dark-roast`);
   console.log(`⚙️  Admin Studio:         http://${primaryIp}:${PORT}/admin`);
   console.log(`================================================================`);
